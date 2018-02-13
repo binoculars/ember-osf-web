@@ -1,8 +1,14 @@
 import Component from '@ember/component';
 
-export default Component.extend({
-    tagName: 'nav',
-    classNames: ['navbar', 'osf-project-navbar', 'row'],
-    attributeBindings: ['role'],
-    role: 'navigation',
-});
+export default class QuickfileNav extends Component {
+    private tagName = 'nav';
+    private classNames = ['navbar', 'osf-project-navbar', 'row'];
+    private attributeBindings = ['role'];
+    private role = 'navigation';
+}
+
+declare module '@ember/component' {
+    interface IRegistry {
+        'quickfile-nav': QuickfileNav;
+    }
+}

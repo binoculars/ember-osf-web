@@ -5,52 +5,85 @@ import Analytics from 'ember-osf/mixins/analytics';
 import config from 'ember-get-config';
 import pathJoin from 'ember-osf/utils/path-join';
 
-export default Component.extend(Analytics, {
+export default class FileShareButton extends Component.extend(Analytics) {
     // -- Component arguments -- //
-    file: null,
+    private file = null;
 
     // -- Class properties -- //
-    showPopup: false,
+    private showPopup = false;
 
     // -- Computed properties -- //
-    popoverClass: computed('styleNamespace', function() {
+    private popoverClass = computed('styleNamespace', function() {
         return `${this.get('styleNamespace')}__popover`;
-    }),
+    });
 
-    sharePaneId: computed('elementId', function() {
+    private sharePaneId = computed('elementId', function() {
         return `${this.get('elementId')}__share-pane`;
-    }),
+    });
 
-    embedPaneId: computed('elementId', function() {
+    private embedPaneId = computed('elementId', function() {
         return `${this.get('elementId')}__embed-pane`;
-    }),
+    });
 
-    fileUrl: computed('file', function() {
+    private fileUrl = computed('file', function() {
         return encodeURIComponent(pathJoin(config.OSF.url, this.get('file.guid')));
-    }),
+    });
 
-    twitterUrl: computed('file.name', 'fileUrl', function() {
-        return `https://twitter.com/intent/tweet?url=${this.get('fileUrl')}&text=${this.get('file.name')}&via=OSFramework`;
-    }),
+    private twitterUrl = computed('file.name', 'fileUrl', function() {
+        const {
+            social: {
+                twitter: {
+                    viaHandle: via,
+                },
+            },
+        } = config;
 
-    facebookUrl: computed('fileUrl', function() {
-        return `https://www.facebook.com/sharer/sharer.php?u=${this.get('fileUrl')}`;
-    }),
+        const params = {
+            text: this.get('file.name'),
+            url: this.get('fileUrl'),
+            via,
+        };
 
-    linkedInUrl: computed('file.name', 'fileUrl', function() {
-        return `https://www.linkedin.com/cws/share?url=${this.get('fileUrl')}&title=${this.get('file.name')}`;
-    }),
+        return `https://twitter.com/intent/tweet?${$.param(params)}`;
+    });
 
-    emailUrl: computed('file.name', 'fileUrl', function() {
-        return `mailto:?subject=${this.get('file.name')}&body=${this.get('fileUrl')}`;
-    }),
+    private facebookUrl = computed('fileUrl', function() {
+        const params = {
+            u: this.get('fileUrl'),
+        };
 
-    mfrUrl: computed('file', function() {
-        const encodedDownloadUrl = encodeURIComponent(pathJoin(config.OSF.url, this.get('file.guid'), 'download'));
-        return `${config.OSF.renderUrl}?url=${encodedDownloadUrl}`;
-    }),
+        return `https://www.facebook.com/sharer/sharer.php?${$.param(params)}`;
+    });
 
-    shareiFrameDynamic: computed('mfrUrl', function() {
+    private linkedInUrl = computed('file.name', 'fileUrl', function() {
+        const params = {
+            title: this.get('file.name'),
+            url: this.get('fileUrl'),
+        };
+
+        return `https://www.linkedin.com/cws/share?${$.param(params)}`;
+    });
+
+    private emailUrl = computed('file.name', 'fileUrl', function() {
+        const params = {
+            body: this.get('fileUrl'),
+            subejct: this.get('file.name'),
+        };
+
+        return `mailto:?${$.param(params)}`;
+    });
+
+    private mfrUrl = computed('file', function() {
+        const params = {
+            url: encodeURIComponent(pathJoin(config.OSF.url, this.get('file.guid'), 'download')),
+        };
+
+        return `${config.OSF.renderUrl}?${$.param(params)}`;
+    });
+
+    private shareiFrameDynamic = computed('mfrUrl', function() {
+        const mfrStaticUrl = config.OSF.renderUrl.replace('/render', '/static');
+
         return htmlSafe(`
             <style>
                 .embed-responsive {
@@ -62,9 +95,9 @@ export default Component.extend(Analytics, {
                     height:100%;
                 }
             </style>
-            <link href="https://mfr.osf.io/static/css/mfr.css" media="all" rel="stylesheet">
+            <link href="${mfrStaticUrl}/css/mfr.css" media="all" rel="stylesheet">
             <div id="mfrIframe" class="mfr mfr-file"></div>
-            <script src="https://mfr.osf.io/static/js/mfr.js"></script>
+            <script src="${mfrStaticUrl}/js/mfr.js"></script>
             <script>
                 function renderMfr() {
                     var mfrRender = new mfr.Render("mfrIframe", "${this.get('mfrUrl')}");
@@ -81,9 +114,9 @@ export default Component.extend(Analytics, {
                 }
             </script>
         `.trim().replace(/^\s{12}/mg, ''));
-    }),
+    });
 
-    shareiFrameDirect: computed('mfrUrl', function() {
+    private shareiFrameDirect = computed('mfrUrl', function() {
         return htmlSafe(`
             <iframe src="${this.get('mfrUrl')}"
                     width="100%"
@@ -94,20 +127,26 @@ export default Component.extend(Analytics, {
                     allowfullscreen
                     webkitallowfullscreen>
         `.trim().replace(/^\s{12}/mg, ''));
-    }),
+    });
 
-    actions: {
-        share() {
+    private actions = {
+        share(this: FileShareButton) {
             document.querySelector('.SharePane__mfr-url').select();
             document.execCommand('copy');
         },
 
-        togglePopup() {
+        togglePopup(this: FileShareButton) {
             this.toggleProperty('showPopup');
         },
 
-        hidePopup() {
+        hidePopup(this: FileShareButton) {
             this.set('showPopup', false);
         },
-    },
-});
+    };
+}
+
+declare module '@ember/component' {
+    interface IRegistry {
+        'file-share-button': FileShareButton;
+    }
+}
