@@ -13,6 +13,7 @@ const App = Application.extend({
         collections: {
             dependencies: {
                 services: [
+                    'analytics',
                     'i18n',
                     'session',
                     'store',

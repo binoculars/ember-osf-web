@@ -6,9 +6,5 @@
  * @return {boolean} Whether it ate any arguments.
  */
 export default function eatArgs(...args: any[]) {
-    if (args.length) {
-        return true;
-    } else {
-        return false;
-    }
+    return !!args.length;
 }

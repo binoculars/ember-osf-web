@@ -16,6 +16,9 @@ module.exports = {
         browser: true,
         es6: true,
     },
+    globals: {
+        c3: true,
+    },
     rules: {
         'arrow-parens': ['error', 'as-needed'],
         'class-methods-use-this': 'off',

@@ -168,5 +168,8 @@
       "lib/osf-components",
       "lib/handbook"
     ]
+  },
+  "dependencies": {
+    "langs": "^2.0.0"
   }
 }
