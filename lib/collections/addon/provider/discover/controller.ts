@@ -7,7 +7,7 @@ import { not } from '@ember-decorators/object/computed';
 import Theme from 'collections/services/theme';
 import I18N from 'ember-i18n/services/i18n';
 
-import config from '../../../config/environment';
+import config from 'collections/config/environment';
 
 export default class Discover extends Controller {
     @service theme!: Theme;

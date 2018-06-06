@@ -50,6 +50,6 @@ export default class MaintenanceBanner extends Component.extend({
     }
 
     didReceiveAttrs(this: MaintenanceBanner): void {
-        this.get('getMaintenanceStatus').perform();
+        // this.get('getMaintenanceStatus').perform();
     }
 }
