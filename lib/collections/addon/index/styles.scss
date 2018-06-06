@@ -4,12 +4,11 @@
 }
 
 .header {
-    background:#214661 url('/engines-dist/collections/assets/img/osf-bg.jpg') top center;
-    // background-position-y: -50px;
+    background: #214661 url('/engines-dist/collections/assets/img/osf-bg.jpg') top center;
     padding-top: 100px;
     padding-bottom: 30px;
-    border-bottom: 1px solid #dddddd;
-    color: white;
+    border-bottom: 1px solid #ddd;
+    color: #fff;
 
     h1 {
         font-size: 41px;
@@ -21,18 +20,18 @@
         text-decoration: underline;
     }
     
-    :gloabl(.btn-info) {
-        color: #fff
+    :global(.btn-info) {
+        color: #fff;
     }
 }
 
 .osf-bg {
     height: 70px;
     background-size: contain;
-    background: top center no-repeat
+    background: top center no-repeat;
 }
 
-.advisory  {
+.advisory {
     background-color: #f3f5f7;
     border-bottom: 1px solid #e0e6ea;
     min-height: 200px;
