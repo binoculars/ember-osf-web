@@ -32,6 +32,8 @@ export default class Theme extends Service {
     provider = {
         id: 'osf',
         advisoryBoard,
+        allowSubmissions: true,
+        additionalProviders: [],
     };
 }
 

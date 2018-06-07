@@ -2,17 +2,37 @@
 
 /* Header panel  */
 .search-header {
-    padding-top: 120px;
+    padding-top: 70px;
+    background: #e0ebef url('img/search-bg.jpg') top center;
     background-size: cover;
+    // background-position-y: -50px;
 }
 
 .share-logo {
     width: 46px;
     height: 22px;
-    background: url('../assets/img/share-logo-icon.png') no-repeat;
+    background: url('img/share-logo-icon.png') no-repeat;
     display: inline-block;
     background-size: contain;
     vertical-align: middle;
+}
+
+.sortByOptionList {
+    background-color: #efefef;
+
+    li:hover {
+        background-color: #d9d9d9;
+    }
+}
+
+.listOption {
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .search-main {
@@ -61,28 +81,12 @@
     border: 1px solid #ddd;
 }
 
-.listOption.btn-link {
-    cursor: pointer;
-    color: #000;
-    text-decoration: none;
-
-    &:focus {
-        outline: none;
-    }
-}
-
 .provider-brand {
     height: 140px;
     background-position-x: right;
 }
 
-.sortByOptionList {
-    background-color: #efefef;
 
-    li:hover {
-        background-color: #d9d9d9;
-    }
-}
 
 .removeActiveFilter button {
     border: 0;

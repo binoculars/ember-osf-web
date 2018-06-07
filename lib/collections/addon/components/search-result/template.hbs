@@ -10,7 +10,7 @@
                     {{#link-to detailRoute result.id}}{{fix-special-char result.title}}{{/link-to}}
                 {{else}}
                     {{#if hyperlink}}
-                        <a href='{{hyperlink}}' onclick={{action 'click' 'link' (concat 'Discover - Result Title: ' hyperlink) result.id}}>{{fix-special-char result.title}}</a>
+                        <a href='{{hyperlink}}' onclick={{action 'click' 'link' (concat 'Discover - Result Title: ' hyperlink) result.id target=analytics}}>{{fix-special-char result.title}}</a>
                     {{else}}
                         <span>{{fix-special-char result.title}}</span>
                     {{/if}}
@@ -44,7 +44,7 @@
             {{#if subjects}}
                 <div class="m-t-sm">
                     {{#each subjects as |subject|}}
-                        <span role="button" class="subject-preview pointer" onclick={{action updateFilters 'subjects' (or subject.value subject.text)}}>
+                        <span role="button" class="subject-preview pointer" onclick={{action updateFilters 'subjects' (or subject.value subject.text) target=analytics}}>
                             {{subject.text}}
                         </span>
                     {{/each}}
@@ -94,7 +94,7 @@
                 {{#if result.hyperLinks}}
                     <ul class="preprints-block-list m-t-sm">
                         {{#each result.hyperLinks as |link|}}
-                            <li><a href='{{link.url}}' onclick={{action 'click' 'link' (concat 'Discover - Result Hyperlink: ' link.url) result.id}}>{{link.url}}</a></li>
+                            <li><a href='{{link.url}}' onclick={{action 'click' 'link' (concat 'Discover - Result Hyperlink: ' link.url) result.id target=analytics}}>{{link.url}}</a></li>
                         {{/each}}
                     </ul>
                 {{/if}}

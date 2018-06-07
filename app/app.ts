@@ -14,6 +14,7 @@ const App = Application.extend({
             dependencies: {
                 services: [
                     'analytics',
+                    'currentUser',
                     'i18n',
                     'session',
                     'store',

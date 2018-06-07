@@ -39,17 +39,24 @@
                 <div class="row">
                     <div class="text-center col-xs-12">
                         <p class="lead">
-                            {{t 'index.header.or'}}
+                            {{t 'general.or'}}
                         </p>
                         <a
-                            type="button" class="btn btn-success btn-lg preprint-submit-button"
-                            onclick={{action "click" "link" "Index - Add preprint"}}
+                            type="button"
+                            class="btn btn-success btn-lg"
+                            local-class="preprint-submit-button"
+                            onclick={{action "click" "link" "Index - Add collection" target=analytics}}
                             href={{concat theme.pathPrefix 'submit'}}
                         >
-                            {{t "global.add_preprint"}}
+                            {{t "global.add_collection"}}
                         </a>
                         <div class="m-t-md">
-                            {{#link-to (route-prefix 'content') (if theme.provider.example theme.provider.example 'khbvy') invokeAction=(action "click" "link" "Index - See example")}}
+                            {{!-- (route-prefix 'content') --}}
+                            {{#link-to
+                                'discover'
+                                (if theme.provider.example theme.provider.example 'khbvy')
+                                invokeAction=(action "click" "link" "Index - See example")
+                            }}
                                 {{t "index.header.example"}}
                             {{/link-to}}
                         </div>

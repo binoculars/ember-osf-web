@@ -33,10 +33,13 @@ export default class Discover extends Controller {
     consumingService = 'collections'; // Consuming service - preprints here
     detailRoute = 'content'; // Name of detail route for this application
 
-    @computed('additionalProviders')
+    // @computed('additionalProviders')
     get discoverHeader(): string { // Header for preprints discover page
         // If additionalProviders, use more generic Repository Search page title
-        return this.additionalProviders ? 'discover.search.heading_repository_search' : 'discover.search.heading';
+        return 'collections.discover.search_placeholder';
+        // return this.additionalProviders ?
+        //     'discover.search.heading_repository_search' :
+        //     'collections.discover.search_heading';
     }
 
     end = ''; // End query param. Must be passed to component, so can be reflected in the URL
@@ -140,21 +143,30 @@ export default class Discover extends Controller {
 
     @computed('additionalProviders')
     get searchPlaceholder() { // Search bar placeholder
-        return this.additionalProviders ? 'discover.search.repository_placeholder' : 'discover.search.placeholder';
+        return this.additionalProviders ?
+            'discover.search.repository_placeholder' :
+            'collections.discover.search_placeholder';
     }
 
     @computed('i18n.locale')
     get sortOptions() { // Sort options for preprints
-        return [{
-            display: this.i18n.t('discover.relevance'),
-            sortBy: '',
-        }, {
-            display: this.i18n.t('discover.sort_oldest_newest'),
-            sortBy: 'date_updated',
-        }, {
-            display: this.i18n.t('discover.sort_newest_oldest'),
-            sortBy: '-date_updated',
-        }];
+        return [
+            {
+                display: 'relevance',
+                sortBy: '',
+            },
+            {
+                display: 'sort_oldest_newest',
+                sortBy: 'date_updated',
+            },
+            {
+                display: 'sort_newest_oldest',
+                sortBy: '-date_updated',
+            },
+        ].map(({ display, sortBy }) => ({
+            display: this.i18n.t(`discover.${display}`),
+            sortBy,
+        }));
     }
 
     sources = ''; // Sources query param. Must be passed to component, so can be reflected in the URL

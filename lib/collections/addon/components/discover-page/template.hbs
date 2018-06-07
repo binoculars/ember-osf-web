@@ -1,5 +1,5 @@
 {{!Component builds DISCOVER PAGE - Blend of Ember-SHARE, Preprints, and Registries Discover pages}}
-<div class="search-header">
+<div local-class="search-header">
     <div class="container">
         {{!BRANDING}}
         <div class="row m-v-md">
@@ -15,25 +15,46 @@
                     <div class="registries-brand m-t-lg"></div>
                     {{!Discover Page Header text}}
                     {{#if discoverHeader}}
-                        <h1> {{t discoverHeader documentType=themeProvider.documentType}} </h1>
+                        <h1>{{t discoverHeader documentType=themeProvider.documentType}}</h1>
                     {{/if}}
                     {{!POWERED BY SHARE}}
-                    <p class="lead">{{t 'eosf.components.discoverPage.poweredBy'}} <a href="https://share.osf.io/" id='share-logo' class="share-logo" title={{t 'eosf.components.discoverPage.share'}} onclick={{action "click" "link" "Discover - SHARE Logo"}}></a></p>
+                    <p class="lead">
+                        {{t 'eosf.components.discoverPage.poweredBy'}}
+                        <a
+                            href="https://share.osf.io/"
+                            id="share-logo"
+                            local-class="share-logo"
+                            title={{t 'eosf.components.discoverPage.share'}}
+                            onclick={{action "click" "link" "Discover - SHARE Logo" target=analytics}}
+                        ></a>
+                    </p>
                 </div>
             </div>
         </div>
-
         {{!SEARCH}}
         <div class="row m-t-md m-b-lg text-center">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                 {{!SEARCH BAR}}
                 <div class="input-group input-group-lg">
-                    {{input id="searchBox" value=q class="form-control" enter="search" placeholder=(t (or searchPlaceholder 'eosf.components.discoverPage.searchPlaceholder') documentType=themeProvider.documentType)}}
+                    {{input
+                        id="searchBox"
+                        value=q
+                        class="form-control"
+                        enter="search"
+                        placeholder=(t
+                            (or searchPlaceholder 'eosf.components.discoverPage.searchPlaceholder')
+                            documentType=themeProvider.documentType
+                        )
+                    }}
                     <span class="input-group-btn">
                         {{!HELP BUTTON}}
-                        <button class="btn btn-default" type="button" aria-label={{t 'eosf.components.discoverPage.luceneHelp'}} {{action 'toggleShowLuceneHelp'}}> <i class="fa fa-question text-muted"></i></button>
+                        <button class="btn btn-default" type="button" aria-label={{t 'eosf.components.discoverPage.luceneHelp'}} {{action 'toggleShowLuceneHelp'}}>
+                            <i class="fa fa-question text-muted"></i>
+                        </button>
                         {{!SEARCH BUTTON}}
-                        <button class="btn btn-default" type="button" {{action "search"}}> {{t 'eosf.components.discoverPage.search'}} </button>
+                        <button class="btn btn-default" type="button" {{action "search"}}>
+                            {{t 'eosf.components.discoverPage.search'}}
+                        </button>
                     </span>
                 </div>
                 {{!Lucene search help modal}}
@@ -64,34 +85,38 @@
         {{/if}}
 
         <div class="row p-v-sm">
-            {{#if (not showActiveFilters)}}
+            {{!-- {{#if (not showActiveFilters)}}
                 <div class="col-xs-6">
                     {{!CLEAR FILTERS BUTTON - ONLY IF ACTIVE FILTERS NOT SHOWN}}
                     <button {{action 'clearFilters'}} class='btn btn-default clear-filters'>
                         {{t 'eosf.components.discoverPage.activeFilters.button'}}
                     </button>
                 </div>
-            {{/if}}
+            {{/if}} --}}
 
             <div class="col-sm-6 pull-right">
-                <div class="dropdown pull-right">
-                    {{!SORT BY BUTTON}}
-                    <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                        {{t 'eosf.components.discoverPage.sortBy'}}: {{sort-option-display sortOptions sort}}
+                {{#bs-dropdown classNames='dropdown pull-right' as |dd|}}
+                    {{#dd.button classNames='btn btn-default'}}
+                        {{t 'eosf.components.discoverPage.sortBy'}}:
+                        {{sortDisplay}}
                         <span class="caret" aria-label={{t 'eosf.components.discoverPage.sortSearchResults'}}></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" id="sortByOptionList" aria-labelledby="sortBy" class="sortByOptionList">
+                    {{/dd.button}}
+                    {{#dd.menu classNames='dropdown-menu dropdown-menu-right' local-class="sortByOptionList" as |ddm|}}
                         {{#each sortOptions as |sortChoice|}}
-                            <li><button class="btn btn-link listOption"{{action "selectSortOption" sortChoice.sortBy}}>{{sortChoice.display}}</button></li>
+                            {{#ddm.item}}
+                                <button class="btn btn-link" local-class="listOption" {{action "selectSortOption" sortChoice.sortBy}}>
+                                    {{sortChoice.display}}
+                                </button>
+                            {{/ddm.item}}
                         {{/each}}
-                    </ul>
-                </div>
+                    {{/dd.menu}}
+                {{/bs-dropdown}}
             </div>
         </div>
-
+{{!--
     </div>
 </div>
+
 <div class="search-main p-v-xl">
     <div class="container">
         <div class="row search-results-section">
@@ -192,5 +217,6 @@
                 {{/if}}
             </div>
         </div>
+        --}}
     </div>
 </div>

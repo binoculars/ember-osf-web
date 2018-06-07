@@ -15,6 +15,7 @@ import { debounce } from '@ember/runloop';
 import Contributor from 'ember-osf-web/models/contributor';
 
 import { encodeParams, getSplitParams, getUniqueList } from '../../utils/elastic-query';
+import styles from './styles';
 import layout from './template';
 
 /**
@@ -140,8 +141,14 @@ interface ThemeProvider {
     shareSource: string;
 }
 
+interface SortOption {
+    display: string;
+    sortBy: string;
+}
+
 export default class DiscoverPage extends Component {
     layout = layout;
+    styles = styles;
 
     @service analytics!: Analytics;
     @service currentUser!: CurrentUser;
@@ -183,7 +190,7 @@ export default class DiscoverPage extends Component {
      * Text header for top of discover page.
      * @property {String} discoverHeader
      */
-    discoverHeader = null;
+    discoverHeader: string = defaultTo(this.discoverHeader, '');
 
     /**
      * End query parameter.  If "end" is one of your query params, it must be passed to the component so it can be
@@ -367,13 +374,20 @@ export default class DiscoverPage extends Component {
      * @property {Array} sortOptions
      */
     // TODO: i18n-ize
-    sortOptions = [
+    sortOptions: SortOption[] = [ // defaultTo(this.sortOptions, [
         ['Relevance', ''],
         ['Date Updated (Desc)', '-date_updated'],
         ['Date Updated (Asc)', 'date_updated'],
         ['Ingest Date (Asc)', 'date_created'],
         ['Ingest Date (Desc)', '-date_created'],
-    ].map(([display, sortBy]) => ({ display, sortBy }));
+    ].map(([display, sortBy]) => ({ display, sortBy })); // );
+
+    @computed('sort', 'sortOptions')
+    get sortDisplay(): string {
+        const sortOption = this.sortOptions.find(({ sortBy }) => this.sort === sortBy);
+
+        return sortOption ? sortOption.display : '';
+    }
 
     /**
      * Sources query parameter.  If "sources" is one of your query params, it must be passed to the component so it can
