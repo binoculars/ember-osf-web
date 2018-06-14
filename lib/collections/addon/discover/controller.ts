@@ -1,19 +1,19 @@
-import { service } from '@ember-decorators/service';
-import Controller from '@ember/controller';
-
 import { computed } from '@ember-decorators/object';
 import { not } from '@ember-decorators/object/computed';
-
+import { service } from '@ember-decorators/service';
+import Controller from '@ember/controller';
+import config from 'collections/config/environment';
 import Theme from 'collections/services/theme';
 import I18N from 'ember-i18n/services/i18n';
-
-import config from 'collections/config/environment';
 
 export default class Discover extends Controller {
     @service theme!: Theme;
     @service i18n!: I18N;
 
-    activeFilters = { providers: [], subjects: [] };
+    activeFilters = {
+        providers: [],
+        subjects: [],
+    };
 
     model!: Array<{
         id: string;
@@ -176,5 +176,11 @@ export default class Discover extends Controller {
 
     _clearQueryString(this: Discover) {
         this.set('q', '');
+    }
+}
+
+declare module '@ember/controller' {
+    interface Registry {
+        'collections/discover': Discover;
     }
 }

@@ -19,11 +19,6 @@ import styles from './styles';
 import layout from './template';
 
 /**
- * @module ember-osf
- * @submodule components
- */
-
-/**
  * Discover-page component. Builds a search interface utilizing SHARE.
  * See retraction-watch, registries, and preprints discover pages for working examples.
  *
@@ -166,7 +161,7 @@ interface Hit {
 }
 
 export default class DiscoverPage extends Component.extend({
-    init(this: DiscoverPage, ...args: any[]) {
+    didInsertElement(this: DiscoverPage, ...args: any[]) {
         // TODO Sort initial results on date_modified
         // Runs on initial render.
         this._super(...args);
@@ -320,9 +315,9 @@ export default class DiscoverPage extends Component.extend({
     /**
      * Locked portions of search query that user cannot change.  Example: {'sources': 'PubMed Central'} will make PMC a
      * locked source.
-     * @property {Object} lockedParams
      */
-    lockedParams = {};
+    lockedParams: object = defaultTo(this.lockedParams, {});
+
     numberOfEvents = 0;
     numberOfResults = 0; // Number of search results returned
     numberOfSources = 0; // Number of sources
@@ -384,18 +379,14 @@ export default class DiscoverPage extends Component.extend({
     /**
      * Size query parameter.  If 'size' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
-     * @property {Integer} size
-     * @default 10
      */
-    size = 10;
+    size: number = defaultTo(this.size, 10);
 
     /**
      * Sort query parameter.  If 'sort' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
-     * @property {String} sort
-     * @default ''
      */
-    sort = '';
+    sort: string = defaultTo(this.sort, '');
 
     /**
      * Sort dropdown options - Array of dictionaries.  Each dictionary should have display and sortBy keys.
@@ -624,11 +615,6 @@ export default class DiscoverPage extends Component.extend({
     }
 
     getQueryBody(this: DiscoverPage): any {
-        return this.set('queryBody',
-            { 'query': { 'bool': { 'must': { 'query_string': { 'query': '*' } }, 'filter': [{ 'bool': { 'should': [{ 'terms': { 'types': ['preprint'] } }, { 'terms': { 'sources': ['Thesis Commons'] } }] } }, { 'terms': { 'sources': ['OSF', 'AgriXiv', 'BITSS', 'EarthArXiv', 'ecsarxiv', 'ECSarXiv', 'ECSarXiv2', 'engrXiv', 'Experimental Protocols', 'FocUS Archive', 'INA-Rxiv', 'LawArXiv', 'LawArXiv', 'LIS Scholarship Archive', 'MarbrXiv', 'MarXiv', 'MedArXiv', 'MindRxiv', 'NutriXiv', 'PaleorXiv', 'PsyArXiv', 'Research AZ', 'SciELO', 'SocArXiv', 'SportRxiv', 'Thesis Commons', 'arXiv', 'bioRxiv', 'Cogprints', 'PeerJ', 'Research Papers in Economics', 'Preprints.org'] } }] } }, 'from': 0, 'aggregations': { 'sources': { 'terms': { 'field': 'sources', 'size': 500 } } } });
-    }
-
-    getQueryBody1(this: DiscoverPage): any {
         /**
          * Builds query body to send to SHARE from a combination of locked Params, facetFilters and activeFilters
          *
@@ -641,7 +627,7 @@ export default class DiscoverPage extends Component.extend({
             ...this.buildLockedQueryBody(this.lockedParams),
             ...Object.values(this.facetFilters as object)
                 .filter(item => !!item)
-                .reduce((acc: string[], val) => acc.concat(Array.isArray(val) ? val : [val]), []),
+                .reduce((acc: string[], val) => [ ...acc, ...(Array.isArray(val) ? val : [val]) ], []),
             // For PREPRINTS and REGISTRIES.  Adds activeFilters to query body.
             ...Object.entries(this.filterMap)
                 .map(([key, val]: [string, string]) => {
@@ -650,17 +636,13 @@ export default class DiscoverPage extends Component.extend({
                     this.set(key as keyof DiscoverPage, filterList.join('OR'));
 
                     if (!filterList.length || (key === 'providers' && this.theme.isProvider)) {
-                        return {};
+                        return undefined;
                     }
 
                     return val === 'subjects' ?
                         {
                             bool: {
-                                should: filterList.map(filter => ({
-                                    match: {
-                                        [val]: filter,
-                                    },
-                                })),
+                                should: filterList.map(filter => ({ match: { [val]: filter } })),
                             },
                         } :
                         {
@@ -669,7 +651,7 @@ export default class DiscoverPage extends Component.extend({
                             },
                         };
                 }),
-        ];
+        ].filter(item => !!item);
 
         // For PREPRINTS and REGISTRIES. If theme.isProvider, add provider(s) to query body
         if (this.themeProvider) {

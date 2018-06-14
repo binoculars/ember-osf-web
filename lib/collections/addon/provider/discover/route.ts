@@ -1,19 +1,6 @@
-import Route from '@ember/routing/route';
+import Discover from '../../discover/route';
 
-export default class Discover extends Route {
-    /**
-     * Stub
-     */
-    model(): any[] {
-        return [
-            {
-                id: 'osf',
-                additionalProviders: [],
-            },
-            {
-                id: 'test',
-                additionalProviders: [],
-            },
-        ];
-    }
+export default class ProviderDiscover extends Discover {
+    controllerName = 'discover';
+    templateName = 'discover';
 }
