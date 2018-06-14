@@ -113,15 +113,21 @@ export default class SearchFacetDaterange extends Component.extend({
 
     updateFilter(this: SearchFacetDaterange, start: Date | null, end: Date | null) {
         const value = start && end ?
-            { start: moment(start).format(DATE_FORMAT), end: moment(end).format(DATE_FORMAT) } :
-            { start: '', end: '' };
+            {
+                start: moment(start).format(DATE_FORMAT),
+                end: moment(end).format(DATE_FORMAT),
+            } :
+            {
+                start: '',
+                end: '',
+            };
 
         this.set('previousState', this.state);
         this.sendAction('onChange', this.key, this.buildQueryObject(start, end), value);
     }
 
     noFilter(this: SearchFacetDaterange) {
-        this.set('pickerValue', `${this.get('i18n').t('eosf.components.searchFacetDaterange.allTime')}`);
+        this.set('pickerValue', this.get('i18n').t('eosf.components.searchFacetDaterange.allTime'));
     }
 
     @action

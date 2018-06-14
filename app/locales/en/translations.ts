@@ -874,4 +874,14 @@ export default {
     eosf: {
         components,
     },
+    discover: {
+        main: {
+            providers: 'Providers',
+        },
+        relevance: 'Relevance',
+    },
+    search_paginator: {
+        prev: '«',
+        next: '»',
+    },
 };

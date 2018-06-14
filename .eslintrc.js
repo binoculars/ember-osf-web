@@ -1,6 +1,7 @@
 module.exports = {
     globals: {
         server: true,
+        c3: true,
     },
     root: true,
     parser: 'typescript-eslint-parser',
@@ -15,9 +16,6 @@ module.exports = {
     env: {
         browser: true,
         es6: true,
-    },
-    globals: {
-        c3: true,
     },
     rules: {
         'arrow-parens': ['error', 'as-needed'],

@@ -52,7 +52,7 @@
                             <i class="fa fa-question text-muted"></i>
                         </button>
                         {{!SEARCH BUTTON}}
-                        <button class="btn btn-default" type="button" {{action "search"}}>
+                        <button class="btn btn-default" type="button" {{action 'searchAction'}}>
                             {{t 'eosf.components.discoverPage.search'}}
                         </button>
                     </span>
@@ -113,7 +113,6 @@
                 {{/bs-dropdown}}
             </div>
         </div>
-{{!--
     </div>
 </div>
 
@@ -125,43 +124,20 @@
                 {{! ACTIVE FILTERS - FOR PREPRINTS, REGISTRIES}}
                 {{#if showActiveFilters}}
                     <div id="activeFilters" class="well well-sm p-md">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>{{t "eosf.components.discoverPage.activeFilters.heading"}}:</h4>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="pull-right">
-                                    {{!CLEAR FILTERS BUTTON}}
-                                    <button type="button" class="btn btn-default btn-sm" {{action "clearFilters"}}>{{t 'eosf.components.discoverPage.activeFilters.button'}} {{fa-icon "remove"}}</button>
-                                </span>
-                            </div>
-                        </div>
-                        <div id="activeFiltersList">
-                            {{#each activeFilters.providers as |filter|}}
-                                <span class='preprint-filter provider-filter'>
-                                    {{filter-replace filter filterReplace}}
-                                    {{#unless theme.isProvider}}
-                                        {{!ACTIVE PROVIDER FILTERS}}
-                                        <span class='removeActiveFilter' aria-label={{t 'eosf.components.discoverPage.removeProvider'}}>{{fa-icon 'times-circle' ariaHidden=false tagName='button' click=(action 'updateFilters' 'providers' filter)}}</span>
-                                    {{/unless}}
-                                </span>
-                            {{/each}}
-                            {{#each activeFilters.subjects as |filter|}}
-                                {{!ACTIVE SUBJECT FILTERS}}
-                                <span class='preprint-filter subject-filter'>{{custom-taxonomy-filter filter}} <span class='removeActiveFilter' aria-label={{t 'eosf.components.discoverPage.removeSubject'}}>{{fa-icon 'times-circle' ariaHidden=false tagName='button' click=(action 'updateFilters' 'subjects' filter)}}</span></span>
-                            {{/each}}
-                            {{!ACTIVE TYPE FILTERS}}
-                            {{#each activeFilters.types as |filter|}}
-                                <span class='preprint-filter type-filter'>{{filter}} <span class='removeActiveFilter' aria-label={{t 'eosf.components.discoverPage.removeRegistrationType'}}>{{fa-icon 'times-circle' ariaHidden=false tagName='button' click=(action 'updateFilters' 'types' filter)}}</span></span>
-                            {{/each}}
-                        </div>
+                        {{discover-page/active-filters
+                            activeFilters=activeFilters
+                            filterReplace=filterReplace
+                            clearFilters=(action clearFilters)
+                            updateFilters=(action updateFilters)
+                        }}
                     </div>
                 {{/if}}
 
                 {{!SEARCH FACETS}}
                 {{#if showActiveFilters}}
-                    <h4> {{t 'eosf.components.discoverPage.refineSearch'}} </h4>
+                    <h4>{{t 'eosf.components.discoverPage.refineSearch'}}</h4>
                 {{/if}}
+
                 {{faceted-search
                     onChange='filtersChanged'
                     updateParams='updateParams'
@@ -178,45 +154,57 @@
                 {{#if (and (eq hostAppName 'Preprints') themeProvider.allowSubmissions)}}
                     {{add-preprint-box provider=themeProvider}}
                 {{/if}}
-
             </div>
-
             {{!RIGHT PANEL - SEARCH RESULTS}}
             <div class="col-sm-8 col-xs-12">
                 {{!SEARCH LOADING}}
                 {{#if loading}}
                     <div class="text-center p-v-md" aria-label={{t 'eosf.components.discoverPage.searchLoading'}}>
-                        {{fa-icon 'spinner' ariaHidden=false pulse=true size=3}}
+                        <span class="fa fa-spinner fa-pulse fa-3x"></span>
                     </div>
                 {{else}}
                     {{#if numberOfResults}}
                         {{!RESULTS FOUND}}
                         <div class="results-top">
                             {{#each results as |result|}}
-                                {{search-result themeProvider=themeProvider queryParams=queryParams detailRoute=detailRoute filterReplace=filterReplace addFilter='addFilter' updateFilters=(action 'updateFilters') result=result currentService=currentService domainRedirectProviders=domainRedirectProviders}}
+                                {{search-result
+                                    themeProvider=themeProvider
+                                    queryParams=queryParams
+                                    detailRoute=detailRoute
+                                    filterReplace=filterReplace
+                                    addFilter='addFilter'
+                                    updateFilters=(action 'updateFilters')
+                                    result=result
+                                    currentService=currentService
+                                    domainRedirectProviders=domainRedirectProviders
+                                }}
                             {{/each}}
                         </div>
+                        
                         <div class="pull-right text-right">
-                            {{pagination-pager count=clampedPages current=page change=(action 'setLoadPage')}}
+                            {{search-paginator
+                                pageChanged=(action 'setLoadPage')
+                                current=page
+                                maximum=clampedPages
+                            }}
                         </div>
                     {{else if queryError}}
                         {{!PROBLEM WITH SEARCH QUERY}}
                         {{query-syntax message=queryError}}
                     {{else if shareDown}}
                         <div class="text-muted text-center">
-                            <p class="lead ">{{t 'eosf.components.discoverPage.shareUnavailable'}}</p>
-                            <p> {{t 'eosf.components.discoverPage.shareUnavailableDescription'}}</p>
+                            <p class="lead">{{t 'eosf.components.discoverPage.shareUnavailable'}}</p>
+                            <p>{{t 'eosf.components.discoverPage.shareUnavailableDescription'}}</p>
                         </div>
                     {{else}}
                         {{!NO RESULTS FOUND}}
                         <div class="text-muted text-center">
-                            <p class="lead ">{{t "eosf.components.discoverPage.noResultsFound"}}</p>
+                            <p class="lead">{{t "eosf.components.discoverPage.noResultsFound"}}</p>
                             <p>{{t 'eosf.components.discoverPage.broadenSearch'}}</p>
                         </div>
                     {{/if}}
                 {{/if}}
             </div>
         </div>
-        --}}
     </div>
 </div>

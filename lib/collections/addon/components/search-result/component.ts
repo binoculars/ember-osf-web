@@ -2,22 +2,15 @@ import { action, computed } from '@ember-decorators/object';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
 import { capitalize } from '@ember/string';
+import config from 'collections/config/environment';
 import I18N from 'ember-i18n/services/i18n';
 import Contributor from 'ember-osf-web/models/contributor';
 import Analytics from 'ember-osf-web/services/analytics';
 import defaultTo from 'ember-osf-web/utils/default-to';
 import moment from 'moment';
 import providerRegex from '../../const/providerRegex';
-
-// import hostAppName from '../../mixins/host-app-name';
-
-// import config from '../../config/environment';
-
+import styles from './styles';
 import layout from './template';
-
-declare global {
-    const MathJax: any;
-}
 
 interface Result {
     id: string;
@@ -61,24 +54,30 @@ interface ThemeProvider {
  * ```
  * @class search-result
  */
-export default class SearchResult extends Component {
+export default class SearchResult extends Component.extend({
+    didRender(...args: any[]) {
+        this._super(...args);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);
+    },
+}) {
     layout = layout;
+    styles = styles;
 
     @service analytics!: Analytics;
     @service i18n!: I18N;
 
-    // hostAppName = config.hostAppName;
-    maxTags = 10;
-    maxSubjects = 10;
-    maxCreators = 10;
-    maxDescription = 300;
-    showBody = false;
+    hostAppName = config.hostAppName;
+    maxTags: number = defaultTo(this.maxTags, 10);
+    maxSubjects: number = defaultTo(this.maxSubjects, 10);
+    maxCreators: number = defaultTo(this.maxCreators, 10);
+    maxDescription: number = defaultTo(this.maxDescription, 300);
+    showBody: boolean = defaultTo(this.showBody, false);
 
     /**
      * Array of query params being used in consuming app
      * @property {Array} queryParams
      */
-    queryParams: string[] | null = null;
+    queryParams: string[] | null = defaultTo(this.queryParams, null);
 
     /**
      * Search result from SHARE
@@ -92,7 +91,7 @@ export default class SearchResult extends Component {
      * Name of detail route for consuming application, if you want search result to link to a route in the consuming spp
      * @property {String} detailRoute
      */
-    detailRoute = null;
+    detailRoute: string = defaultTo(this.detailRoute, '');
 
     /**
      * Provider loaded from theme service. Passed in from consuming application.
@@ -160,7 +159,7 @@ export default class SearchResult extends Component {
             this.result.subject_synonyms :
             this.result.subjects;
 
-        let uniqueSubs: any = {};
+        const uniqueSubs: any = {};
 
         subs!.forEach((e: any) => {
             const [tax, ...subjects] = e.text.split('|');
@@ -182,9 +181,9 @@ export default class SearchResult extends Component {
             }
         });
 
-        uniqueSubs = Object.keys(uniqueSubs).map(e => uniqueSubs[e]);
-
-        return (uniqueSubs || []).slice(0, this.maxSubjects);
+        return Object.keys(uniqueSubs)
+            .map(e => uniqueSubs[e])
+            .slice(0, this.maxSubjects);
     }
 
     @computed('result.subjects')
@@ -237,7 +236,7 @@ export default class SearchResult extends Component {
                 for (const domain of domainRedirectList) {
                     if (domainRegex.test(domain)) {
                         // If the domain matches use the path from the identifier concatentated to the domain
-                        return domain + url[2];
+                        return `${domain}${url[2]}`;
                     }
                 }
             }
@@ -276,10 +275,6 @@ export default class SearchResult extends Component {
     @computed('result.date_updated')
     get dateUpdated(): string {
         return moment(this.result.date_updated).utc().format('YYYY-MM-DD');
-    }
-
-    didRender() {
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);
     }
 
     compare(first: any, second: any, param: string) {

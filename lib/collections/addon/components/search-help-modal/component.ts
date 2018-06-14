@@ -14,10 +14,11 @@ import layout from './template';
  * @class search-help-modal
  */
 export default class SearchHelpModal extends Component.extend({
-    init(...args: any[]) {
+    didInsertElement(this: SearchHelpModal, ...args: any[]) {
         this._super(...args);
-        // TODO: this doesn't make sense in the init. Sould be didInsertElement or something
-        // this.set('currentPath', `${window.location.origin}${window.location.pathname}`);
+
+        const { origin, pathname } = window.location;
+        this.set('currentPath', `${origin}${pathname}`);
     },
 }) {
     layout = layout;

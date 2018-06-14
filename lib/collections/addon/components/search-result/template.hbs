@@ -5,18 +5,26 @@
             {{!Title}}
             <h4>
                 {{#if (and detailRoute osfID)}}
-                    {{#link-to detailRoute osfID invokeAction=(action 'click' 'link' 'Discover - Result Title' osfID)}}{{fix-special-char result.title}}{{/link-to}}
+                    {{#link-to detailRoute osfID invokeAction=(action 'click' 'link' 'Discover - Result Title' osfID)}}
+                        {{fix-special-char result.title}}
+                    {{/link-to}}
                 {{else if (and detailRoute (eq hostAppName 'Retraction Watch'))}}
-                    {{#link-to detailRoute result.id}}{{fix-special-char result.title}}{{/link-to}}
+                    {{#link-to detailRoute result.id}}
+                        {{fix-special-char result.title}}
+                    {{/link-to}}
                 {{else}}
                     {{#if hyperlink}}
-                        <a href='{{hyperlink}}' onclick={{action 'click' 'link' (concat 'Discover - Result Title: ' hyperlink) result.id target=analytics}}>{{fix-special-char result.title}}</a>
+                        <a href='{{hyperlink}}' onclick={{action 'click' 'link' (concat 'Discover - Result Title: ' hyperlink) result.id target=analytics}}>
+                            {{fix-special-char result.title}}
+                        </a>
                     {{else}}
                         <span>{{fix-special-char result.title}}</span>
                     {{/if}}
                 {{/if}}
                 {{#if result.withdrawn}}
-                    <span class='label label-default'> {{t 'eosf.components.searchResult.withdrawn'}} </span>
+                    <span class='label label-default'>
+                        {{t 'eosf.components.searchResult.withdrawn'}}
+                    </span>
                 {{/if}}
             </h4>
 
@@ -24,7 +32,7 @@
             <div>
                 <ul class="comma-list">
                     {{~#each creators as |creator|}}
-                        {{~author-link contributor=creator}}
+                        {{!~author-link contributor=creator}}
                     {{~/each}}
                 </ul>
                 {{! +5, for example }}
@@ -36,7 +44,9 @@
             {{!Last edited on on}}
             {{#if result.date_updated}}
                 {{! template-lint-disable bare-strings }}
-                <div class="m-t-sm"> <em> {{t "eosf.components.searchResult.lastEdited"}}: {{dateUpdated}} (UTC) </em> </div>
+                <div class="m-t-sm">
+                    <em>{{t "eosf.components.searchResult.lastEdited"}}: {{dateUpdated}} (UTC)</em>
+                </div>
                 {{! template-lint-enable bare-strings }}
             {{/if}}
 
@@ -126,7 +136,7 @@
 
     <div class="text-center">
         <button class='toggleShowResult btn btn-link' aria-label={{t 'eosf.components.searchResult.showResult'}} {{action 'toggleShowBody'}}>
-            {{fa-icon footerIcon size=1 ariaHidden=false}}
+            {{!fa-icon footerIcon size=1 ariaHidden=false}}
         </button>
     </div>
 </div>

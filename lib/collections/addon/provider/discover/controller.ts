@@ -33,13 +33,12 @@ export default class Discover extends Controller {
     consumingService = 'collections'; // Consuming service - preprints here
     detailRoute = 'content'; // Name of detail route for this application
 
-    // @computed('additionalProviders')
+    @computed('additionalProviders')
     get discoverHeader(): string { // Header for preprints discover page
         // If additionalProviders, use more generic Repository Search page title
-        return 'collections.discover.search_placeholder';
-        // return this.additionalProviders ?
-        //     'discover.search.heading_repository_search' :
-        //     'collections.discover.search_heading';
+        return this.additionalProviders ?
+            'discover.search.heading_repository_search' :
+            'collections.discover.search_heading';
     }
 
     end = ''; // End query param. Must be passed to component, so can be reflected in the URL
@@ -51,43 +50,25 @@ export default class Discover extends Controller {
 
     @computed('i18n.locale', 'additionalProviders')
     get facets() { // List of facets available for preprints
-        if (this.additionalProviders) { // if additionalProviders exist, use subset of SHARE facets
-            return [
-                {
-                    key: 'sources',
-                    title: this.i18n.t('discover.main.source'),
-                    component: 'search-facet-source',
-                },
-                {
-                    key: 'date',
-                    title: this.i18n.t('discover.main.date'),
-                    component: 'search-facet-daterange',
-                },
-                {
-                    key: 'type',
-                    title: this.i18n.t('discover.main.type'),
-                    component: 'search-facet-worktype',
-                },
-                {
-                    key: 'tags',
-                    title: this.i18n.t('discover.main.tag'),
-                    component: 'search-facet-typeahead',
-                },
-            ];
-        } else { // Regular preprints and branded preprints get provider and taxonomy facets
-            return [
-                {
-                    key: 'sources',
-                    title: this.i18n.t('discover.main.providers'),
-                    component: 'search-facet-provider',
-                },
-                {
-                    key: 'subjects',
-                    title: this.i18n.t('discover.main.subject'),
-                    component: 'search-facet-taxonomy',
-                },
-            ];
-        }
+        return (
+            this.additionalProviders ?
+                // if additionalProviders exist, use subset of SHARE facets
+                [
+                    ['sources', 'source', 'source'],
+                    ['date', 'date', 'daterange'],
+                    ['type', 'type', 'worktype'],
+                    ['tags', 'tag', 'typeahead'],
+                ] :
+                // Regular preprints and branded preprints get provider and taxonomy facets
+                [
+                    ['sources', 'providers', 'provider'],
+                    // ['subjects', 'subject', 'taxonomy'],
+                ]
+        ).map(([key, title, component]) => ({
+            key,
+            title: this.i18n.t(`discover.main.${title}`),
+            component: `search-facet-${component}`,
+        }));
     }
 
     filterMap = { // Map active filters to facet names expected by SHARE

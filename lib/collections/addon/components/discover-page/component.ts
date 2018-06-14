@@ -146,7 +146,36 @@ interface SortOption {
     sortBy: string;
 }
 
-export default class DiscoverPage extends Component {
+interface Source {
+    '@type': string;
+    description: string;
+    identifiers: string[];
+    subjects: string[];
+    subject_synonyms: string[]; // eslint-disable-line camelcase
+    sources: string[];
+    type: string;
+    registration_type?: string; // eslint-disable-line camelcase
+    lists: {
+        contributors: any;
+    };
+}
+
+interface Hit {
+    _id: string;
+    _source: Source;
+}
+
+export default class DiscoverPage extends Component.extend({
+    init(this: DiscoverPage, ...args: any[]) {
+        // TODO Sort initial results on date_modified
+        // Runs on initial render.
+        this._super(...args);
+        // this.set('firstLoad', true);
+        this.set('facetFilters', EmberObject.create());
+        this.getCounts();
+        this.loadPage();
+    },
+}) {
     layout = layout;
     styles = styles;
 
@@ -155,7 +184,7 @@ export default class DiscoverPage extends Component {
     @service theme!: Theme;
     @service i18n!: I18N;
 
-    firstLoad = true;
+    firstLoad: boolean = defaultTo(this.firstLoad, true);
     results: Result[] = [];
 
     // classNames: ['discover-page'],
@@ -172,7 +201,7 @@ export default class DiscoverPage extends Component {
     activeFilters: Filters = defaultTo(this.activeFilters, { providers: [], subjects: [], types: [] });
 
     /**
-     * Contributors query parameter.  If "contributors" is one of your query params, it must be passed to the component
+     * Contributors query parameter.  If 'contributors' is one of your query params, it must be passed to the component
      * so it can be reflected in the URL.
      * @property {String} contributors
      * @default ''
@@ -180,7 +209,7 @@ export default class DiscoverPage extends Component {
     contributors: string = defaultTo(this.contributors, '');
 
     /**
-     * Name of detail route for consuming application, like "content" or "detail". Override if search result title
+     * Name of detail route for consuming application, like 'content' or 'detail'. Override if search result title
      * should link to detail route.
      * @property {String} detailRoute
      */
@@ -193,7 +222,7 @@ export default class DiscoverPage extends Component {
     discoverHeader: string = defaultTo(this.discoverHeader, '');
 
     /**
-     * End query parameter.  If "end" is one of your query params, it must be passed to the component so it can be
+     * End query parameter.  If 'end' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {String} end
      * @default ''
@@ -217,7 +246,7 @@ export default class DiscoverPage extends Component {
      *          type: 'person' }
      *   ]
      */
-    facets: Facet[] = [
+    facets: Facet[] = defaultTo(this.facets, [
         ['sources', 'source', 'source'],
         ['date', 'date', 'daterange'],
         ['type', 'type', 'worktype'],
@@ -232,7 +261,7 @@ export default class DiscoverPage extends Component {
         key,
         title: this.i18n.t(`eosf.components.discoverPage.${tKey}`),
         type,
-    }));
+    })));
 
     facetFilters = {};
 
@@ -263,7 +292,7 @@ export default class DiscoverPage extends Component {
     filterReplace = {};
 
     /**
-     * Funders query parameter. If "funders" is one of your query params, it must be passed to the component so it can
+     * Funders query parameter. If 'funders' is one of your query params, it must be passed to the component so it can
      * be reflected in the URL.
      * @property {String} funders
      * @default ''
@@ -271,7 +300,7 @@ export default class DiscoverPage extends Component {
     funders = '';
 
     /**
-     * Institutions query parameter. If "institutions" is one of your query params, it must be passed to the component
+     * Institutions query parameter. If 'institutions' is one of your query params, it must be passed to the component
      * so it can be reflected in the URL.
      * @property {String} institutions
      * @default ''
@@ -279,14 +308,14 @@ export default class DiscoverPage extends Component {
     institutions = '';
 
     /**
-     * Language query parameter. If "language" is one of your query params, it must be passed to the component so it
+     * Language query parameter. If 'language' is one of your query params, it must be passed to the component so it
      * can be reflected in the URL.
      * @property {String} language
      * @default ''
      */
     language = '';
 
-    loading = true;
+    loading: boolean = defaultTo(this.loading, true);
 
     /**
      * Locked portions of search query that user cannot change.  Example: {'sources': 'PubMed Central'} will make PMC a
@@ -299,7 +328,7 @@ export default class DiscoverPage extends Component {
     numberOfSources = 0; // Number of sources
 
     /**
-     * Organizations query parameter.  If "organizations" is one of your query params, it must be passed to the
+     * Organizations query parameter.  If 'organizations' is one of your query params, it must be passed to the
      * component so it can be reflected in the URL.
      * @property {String} organizations
      * @default ''
@@ -307,7 +336,7 @@ export default class DiscoverPage extends Component {
     organizations = '';
 
     /**
-     * Page query parameter.  If "page" is one of your query params, it must be passed to the component so it can be
+     * Page query parameter.  If 'page' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {Integer} page
      * @default 1
@@ -315,7 +344,7 @@ export default class DiscoverPage extends Component {
     page = 1;
 
     /**
-     * Provider query parameter.  If "provider" is one of your query params, it must be passed to the component so it
+     * Provider query parameter.  If 'provider' is one of your query params, it must be passed to the component so it
      * can be reflected in the URL.
      * @property {String} provider
      * @default ''
@@ -323,7 +352,7 @@ export default class DiscoverPage extends Component {
     provider = '';
 
     /**
-     * Publishers query parameter.  If "publishers" is one of your query params, it must be passed to the component so
+     * Publishers query parameter.  If 'publishers' is one of your query params, it must be passed to the component so
      * it can be reflected in the URL.
      * @property {String} publishers
      * @default ''
@@ -331,7 +360,7 @@ export default class DiscoverPage extends Component {
     publishers = '';
 
     /**
-     * q query parameter.  If "q" is one of your query params, it must be passed to the component so it can be
+     * q query parameter.  If 'q' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {String} q
      * @default ''
@@ -348,13 +377,12 @@ export default class DiscoverPage extends Component {
 
     /**
      * For PREPRINTS and REGISTRIES.  Displays activeFilters box above search facets.
-     * @property {boolean} showActiveFilters
      */
-    showActiveFilters = false;
-    showLuceneHelp = false; // Is Lucene Search help modal open?
+    showActiveFilters: boolean = defaultTo(this.showActiveFilters, false);
+    showLuceneHelp: boolean = false; // Is Lucene Search help modal open?
 
     /**
-     * Size query parameter.  If "size" is one of your query params, it must be passed to the component so it can be
+     * Size query parameter.  If 'size' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {Integer} size
      * @default 10
@@ -362,7 +390,7 @@ export default class DiscoverPage extends Component {
     size = 10;
 
     /**
-     * Sort query parameter.  If "sort" is one of your query params, it must be passed to the component so it can be
+     * Sort query parameter.  If 'sort' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {String} sort
      * @default ''
@@ -390,7 +418,7 @@ export default class DiscoverPage extends Component {
     }
 
     /**
-     * Sources query parameter.  If "sources" is one of your query params, it must be passed to the component so it can
+     * Sources query parameter.  If 'sources' is one of your query params, it must be passed to the component so it can
      * be reflected in the URL.
      * @property {String} sources
      * @default ''
@@ -398,7 +426,7 @@ export default class DiscoverPage extends Component {
     sources = '';
 
     /**
-     * Start query parameter.  If "start" is one of your query params, it must be passed to the component so it can be
+     * Start query parameter.  If 'start' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {String} start
      * @default ''
@@ -406,7 +434,7 @@ export default class DiscoverPage extends Component {
     start = '';
 
     /**
-     * Subject query parameter.  If "subject" is one of your query params, it must be passed to the component so it can
+     * Subject query parameter.  If 'subject' is one of your query params, it must be passed to the component so it can
      * be reflected in the URL.
      * @property {String} subject
      * @default ''
@@ -414,7 +442,7 @@ export default class DiscoverPage extends Component {
     subject = '';
 
     /**
-     * Tags query parameter.  If "tags" is one of your query params, it must be passed to the component so it can be
+     * Tags query parameter.  If 'tags' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {String} tags
      * @default ''
@@ -432,7 +460,7 @@ export default class DiscoverPage extends Component {
     took = 0;
 
     /**
-     * type query parameter.  If "type" is one of your query params, it must be passed to the component so it can be
+     * type query parameter.  If 'type' is one of your query params, it must be passed to the component so it can be
      * reflected in the URL.
      * @property {String} type
      * @default ''
@@ -596,6 +624,11 @@ export default class DiscoverPage extends Component {
     }
 
     getQueryBody(this: DiscoverPage): any {
+        return this.set('queryBody',
+            { 'query': { 'bool': { 'must': { 'query_string': { 'query': '*' } }, 'filter': [{ 'bool': { 'should': [{ 'terms': { 'types': ['preprint'] } }, { 'terms': { 'sources': ['Thesis Commons'] } }] } }, { 'terms': { 'sources': ['OSF', 'AgriXiv', 'BITSS', 'EarthArXiv', 'ecsarxiv', 'ECSarXiv', 'ECSarXiv2', 'engrXiv', 'Experimental Protocols', 'FocUS Archive', 'INA-Rxiv', 'LawArXiv', 'LawArXiv', 'LIS Scholarship Archive', 'MarbrXiv', 'MarXiv', 'MedArXiv', 'MindRxiv', 'NutriXiv', 'PaleorXiv', 'PsyArXiv', 'Research AZ', 'SciELO', 'SocArXiv', 'SportRxiv', 'Thesis Commons', 'arXiv', 'bioRxiv', 'Cogprints', 'PeerJ', 'Research Papers in Economics', 'Preprints.org'] } }] } }, 'from': 0, 'aggregations': { 'sources': { 'terms': { 'field': 'sources', 'size': 500 } } } });
+    }
+
+    getQueryBody1(this: DiscoverPage): any {
         /**
          * Builds query body to send to SHARE from a combination of locked Params, facetFilters and activeFilters
          *
@@ -641,7 +674,7 @@ export default class DiscoverPage extends Component {
         // For PREPRINTS and REGISTRIES. If theme.isProvider, add provider(s) to query body
         if (this.themeProvider) {
             // Regular preprint providers will have their search results restricted to the one provider.
-            // If the provider has additionalProviders, all of these providers will be added to the "sources" SHARE
+            // If the provider has additionalProviders, all of these providers will be added to the 'sources' SHARE
             // query
 
             let sources: any[] = [];
@@ -667,7 +700,7 @@ export default class DiscoverPage extends Component {
 
         let query: any = {
             query_string: {
-                query: this.get('q') || '*',
+                query: this.q || '*',
             },
         };
 
@@ -696,18 +729,9 @@ export default class DiscoverPage extends Component {
         }
 
         this.set('displayQueryBody', { query });
+
         return this.set('queryBody', queryBody);
     }
-
-    // init() {
-    //     // TODO Sort initial results on date_modified
-    //     // Runs on initial render.
-    //     this._super(...arguments);
-    //     this.set('firstLoad', true);
-    //     this.set('facetFilters', EmberObject.create());
-    //     this.getCounts();
-    //     this.loadPage();
-    // }
 
     async loadPage(this: DiscoverPage) {
         const data = JSON.stringify(this.getQueryBody());
@@ -728,28 +752,9 @@ export default class DiscoverPage extends Component {
             }
 
             // Safeguard: if query has changed since request was sent, dont update results
-            if (this.queryBody !== JSON.stringify(this.getQueryBody())) {
-                return;
-            }
-
-            interface Source {
-                '@type': string;
-                description: string;
-                identifiers: string[];
-                subjects: string[];
-                subject_synonyms: string[]; // eslint-disable-line camelcase
-                sources: string[];
-                type: string;
-                registration_type?: string; // eslint-disable-line camelcase
-                lists: {
-                    contributors: any;
-                };
-            }
-
-            interface Hit {
-                _id: string;
-                _source: Source;
-            }
+            // if (this.queryBody !== JSON.stringify(this.getQueryBody())) {
+            //     return;
+            // }
 
             const results = (json.hits.hits as Hit[]).map(hit => {
                 // HACK: Make share data look like apiv2 preprints data
@@ -777,8 +782,8 @@ export default class DiscoverPage extends Component {
                                 .reduce(
                                     (acc, [key, val]) => ({ ...acc, [camelize(key)]: val }),
                                     { bibliographic: contributor.relation !== 'contributor' },
-                                ),
-                        })),
+                            )}),
+                        ),
                 };
 
                 hit._source.identifiers.forEach(identifier => {
@@ -811,6 +816,7 @@ export default class DiscoverPage extends Component {
                 queryError: false,
                 shareDown: false,
             });
+
             if (this.get('totalPages') && this.get('totalPages') < this.get('page')) {
                 this.search();
             }
@@ -901,14 +907,14 @@ export default class DiscoverPage extends Component {
     }
 
     @action
-    loadPageAction(this: DiscoverPage, newPage: number, scroll = true) {
+    loadPageAction(this: DiscoverPage, newPage: number, scrollUp = true) {
         if (newPage === this.page || newPage < 1 || newPage > this.totalPages) {
             return;
         }
 
         this.set('page', newPage);
 
-        if (scroll) {
+        if (scrollUp) {
             this.scrollToResults();
         }
 
@@ -917,7 +923,7 @@ export default class DiscoverPage extends Component {
 
     // @action
     // modifyRegistrationType(filter, query) {
-    //     // For REGISTRIES only - modifies "type" query param if "provider" query param changes.
+    //     // For REGISTRIES only - modifies 'type' query param if 'provider' query param changes.
     //     // Registries are unusual, since the OSF Registration Type facet depends upon the Providers facet
     //     if (filter === 'provider' && this.get('hostAppName') === 'Registries') {
     //         if (query.length === 1 && query[0] === 'OSF') {
@@ -947,13 +953,7 @@ export default class DiscoverPage extends Component {
     @action
     searchAction() {
         // Only want to track search here when button clicked. Keypress search tracking is debounced in trackSearch
-        this.analytics.track(
-            'button',
-            'click',
-            'Discover - Search',
-            this.q,
-        );
-
+        this.analytics.track('button', 'click', 'Discover - Search', this.q);
         this.search();
     }
 
@@ -965,17 +965,17 @@ export default class DiscoverPage extends Component {
         this.search();
     }
 
-    // @action
-    // setLoadPage(this: DiscoverPage, pageNumber: number) {
-    //     // Adapted from PREPRINTS for pagination. When paginating, sets page and scrolls to top of results.
-    //     this.set('page', pageNumber);
+    @action
+    setLoadPage(this: DiscoverPage, pageNumber: number, scrollUp: boolean = true) {
+        // Adapted from PREPRINTS for pagination. When paginating, sets page and scrolls to top of results.
+        this.set('page', pageNumber);
 
-    //     if (scroll) {
-    //         this.scrollToResults();
-    //     }
+        if (scrollUp) {
+            this.scrollToResults();
+        }
 
-    //     this.loadPage();
-    // }
+        this.loadPage();
+    }
 
     @action
     toggleShowLuceneHelp() {
@@ -1024,7 +1024,7 @@ export default class DiscoverPage extends Component {
 
         if (pluralFilter !== 'providers' || !this.theme.isProvider) {
             this.set(filter as keyof DiscoverPage, query.join('OR'));
-            this.send('modifyRegistrationType', filter, query);
+            // this.send('modifyRegistrationType', filter, query);
         }
     }
 }
