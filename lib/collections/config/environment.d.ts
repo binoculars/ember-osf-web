@@ -1,7 +1,8 @@
 declare const config: {
     environment: any;
-    modulePrefix: string;
     hostAppName: string;
+    modulePrefix: string;
+    defaultProvider: string;
     OSF: {
         shareSearchUrl: string;
         url: string;

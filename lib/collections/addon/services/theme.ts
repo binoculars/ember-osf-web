@@ -1,41 +1,72 @@
+import { computed } from '@ember-decorators/object';
+import { service } from '@ember-decorators/service';
 import Service from '@ember/service';
+import config from 'collections/config/environment';
+import DS from 'ember-data';
+import PreprintProvider from 'ember-osf-web/models/preprint-provider';
+import defaultTo from 'ember-osf-web/utils/default-to';
 
-const advisoryBoard = `
-    <div class="col-xs-12">
-        <h2>Advisory Group</h2>
-        <p class="m-b-lg">Our advisory group includes leaders in preprints and scholarly communication</p>
-    </div>
-    <div class="col-xs-6">
-        <ul>
-            <li><strong>Devin Berg</strong> : engrXiv, University of Wisconsin-Stout</li>
-            <li><strong>Pete Binfield</strong> : PeerJ PrePrints</li>
-            <li><strong>Benjamin Brown</strong> : PsyArXiv, Georgia Gwinnett College</li>
-            <li><strong>Philip Cohen</strong> : SocArXiv, University of Maryland</li>
-            <li><strong>Kathleen Fitzpatrick</strong> : Modern Language Association</li>
-        </ul>
-    </div>
-    <div class="col-xs-6">
-        <ul>
-            <li><strong>John Inglis</strong> : bioRxiv, Cold Spring Harbor Laboratory Press</li>
-            <li><strong>Rebecca Kennison</strong> : K | N Consultants</li>
-            <li><strong>Kristen Ratan</strong> : CoKo Foundation</li>
-            <li><strong>Oya Riege</strong>r : arXiv, Cornell University</li>
-            <li><strong>Judy Ruttenberg</strong> : SHARE, Association of Research Libraries</li>
-        </ul>
-    </div>
-`.trim();
+const { defaultProvider } = config;
 
 export default class Theme extends Service {
-    id = 'osf';
-    isProvider = false;
+    @service store!: DS.Store;
 
-    provider = {
-        id: 'osf',
-        name: 'OSF',
-        advisoryBoard,
-        allowSubmissions: true,
-        additionalProviders: [],
-    };
+    id: string = defaultTo(this.id, defaultProvider);
+
+    // If we're using a provider domain
+    isDomain = window.isProviderDomain;
+
+    // If we're using a branded provider
+    @computed('id')
+    get isProvider() {
+        return this.id !== defaultProvider;
+    }
+
+    @computed('id', 'isProvider')
+    get provider(): PreprintProvider | null {
+        const provider = this.store.peekRecord('preprint-provider', this.id);
+
+        if (!provider) {
+            return null;
+        }
+
+        // Check if redirect is enabled for the current provider
+        if (!window.isProviderDomain && this.isProvider && provider.domainRedirectEnabled) {
+            const { href, origin } = window.location;
+            const url = href.replace(new RegExp(`^${origin}/collections/${this.id}/?`), provider.domain);
+
+            window.location.replace(url);
+        }
+
+        return provider;
+    }
+
+    // If we're using a branded provider and not under a branded domain (e.g. /collections/<provider>)
+    @computed('isProvider', 'isDomain')
+    get isSubRoute() {
+        return this.isProvider && !this.isDomain;
+    }
+
+    @computed('isProvider', 'isDomain', 'id')
+    get pathPrefix() {
+        let pathPrefix = '/';
+
+        if (!this.isDomain) {
+            pathPrefix += 'collections/';
+
+            if (this.isProvider) {
+                pathPrefix += `${this.id}/`;
+            }
+        }
+
+        return pathPrefix;
+    }
+}
+
+declare global {
+    interface Window {
+        isProviderDomain?: boolean;
+    }
 }
 
 declare module '@ember/service' {

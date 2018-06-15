@@ -170,7 +170,7 @@ export default class SearchFacetProvider extends Component.extend({
             this.set('otherProviders', providers);
         } else {
             const filtered = providers.filter(
-                ({ key }) => key === this.theme.provider.name,
+                ({ key }) => key === this.theme.provider!.name,
             );
 
             this.set('otherProviders', filtered);

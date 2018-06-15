@@ -627,7 +627,7 @@ export default class DiscoverPage extends Component.extend({
             ...this.buildLockedQueryBody(this.lockedParams),
             ...Object.values(this.facetFilters as object)
                 .filter(item => !!item)
-                .reduce((acc: string[], val) => [ ...acc, ...(Array.isArray(val) ? val : [val]) ], []),
+                .reduce((acc: string[], val) => [...acc, ...(Array.isArray(val) ? val : [val])], []),
             // For PREPRINTS and REGISTRIES.  Adds activeFilters to query body.
             ...Object.entries(this.filterMap)
                 .map(([key, val]: [string, string]) => {
@@ -764,8 +764,8 @@ export default class DiscoverPage extends Component.extend({
                                 .reduce(
                                     (acc, [key, val]) => ({ ...acc, [camelize(key)]: val }),
                                     { bibliographic: contributor.relation !== 'contributor' },
-                            )}),
-                        ),
+                                ),
+                        })),
                 };
 
                 hit._source.identifiers.forEach(identifier => {

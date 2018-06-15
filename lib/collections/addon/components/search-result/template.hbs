@@ -31,12 +31,13 @@
             {{!Authors}}
             <div>
                 <ul class="comma-list">
-                    {{~#each creators as |creator|}}
-                        {{!~author-link contributor=creator}}
-                    {{~/each}}
+                    {{!~#each creators as |creator|}}
+                    {{!~author-link contributor=creator}}
+                    {{!~/each}}
                 </ul>
                 {{! +5, for example }}
                 {{#if extraCreators}}
+                    {{! TOD i18n-ize}}
                     <span class="text-muted">+{{extraCreators.length}}</span>
                 {{/if}}
             </div>
@@ -70,12 +71,12 @@
                     {{#if showBody}}
                         {{fix-special-char result.description}}
                     {{else}}
-                         {{#if abbreviation}}
-                             {{abbreviation}}
-                             {{#if abbreviated}}
-                                 <span class="text-muted">...</span>
-                             {{/if}}
-                         {{/if}}
+                        {{#if abbreviation}}
+                            {{abbreviation}}
+                            {{#if abbreviated}}
+                                <span class="text-muted">...</span>
+                            {{/if}}
+                        {{/if}}
                     {{/if}}
                 </div>
             </p>
