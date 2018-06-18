@@ -1,10 +1,11 @@
+import { action, computed } from '@ember-decorators/object';
 import { service } from '@ember-decorators/service';
-import Component from '@ember/component';
+import { assert } from '@ember/debug';
 import config from 'collections/config/environment';
-import Theme from 'collections/services/theme';
 import DS from 'ember-data';
-import Analytics from 'ember-osf-web/services/analytics';
+import eatArgs from 'ember-osf-web/utils/eat-args';
 import $ from 'jquery';
+import Base from '../base/component';
 
 const {
     OSF: {
@@ -79,22 +80,42 @@ interface ShareProviderHit {
  * ```
  * @class search-facet-provider
  */
-export default class SearchFacetProvider extends Component.extend({
-    init(this: SearchFacetProvider, ...args: any[]) {
+export default class SearchFacetProvider extends Base.extend({
+    didReceiveAttrs(this: SearchFacetProvider, ...args: any[]) {
         this._super(...args);
         this.initialize();
     },
 }) {
-    @service analytics!: Analytics;
     @service store!: DS.Store;
-    @service theme!: Theme;
 
-    activeFilters: any = this.activeFilters;
+    activeFilter: string[] = this.activeFilter;
     osfProviders: string[] = [];
     otherProviders: ShareProviderHit[] = [];
-    searchUrl = shareSearchUrl;
+    // allProviders
     whiteListedProviders = whiteListedProviders.map(item => item.toLowerCase());
     osfUrl = url;
+
+    @computed('otherProviders.[]')
+    get checkedProviders() {
+        return this.otherProviders.filterBy('checked', true);
+    }
+
+    @computed('checkedProviders')
+    get activeProviders() {
+        return this.checkedProviders.mapBy('key');
+    }
+
+    @computed('otherProviders.[]', 'checkedProviders')
+    get filters() {
+        return [
+            this.checkedProviders,
+            this.otherProviders,
+        ].map(item => ({
+            terms: {
+                sources: item.mapBy('key'),
+            },
+        }));
+    }
 
     /**
      * The providers list from the API
@@ -124,7 +145,7 @@ export default class SearchFacetProvider extends Component.extend({
             },
         } = await $.ajax({
             type: 'POST',
-            url: config.OSF.shareSearchUrl,
+            url: shareSearchUrl,
             data: getProvidersPayload,
             contentType: 'application/json',
             crossDomain: true,
@@ -134,7 +155,10 @@ export default class SearchFacetProvider extends Component.extend({
     }
 
     async initialize(this: SearchFacetProvider) {
-        const [osfProviders, hits] = await Promise.all([this.getProviderNames(), this.getShareProviders()]);
+        const [osfProviders, hits] = await Promise.all([
+            this.getProviderNames(),
+            this.getShareProviders(),
+        ]);
 
         // Get the whitelist and add the OSF Providers to it
         const whiteList = [
@@ -169,14 +193,37 @@ export default class SearchFacetProvider extends Component.extend({
         if (!this.theme.isProvider) {
             this.set('otherProviders', providers);
         } else {
-            const filtered = providers.filter(
-                ({ key }) => key === this.theme.provider!.name,
-            );
+            const filtered = providers
+                .filter(({ key }) => key === this.theme.provider!.name);
 
             this.set('otherProviders', filtered);
-            this.activeFilters.providers.pushObject(filtered[0].key);
+            this.activeFilter.pushObject(filtered[0].key);
         }
 
-        this.notifyPropertyChange('otherProviders');
+        // this.notifyPropertyChange('otherProviders');
+    }
+
+    @computed('otherProviders.[]', 'activeFilter.[]')
+    get providers() {
+        return this.otherProviders
+            .map(provider => ({
+                ...provider,
+                checked: this.activeFilter.includes(provider.key),
+            }));
+    }
+
+    @action
+    updateFilters(this: SearchFacetProvider, item: any) {
+        // item.checked = !item.checked;
+
+        // this.filterChanged('providers', this.activeProviders);
+        const method = this.activeFilter.includes(item.key) ? 'removeObject' : 'pushObject';
+
+        this.activeFilter[method](item.key);
+    }
+
+    filterChanged(key: string, providers: string[]) {
+        eatArgs(key, providers);
+        assert('You should pass in a closure action: filterChanged');
     }
 }

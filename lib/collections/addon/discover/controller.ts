@@ -61,13 +61,13 @@ export default class Discover extends Controller {
                 ] :
                 // Regular preprints and branded preprints get provider and taxonomy facets
                 [
-                    ['sources', 'providers', 'provider'],
+                    ['sources', 'providers', 'providers'],
                     // ['subjects', 'subject', 'taxonomy'],
                 ]
         ).map(([key, title, component]) => ({
             key,
             title: this.i18n.t(`discover.main.${title}`),
-            component: `search-facet-${component}`,
+            component,
         }));
     }
 

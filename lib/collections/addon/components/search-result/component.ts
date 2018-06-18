@@ -287,10 +287,10 @@ export default class SearchResult extends Component.extend({
         }
     }
 
-    @action
-    addFilter(type: any, filter: any): void {
-        this.sendAction('addFilter', type, filter);
-    }
+    // @action
+    // addFilter(type: any, filter: any): void {
+    //     // this.sendAction('addFilter', type, filter);
+    // }
 
     @action
     toggleShowBody() {

@@ -1,14 +1,14 @@
 <div>
     <ul local-class="nobullet">
-        {{#each otherProviders as |item|}}
+        {{#each providers as |item|}}
             <li>
                 <label local-class="provider-label">
-                    <input
+                    {{input
                         type="checkbox"
-                        checked="{{if (if-filter item.key activeFilters.providers) 'checked'}}"
-                        onclick={{action updateFilters 'providers' item.key}}
-                        disabled={{theme.isProvider}}
-                    >
+                        checked=item.checked
+                        change=(action 'updateFilters' item)
+                        disabled=theme.isProvider
+                    }}
                     {{!-- {{filter-replace item.key filterReplace}} --}}
                     {{item.key}}
                     <small>({{number-format item.doc_count}})</small>

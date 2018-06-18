@@ -138,16 +138,11 @@
                     <h4>{{t 'eosf.components.discoverPage.refineSearch'}}</h4>
                 {{/if}}
 
-                {{faceted-search
-                    onChange='filtersChanged'
-                    updateParams='updateParams'
-                    filters=facetFilters
-                    facetStates=facetStates
+                {{discover-page/facets
                     facets=facets
-                    aggregations=aggregations
+                    filters=filters
                     activeFilters=activeFilters
-                    updateFilters=(action 'updateFilters')
-                    filterReplace=filterReplace
+                    filterChanged=(action 'filterChanged')
                 }}
 
                 {{!ADD PREPRINT BUTTON - Preprints Only }}
@@ -180,7 +175,6 @@
                                 }}
                             {{/each}}
                         </div>
-                        
                         <div class="pull-right text-right">
                             {{search-paginator
                                 pageChanged=(action 'setLoadPage')

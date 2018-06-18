@@ -12,16 +12,16 @@
         </span>
     </div>
 </div>
-{{#each activeFilters.providers as |filter|}}
+{{#each activeFilters.providers as |item|}}
     <span local-class="preprint-filter provider-filter">
-        {{filter-replace filter filterReplace}}
+        {{filter-replace item filterReplace}}
         {{#unless theme.isProvider}}
             {{!ACTIVE PROVIDER FILTERS}}
             <span aria-label={{t 'eosf.components.discoverPage.removeProvider'}}>
                 <button
                     class="fa fa-times-circle"
                     local-class="removeActiveFilter"
-                    {{action updateFilters 'providers' filter}}
+                    {{action 'removeFilterItem' 'providers' item}}
                 ></button>
             </span>
         {{/unless}}

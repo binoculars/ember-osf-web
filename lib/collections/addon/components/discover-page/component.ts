@@ -74,7 +74,7 @@ const filterQueryParams = [
     'type',
 ];
 
-interface Filters {
+export interface Filters extends EmberObject {
     providers: string[];
     subjects: string[];
     types: string[];
@@ -191,9 +191,15 @@ export default class DiscoverPage extends Component.extend({
      * Primary filters for service - currently setup for PREPRINTS and REGISTRIES. Ember-SHARE's equivalent is
      * facetStates.
      * @property {Object} activeFilters
-     * @default { providers: [], subjects: [], types: [] }
      */
-    activeFilters: Filters = defaultTo(this.activeFilters, { providers: [], subjects: [], types: [] });
+    activeFilters: Filters = defaultTo(
+        this.activeFilters,
+        EmberObject.create({
+            providers: [],
+            subjects: [],
+            types: [],
+        }),
+    );
 
     /**
      * Contributors query parameter.  If 'contributors' is one of your query params, it must be passed to the component
@@ -862,24 +868,29 @@ export default class DiscoverPage extends Component.extend({
         // Clears facetFilters for SHARE-type facets
         this.set('facetFilters', EmberObject.create());
 
+        // Clear all of the activeFilters
+        Object.values(this.activeFilters).forEach(arr => arr.clear());
+
         this.setProperties({
-            start: '',
-            end: '',
-            sort: '',
-            ...filterQueryParams.reduce((acc, val) => ({ ...acc, [val]: '' }), {} as any),
+            ...[
+                'start',
+                'end',
+                'sort',
+                ...filterQueryParams,
+            ].reduce((acc, val) => ({ ...acc, [val]: '' }), {} as any),
         });
 
         this.search();
 
-        // For PREPRINTS and REGISTRIES. Clears activeFilters.
-        const restoreActiveFilters = Object.entries(this.activeFilters)
-            .reduce((acc, [key, val]) => ({
-                ...acc,
-                [key]: (key === 'providers' && this.theme.isProvider) ? val : [],
-            }), {} as Filters);
+        // // For PREPRINTS and REGISTRIES. Clears activeFilters.
+        // const restoreActiveFilters = Object.entries(this.activeFilters)
+        //     .reduce((acc, [key, val]) => ({
+        //         ...acc,
+        //         [key]: (key === 'providers' && this.theme.isProvider) ? val : [],
+        //     }), {} as Filters);
 
-        this.set('activeFilters', restoreActiveFilters);
-        this.analytics.track('button', 'click', 'Discover - Clear Filters');
+        // this.set('activeFilters', restoreActiveFilters);
+        // this.analytics.track('button', 'click', 'Discover - Clear Filters');
     }
 
     @action
@@ -965,23 +976,28 @@ export default class DiscoverPage extends Component.extend({
         this.toggleProperty('showLuceneHelp');
     }
 
+    // @action
+    // updateFilters(this: DiscoverPage, filterType: keyof Filters, filterItem: string | { text: string }) {
+    //     // For PREPRINTS and REGISTRIES.  Modifies activeFilters.
+    //     const item = typeof filterItem === 'object' ? filterItem.text : filterItem;
+    //     const filters = this.activeFilters[filterType];
+    //     const hasItem = filters.includes(item);
+
+    //     filters[hasItem ? 'removeObject' : 'pushObject'](item);
+
+    //     // this.set(`activeFilters.${filterType}`, filters);
+    //     this.send('updateQueryParams', filterType, filters);
+
+    //     this.analytics.track(
+    //         'filter',
+    //         hasItem ? 'remove' : 'add',
+    //         `Discover - ${filterType} ${item}`,
+    //     );
+    // }
+
     @action
-    updateFilters(this: DiscoverPage, filterType: keyof Filters, filterItem: string | { text: string }) {
-        // For PREPRINTS and REGISTRIES.  Modifies activeFilters.
-        const item = typeof filterItem === 'object' ? filterItem.text : filterItem;
-        const filters = this.activeFilters[filterType];
-        const hasItem = filters.includes(item);
-
-        filters[hasItem ? 'removeObject' : 'pushObject'](item);
-
-        // this.set(`activeFilters.${filterType}`, filters);
-        this.send('updateQueryParams', filterType, filters);
-
-        this.analytics.track(
-            'filter',
-            hasItem ? 'remove' : 'add',
-            `Discover - ${filterType} ${item}`,
-        );
+    updateFilters() {
+        return null;
     }
 
     @action
@@ -1008,5 +1024,14 @@ export default class DiscoverPage extends Component.extend({
             this.set(filter as keyof DiscoverPage, query.join('OR'));
             // this.send('modifyRegistrationType', filter, query);
         }
+    }
+
+    @action
+    filterChanged(this: DiscoverPage) {
+        // debugger;
+        // if (activeFilter) {
+        //     this.set(`activeFilters.${facet}` as keyof DiscoverPage, activeFilter);
+        //     debugger;
+        // }
     }
 }
