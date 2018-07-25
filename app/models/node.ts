@@ -4,6 +4,7 @@ import { buildValidations, validator } from 'ember-cp-validations';
 import DS from 'ember-data';
 
 import authenticatedAJAX from 'ember-osf-web/utils/ajax-helpers';
+import defaultTo from 'ember-osf-web/utils/default-to';
 
 import BaseFileItem from './base-file-item';
 import Citation from './citation';
@@ -19,6 +20,8 @@ import Region from './region';
 import Registration from './registration';
 import Wiki from './wiki';
 
+import { computed } from '@ember/object';
+
 /**
  * @module ember-osf-web
  * @submodule models
@@ -27,6 +30,24 @@ import Wiki from './wiki';
 const Validations = buildValidations({
     title: [
         validator('presence', true),
+    ],
+    description: [
+        validator('presence', {
+            presence: true,
+            disabled: computed.not('model.collectable'),
+        }),
+    ],
+    license: [
+        validator('presence', {
+            presence: true,
+            disabled: computed.not('model.collectable'),
+        }),
+    ],
+    tags: [
+        validator('presence', {
+            presence: true,
+            disabled: computed.not('model.collectable'),
+        }),
     ],
 });
 
@@ -125,6 +146,7 @@ export default class Node extends BaseFileItem.extend(Validations) {
 
     // BaseFileItem override
     isNode = true;
+    collectable: boolean = defaultTo(this.collectable, false);
 
     makeFork(this: Node): Promise<object> {
         const url = this.get('links').relationships.forks.links.related.href;
@@ -143,6 +165,6 @@ export default class Node extends BaseFileItem.extend(Validations) {
 
 declare module 'ember-data' {
     interface ModelRegistry {
-        'node': Node;
+        node: Node;
     }
 }

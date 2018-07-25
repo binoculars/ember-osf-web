@@ -12,6 +12,7 @@
     "ember-cli-sass": "*",
     "ember-cli-template-lint": "*",
     "ember-cli-typescript": "*",
+    "ember-collapsible-panel": "*",
     "ember-css-modules": "*",
     "ember-css-modules-sass": "*",
     "ember-i18n": "*",
@@ -19,8 +20,9 @@
     "ember-moment": "*",
     "ember-page-title": "*",
     "ember-power-select": "*",
-    "ember-wormhole": "*"
-
+    "ember-tag-input": "*",
+    "ember-wormhole": "*",
+    "liquid-fire": "*"
   },
   "ember-addon": {
     "paths": [

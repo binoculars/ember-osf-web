@@ -1,0 +1,20 @@
+.Component {
+    margin: 20px 10%;
+    padding: 10px 20px 20px;
+
+    :global(.cp-Panel-body-inner) {
+        padding: 1em 1em 3em;
+    }
+
+    header {
+        font-size: large;
+    }
+}
+
+.closed {
+    color: #888;
+}
+
+.shadow {
+    box-shadow: 0 0 3px #ddd;
+}

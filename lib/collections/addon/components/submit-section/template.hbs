@@ -1,0 +1,24 @@
+{{#if (and (not open) tooltipKey)}}
+    {{bs-tooltip
+        title=(t (concat tPrefix tooltipKey))
+        triggerElement='parentView'
+    }}
+{{/if}}
+{{#cp-panel
+    open=open
+    as |panel|
+}}
+    {{#if titleKey}}
+        <header local-class="{{if (not open) 'closed'}}">
+            {{t (concat tPrefix titleKey)}}
+        </header>
+    {{/if}}
+    {{#panel.body}}
+        {{#if descriptionKey}}
+            <p>{{t (concat tPrefix descriptionKey)}}</p>
+        {{/if}}
+        <div class="row">
+            {{yield}}
+        </div>
+    {{/panel.body}}
+{{/cp-panel}}
