@@ -1,1 +1,134 @@
-<h1>{{t 'collections.submit.title'}}</h1>
+<div class="submit-header" local-class="header">
+    <h1>{{t 'collections.submit.header'}}</h1>
+</div>
+<div local-class="body">
+    <div class="container">
+        <div class="row m-t-lg">
+            {{#submit-section
+                open=true
+                titleKey='project_select_title'
+            }}
+                <div class="col-xs-12">
+                    {{project-selector
+                        projectSelectState='existingProject'
+                        user=currentUser.user
+                        validationChanged=(action (mut isProjectSelectorValid))
+                        projectSelected=(action 'projectSelected')
+                    }}
+                </div>
+            {{/submit-section}}
+
+            {{#submit-section
+                open=collectionItem
+                tooltipKey='closed_tooltip'
+                titleKey='project_metadata_title'
+                descriptionKey='project_metadata_description'
+            }}
+                <div class="col-md-6">
+                    <label>
+                        {{t 'collections.submit.project_metadata_field_title_label'}}
+                        {{validated-input
+                            model=collectionItem
+                            valuePath='title'
+                            aria-label=(t 'move_to_project.enter_project_title')
+                        }}
+                    </label>
+                    <br>
+                    <label>
+                        {{t 'collections.submit.project_metadata_field_description_label'}}
+                        {{validated-input
+                            model=collectionItem
+                            type='textarea'
+                            valuePath='description'
+                        }}
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <label>
+                        {{t 'collections.submit.project_metadata_field_license_label'}}
+                        {{!power-select}}
+                    </label>
+                    <br>
+                    <label>
+                        {{t 'collections.submit.project_metadata_field_tags_label'}}
+                        {{#tag-input
+                            tags=tags
+                            addTag=(action 'addTag')
+                            removeTagAtIndex=(action 'removeTagAtIndex')
+                            allowSpacesInTags=true
+                            placeholder=(t 'file_detail.add_tag')
+                            aria_label=(t 'file_detial.tags')
+                            readOnly=false
+                            as |tag|
+                        }}
+                            <a
+                                href='{{searchUrl}}?q=(tags:"{{tag}}")'
+                                onclick={{action 'click' 'link' 'Collections - Submit - Search by tag' target=analytics}}
+                            >
+                                {{tag}}
+                            </a>
+                        {{/tag-input}}
+                    </label>
+                </div>
+            {{/submit-section}}
+
+            {{#submit-section
+                open=collectionItem
+                tooltipKey='closed_tooltip'
+                titleKey='project_contributors_title'
+                descriptionKey='project_contributors_description'
+            }}
+                {{!contributors}}
+            {{/submit-section}}
+
+            {{#submit-section
+                open=true
+                titleKey='subjects_title'
+                descriptionKey='subjects_description'
+            }}
+                {{subject-picker}}
+            {{/submit-section}}
+
+            {{#submit-section
+                open=true
+                titleKey='collection_metadata_title'
+            }}
+                <div class="col-md-6">
+                    <label>
+                        {{t 'collections.submit.collection_metadata_type_label'}}
+                        {{#power-select
+                            options=collection.collectedTypeChoices
+                            onchange=(action 'collectedTypeChanged')
+                            as |collectedTypeChoice|
+                        }}
+                            {{collectedTypeChoice}}
+                        {{/power-select}}
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <label>
+                        {{t 'collections.submit.collection_metadata_status_label'}}
+                        {{#power-select
+                            options=collection.statusChoices
+                            onchange=(action 'statusChanged')
+                            as |statusChoice|
+                        }}
+                            {{statusChoice}}
+                        {{/power-select}}
+                    </label>
+                </div>
+            {{/submit-section}}
+
+            {{#submit-section open=true shadow=false}}
+                <div class="col-xs-12 text-right">
+                    <button class="btn btn-default">
+                        {{t 'collections.submit.cancel'}}
+                    </button>
+                    <button class="btn btn-success">
+                        {{t 'collections.submit.add_to_collection'}}
+                    </button>
+                </div>
+            {{/submit-section}}
+        </div>
+    </div>
+</div>

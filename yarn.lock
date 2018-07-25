@@ -5396,6 +5396,14 @@ ember-code-snippet@^2.1.0:
     es6-promise "^1.0.0"
     glob "^4.0.4"
 
+ember-collapsible-panel@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/ember-collapsible-panel/-/ember-collapsible-panel-3.1.1.tgz#7fa04b0217c7c333d04fd74d0fb0d568f4cb31b1"
+  dependencies:
+    ember-cli-babel "^6.12.0"
+    ember-cli-htmlbars "^2.0.3"
+    ember-cli-version-checker "^2.1.0"
+
 ember-compatibility-helpers@1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.0.0-beta.1.tgz#e54d68125f9bc15735ca4a68960d186d5c3ca58b"
@@ -9213,6 +9221,21 @@ lint-staged@^7.1.0:
 liquid-fire@^0.29.1:
   version "0.29.2"
   resolved "https://registry.yarnpkg.com/liquid-fire/-/liquid-fire-0.29.2.tgz#db3900c0d6554262e2c2f30a3f24681a3006f850"
+  dependencies:
+    broccoli-funnel "^1.0.1"
+    broccoli-merge-trees "^1.0.0"
+    broccoli-stew "^1.4.2"
+    ember-cli-babel "^6.6.0"
+    ember-cli-htmlbars "^2.0.1"
+    ember-cli-version-checker "^2.0.0"
+    ember-getowner-polyfill "^2.0.1"
+    ember-hash-helper-polyfill "^0.2.0"
+    match-media "^0.2.0"
+    velocity-animate "^1.5.1"
+
+liquid-fire@^0.29.3:
+  version "0.29.3"
+  resolved "https://registry.yarnpkg.com/liquid-fire/-/liquid-fire-0.29.3.tgz#a979f0c81eaa9a1fb0e264fb0dcf288148e52a00"
   dependencies:
     broccoli-funnel "^1.0.1"
     broccoli-merge-trees "^1.0.0"

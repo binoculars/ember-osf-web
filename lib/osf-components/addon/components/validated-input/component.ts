@@ -39,7 +39,7 @@ export default class ValidatedInput extends Component {
     validation: any = defaultTo(this.validation, null);
     isTyping: boolean = defaultTo(this.isTyping, false);
 
-    @oneWay('targetObject.didValidate') didValidate!: boolean;
+    @oneWay('target.didValidate') didValidate!: boolean;
     @oneWay('validation.isInvalid') isInvalid!: boolean;
     @not('validation.isValidating') notValidating!: boolean;
     @notEmpty('value') hasContent!: boolean;

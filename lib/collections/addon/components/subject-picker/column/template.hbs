@@ -1,0 +1,17 @@
+<ol local-class="list" role="listbox">
+    {{input
+        value=filterText
+        class='form-control'
+        local-class='input'
+        placeholder=(t 'collections.subject_picker.column.search')
+    }}
+    {{#each subjectsSorted as |subject|}}
+        <li
+            {{action select subject}}
+            local-class="{{if (eq subject.id selection.id) 'selected'}}"
+            role="listitem"
+        >
+            {{subject.text}}
+        </li>
+    {{/each}}
+</ol>
