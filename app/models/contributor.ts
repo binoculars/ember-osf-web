@@ -1,8 +1,34 @@
 import { attr, belongsTo } from '@ember-decorators/data';
+import { not } from '@ember/object/computed';
+import { buildValidations, validator } from 'ember-cp-validations';
 import DS from 'ember-data';
+import defaultTo from 'ember-osf-web/utils/default-to';
 import Node from './node';
 import OsfModel from './osf-model';
 import User from './user';
+
+const Validations = buildValidations({
+    fullName: [
+        validator('presence', {
+            presence: true,
+            disabled: not('model.isUnregistered'),
+        }),
+        validator('length', {
+            max: 186,
+            min: 3,
+        }),
+    ],
+    email: [
+        validator('presence', {
+            presence: true,
+            disabled: not('model.isUnregistered'),
+        }),
+        validator('format', { type: 'email' }),
+        validator('length', {
+            max: 255,
+        }),
+    ],
+});
 
 /**
  * @module ember-osf-web
@@ -14,8 +40,8 @@ import User from './user';
  *
  * @class Contributor
  */
-export default class Contributor extends OsfModel {
-    @attr('fixstring') permission!: string;
+export default class Contributor extends OsfModel.extend(Validations) {
+    @attr('fixstring') permission!: 'read' | 'write' | 'admin';
     @attr('boolean') bibliographic!: boolean;
 
     @attr('fixstring') unregisteredContributor!: string;
@@ -27,6 +53,8 @@ export default class Contributor extends OsfModel {
     @belongsTo('user') users!: DS.PromiseObject<User> & User;
 
     @belongsTo('node', { inverse: 'contributors' }) node!: DS.PromiseObject<Node> & Node;
+
+    isUnregistered: boolean = defaultTo(this.isUnregistered, false);
 }
 
 declare module 'ember-data' {

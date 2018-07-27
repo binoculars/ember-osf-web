@@ -623,6 +623,37 @@ export default {
                 search: 'Search',
             },
         },
+        project_contributors: {
+            title: 'Contributors:',
+            instructions: 'Drag and drop authors to change authorship order.',
+            list: {
+                name: 'Name:',
+                permissions: 'Permissions:',
+                citation: 'Citiation:',
+                contributor: {
+                    remove: 'Remove',
+                },
+            },
+            search: {
+                placeholder: 'Search by name',
+                unregistered_description: 'Can\'t find the user that you\'re looking for?',
+                unregistered_button: 'Add author by email address',
+                results: 'Results',
+                no_results: 'No results found.',
+                unregistered_contributor: {
+                    title: 'Add author by email',
+                    full_name: 'Full name',
+                    email: 'Email',
+                    paragraph: 'We will notify the user that they have been added to your preprint.',
+                    cancel: 'Cancel',
+                    add: 'Add',
+                },
+                result: {
+                    yourself: 'yourself',
+                    add: 'Add',
+                },
+            },
+        },
     },
     branded_navbar: {
         my_osf_projects: 'My OSF Projects',

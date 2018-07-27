@@ -20,6 +20,7 @@
     "ember-moment": "*",
     "ember-page-title": "*",
     "ember-power-select": "*",
+    "ember-sortable": "*",
     "ember-tag-input": "*",
     "ember-wormhole": "*",
     "liquid-fire": "*"
