@@ -5804,6 +5804,12 @@ ember-inflector@^2.0.0:
   dependencies:
     ember-cli-babel "^6.0.0"
 
+ember-invoke-action@^1.4.0:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/ember-invoke-action/-/ember-invoke-action-1.5.1.tgz#b6cad51ee729fc227cdbdba83b2b5486f0fa5834"
+  dependencies:
+    ember-cli-babel "^6.6.0"
+
 ember-keyboard@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/ember-keyboard/-/ember-keyboard-3.0.2.tgz#839ab5c32a6b3d3ce0b735728c1e1bc362107464"
@@ -6047,6 +6053,14 @@ ember-sinon@^2.1.0, ember-sinon@~2.1.0:
     broccoli-merge-trees "^2.0.0"
     ember-cli-babel "^6.6.0"
     sinon "^4.4.5"
+
+ember-sortable@^1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/ember-sortable/-/ember-sortable-1.11.2.tgz#b970e79c3f3bb7546e10a6099db73e545137cb9d"
+  dependencies:
+    ember-cli-babel "^6.6.0"
+    ember-cli-htmlbars "^2.0.3"
+    ember-invoke-action "^1.4.0"
 
 ember-source-channel-url@^1.0.1:
   version "1.1.0"

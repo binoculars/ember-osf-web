@@ -73,12 +73,12 @@
             {{/submit-section}}
 
             {{#submit-section
-                open=collectionItem
+                open=true
                 tooltipKey='closed_tooltip'
                 titleKey='project_contributors_title'
                 descriptionKey='project_contributors_description'
             }}
-                {{!contributors}}
+                {{project-contributors node=collectionItem contributors=collectionItem.contributors}}
             {{/submit-section}}
 
             {{#submit-section

@@ -1,7 +1,12 @@
 import { attr, belongsTo, hasMany } from '@ember-decorators/data';
 import { bool, equal } from '@ember-decorators/object/computed';
+import { not } from '@ember/object/computed';
 import { buildValidations, validator } from 'ember-cp-validations';
 import DS from 'ember-data';
+<<<<<<< HEAD
+=======
+import authenticatedAJAX from 'ember-osf-web/utils/ajax-helpers';
+>>>>>>> WIP submit/contributors
 import defaultTo from 'ember-osf-web/utils/default-to';
 import BaseFileItem from './base-file-item';
 import Citation from './citation';
@@ -17,7 +22,6 @@ import Region from './region';
 import Registration from './registration';
 import Wiki from './wiki';
 
-import { computed } from '@ember/object';
 
 /**
  * @module ember-osf-web
@@ -31,19 +35,19 @@ const Validations = buildValidations({
     description: [
         validator('presence', {
             presence: true,
-            disabled: computed.not('model.collectable'),
+            disabled: not('model.collectable'),
         }),
     ],
     license: [
         validator('presence', {
             presence: true,
-            disabled: computed.not('model.collectable'),
+            disabled: not('model.collectable'),
         }),
     ],
     tags: [
         validator('presence', {
             presence: true,
-            disabled: computed.not('model.collectable'),
+            disabled: not('model.collectable'),
         }),
     ],
 });
