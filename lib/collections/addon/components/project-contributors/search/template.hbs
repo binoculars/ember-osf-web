@@ -21,7 +21,7 @@
     {{project-contributors/search/unregistered-contributor
         close=(action (mut showUnregisteredForm) false)
     }}
-{{else if results}}
+{{else if results.isLoaded}}
     <div class="text-center" local-class="unregisteredUsers">
         <p>{{t 'collections.project_contributors.search.unregistered_description'}}</p>
         <button
@@ -31,10 +31,10 @@
             {{t 'collections.project_contributors.search.unregistered_button'}}
         </button>
     </div>
+    <h3>
+        {{t 'collections.project_contributors.search.results'}}
+    </h3>
     {{#if results.length}}
-        <h3>
-            {{t 'collections.project_contributors.search.results'}}
-        </h3>
         <table class="table author-table">
             {{#each results as |result|}}
                 {{project-contributors/search/result user=result contributors=contributors}}

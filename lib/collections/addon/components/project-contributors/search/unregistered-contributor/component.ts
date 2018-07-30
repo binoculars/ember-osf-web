@@ -31,9 +31,9 @@ export default class UnregisteredContributor extends Component {
     //     this.setProperties({ results });
     // }).restartable();
 
-    // didReceiveAttrs(this: UnregisteredContributor) {
-    //     debugger;
-    // }
+    didReceiveAttrs(this: UnregisteredContributor) {
+        this.reset();
+    }
 
     reset(this: UnregisteredContributor) {
         if (this.model) {
