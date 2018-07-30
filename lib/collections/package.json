@@ -22,6 +22,7 @@
     "ember-power-select": "*",
     "ember-sortable": "*",
     "ember-tag-input": "*",
+    "ember-toastr": "*",
     "ember-wormhole": "*",
     "liquid-fire": "*"
   },

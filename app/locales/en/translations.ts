@@ -657,6 +657,8 @@ export default {
                     yourself: 'yourself',
                     add: 'Add',
                 },
+                add_contributor_success: 'Project contributor added!',
+                add_contributor_error: 'Could not add contributor. Please try again.',
             },
         },
     },

@@ -4,8 +4,11 @@ import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
 import { task, timeout } from 'ember-concurrency';
 import { DS } from 'ember-data';
+import I18N from 'ember-i18n/services/i18n';
+import Node from 'ember-osf-web/models/node';
 import User from 'ember-osf-web/models/user';
 import Analytics from 'ember-osf-web/services/analytics';
+import Toast from 'ember-toastr/services/toast';
 
 const nameFields = [
     'full_name',
@@ -16,11 +19,17 @@ const nameFields = [
 
 export default class Search extends Component {
     @service analytics!: Analytics;
+    @service i18n!: I18N;
     @service store!: DS.Store;
+    @service toast!: Toast;
 
     query: string = '';
     page: number = 1;
     showUnregisteredForm: boolean = false;
+    node: Node = this.node;
+
+    @alias('search.lastSuccessful.value') results?: DS.AdapterPopulatedRecordArray<User>;
+    @alias('results.meta.total_pages') totalPages?: number;
 
     search = task(function *(this: Search) {
         yield timeout(250);
@@ -36,8 +45,24 @@ export default class Search extends Component {
         return results;
     }).restartable();
 
-    @alias('search.lastSuccessful.value') results?: DS.AdapterPopulatedRecordArray<User>;
-    @alias('results.meta.total_pages') totalPages?: number;
+    addContributor = task(function *(this: Search, user: User) {
+        this.analytics.track('list', 'filter', 'Collections - Contributors - Add Contributor');
+
+        const contributor = this.store.createRecord('contributor', {
+            permission: 'write',
+            bibliographic: true,
+            sendEmail: 'false',
+            nodeId: this.node.id,
+            userId: user.id,
+        });
+
+        try {
+            yield contributor.save();
+            this.toast.success(this.i18n.t('collections.project_contributors.search.add_contributor_success'));
+        } catch (e) {
+            this.toast.error(this.i18n.t('collections.project_contributors.search.add_contributor_error'));
+        }
+    });
 
     @action
     findUsers(this: Search) {

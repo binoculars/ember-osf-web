@@ -37,7 +37,11 @@
     {{#if results.length}}
         <table class="table author-table">
             {{#each results as |result|}}
-                {{project-contributors/search/result user=result contributors=contributors}}
+                {{project-contributors/search/result
+                    user=result
+                    contributors=contributors
+                    addContributor=(action (perform addContributor))
+                }}
             {{/each}}
         </table>
         <div class="pull-right text-right">

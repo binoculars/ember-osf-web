@@ -22,6 +22,7 @@ const App = Application.extend({
                     'session',
                     'store',
                     'theme',
+                    'toast',
                     'router',
                 ],
             },
