@@ -31,5 +31,4 @@ export default class ProjectContributors extends Component.extend({
     // contributors: Contributor[] = this.contributors;
 
     // @computed('node')
-
 }

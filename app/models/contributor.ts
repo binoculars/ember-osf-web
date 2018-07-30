@@ -31,11 +31,6 @@ const Validations = buildValidations({
 });
 
 /**
- * @module ember-osf-web
- * @submodule models
- */
-
-/**
  * Model for OSF APIv2 contributors. Primarily accessed via relationship fields.
  *
  * @class Contributor
@@ -48,7 +43,7 @@ export default class Contributor extends OsfModel.extend(Validations) {
     @attr('number') index!: number;
     @attr('fixstring') fullName!: string;
     @attr('fixstring') email!: string;
-    @attr('boolean') sendEmail!: boolean;
+    @attr('string') sendEmail!: 'default' | 'preprint' | 'false';
 
     @belongsTo('user', { inverse: 'contributors' }) users!: DS.PromiseObject<User> & User;
 
@@ -59,6 +54,6 @@ export default class Contributor extends OsfModel.extend(Validations) {
 
 declare module 'ember-data' {
     interface ModelRegistry {
-        'contributor': Contributor;
+        contributor: Contributor;
     }
 }
