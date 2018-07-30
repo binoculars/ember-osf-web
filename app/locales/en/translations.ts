@@ -631,6 +631,11 @@ export default {
                 citation: 'Citiation:',
                 contributor: {
                     remove: 'Remove',
+                    permissions: {
+                        admin: 'Administrator',
+                        write: 'Read + Write',
+                        read: 'Read',
+                    },
                 },
             },
             search: {
