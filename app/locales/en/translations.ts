@@ -631,6 +631,7 @@ export default {
                 permissions: 'Permissions:',
                 citation: 'Citiation:',
                 contributor: {
+                    img_alt: 'Gravatar',
                     remove: 'Remove',
                     permissions: {
                         admin: 'Administrator',

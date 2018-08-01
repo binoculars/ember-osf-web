@@ -19,7 +19,6 @@ import Region from './region';
 import Registration from './registration';
 import Wiki from './wiki';
 
-
 /**
  * @module ember-osf-web
  * @submodule models

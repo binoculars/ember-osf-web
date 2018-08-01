@@ -61,6 +61,7 @@ export default class Search extends Component {
             this.toast.success(this.i18n.t('collections.project_contributors.search.add_contributor_success'));
         } catch (e) {
             this.toast.error(this.i18n.t('collections.project_contributors.search.add_contributor_error'));
+            throw e;
         }
     });
 

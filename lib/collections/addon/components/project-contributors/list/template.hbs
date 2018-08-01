@@ -41,6 +41,12 @@
             {{project-contributors/list/contributor
                 group=group
                 contributor=contributor
+                isAdmin=isAdmin
+                adminCount=adminCount
+                bibliographicCount=bibliographicCount
+                removeContributor=(action (perform removeContributor))
+                toggleBibliographic=(action (perform toggleBibliographic))
+                updatePermissions=(action (perform updatePermissions))
             }}
         {{/each}}
     {{/sortable-group}}
