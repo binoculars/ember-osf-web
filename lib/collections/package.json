@@ -13,6 +13,7 @@
     "ember-cli-template-lint": "*",
     "ember-cli-typescript": "*",
     "ember-collapsible-panel": "*",
+    "ember-cp-validations": "*",
     "ember-css-modules": "*",
     "ember-css-modules-sass": "*",
     "ember-i18n": "*",

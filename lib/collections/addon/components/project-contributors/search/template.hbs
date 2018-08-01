@@ -19,6 +19,7 @@
 
 {{#if showUnregisteredForm}}
     {{project-contributors/search/unregistered-contributor
+        node=node
         close=(action (mut showUnregisteredForm) false)
     }}
 {{else if results.isLoaded}}
