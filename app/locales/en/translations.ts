@@ -657,6 +657,8 @@ export default {
                     paragraph: 'We will notify the user that they have been added to your preprint.',
                     cancel: 'Cancel',
                     add: 'Add',
+                    add_success: 'Unregistered contributor added!',
+                    add_error: 'Could not add unregistered contributor. Please try again.',
                 },
                 result: {
                     yourself: 'yourself',

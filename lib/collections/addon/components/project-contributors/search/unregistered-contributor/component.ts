@@ -1,51 +1,68 @@
 import { action } from '@ember-decorators/object';
-// import { alias } from '@ember-decorators/object/computed';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
-// import { task, timeout } from 'ember-concurrency';
+import { task } from 'ember-concurrency';
 import { DS } from 'ember-data';
+import I18N from 'ember-i18n/services/i18n';
 import requiredAction from 'ember-osf-web/decorators/required-action';
-import Contributor from 'ember-osf-web/models/contributor';
+import Contributor, { Permission } from 'ember-osf-web/models/contributor';
+import Node from 'ember-osf-web/models/node';
 import Analytics from 'ember-osf-web/services/analytics';
+import Toast from 'ember-toastr/services/toast';
 
 export default class UnregisteredContributor extends Component {
     @service analytics!: Analytics;
+    @service i18n!: I18N;
     @service store!: DS.Store;
+    @service toast!: Toast;
 
     model?: Contributor;
     node: Node = this.node;
+    didValidate: boolean = false;
 
     @requiredAction close!: () => void;
 
-    // search = task(function *(this: Search, query: string, page: number) {
-    //     yield timeout(250);
-    //     this.analytics.track('list', 'filter', 'Collections - Contributors - Search');
+    add = task(function *(this: UnregisteredContributor) {
+        const { validations } = yield this.model!.validate();
+        this.set('didValidate', true);
 
-    //     const results = yield this.store.query('user', {
-    //         filter: {
-    //             [nameFields]: query,
-    //         },
-    //         page,
-    //     });
+        if (validations.get('isInvalid')) {
+            return;
+        }
 
-    //     this.setProperties({ results });
-    // }).restartable();
+        this.analytics.track('form', 'submit', 'Collections - Contributors - Add Unregistered Contributor');
+
+        try {
+            yield this.model!.save();
+            this.toast.success(
+                this.i18n.t('collections.project_contributors.search.unregistered_contributor.add_success'),
+            );
+        } catch (e) {
+            this.toast.error(
+                this.i18n.t('collections.project_contributors.search.unregistered_contributor.add_error'),
+            );
+        }
+
+        this.reset(false);
+        this.close();
+    }).drop();
 
     didReceiveAttrs(this: UnregisteredContributor) {
         this.reset();
     }
 
-    reset(this: UnregisteredContributor) {
-        if (this.model) {
+    reset(this: UnregisteredContributor, rollback: boolean = true) {
+        if (this.model && rollback) {
             this.model.rollbackAttributes();
         }
 
-        const model = this.store.createRecord('contributor', {
-            node: this.node,
-            isUnregistered: true,
+        this.setProperties({
+            model: this.store.createRecord('contributor', {
+                nodeId: this.node.id,
+                permission: Permission.write,
+                isUnregistered: true,
+            }),
         });
-
-        this.setProperties({ model });
     }
 
     @action
