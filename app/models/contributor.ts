@@ -30,13 +30,23 @@ const Validations = buildValidations({
     ],
 });
 
+export enum Permission {
+    'admin',
+    'write',
+    'read',
+}
+
+export const permissions = Object.freeze(
+    Object.values(Permission).filter(key => typeof key === 'string'),
+);
+
 /**
  * Model for OSF APIv2 contributors. Primarily accessed via relationship fields.
  *
  * @class Contributor
  */
 export default class Contributor extends OsfModel.extend(Validations) {
-    @attr('fixstring') permission!: 'read' | 'write' | 'admin';
+    @attr('fixstring') permission!: Permission;
     @attr('boolean') bibliographic!: boolean;
 
     @attr('fixstring') unregisteredContributor!: string;

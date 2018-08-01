@@ -1,49 +1,37 @@
 import { tagName } from '@ember-decorators/component';
-import { action } from '@ember-decorators/object';
+import { computed } from '@ember-decorators/object';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
-import Contributor from 'ember-osf-web/models/contributor';
-import Analytics from 'ember-osf-web/services/analytics';
+import Contributor, { permissions } from 'ember-osf-web/models/contributor';
 import CurrentUser from 'ember-osf-web/services/current-user';
 
 @tagName('')
 export default class extends Component {
-    @service analytics!: Analytics;
     @service currentUser!: CurrentUser;
 
+    permissions = permissions;
     contributor: Contributor = this.contributor;
+    isAdmin: boolean = this.isAdmin;
+    adminCount: number = this.adminCount;
+    bibliographicCount: number = this.bibliographicCount;
 
+    @computed('currentUser.currentUserId', 'contributor.users.id')
+    get isSelf() {
+        return this.currentUser.currentUserId === this.contributor.users.get('id');
+    }
+
+    @computed('isAdmin', 'isSelf')
+    get canChangePermissions() {
+        return this.isAdmin && !this.isSelf;
+    }
+
+    @computed('isAdmin', 'bibliographicCount', 'contributor.bibliographic')
+    get canChangeBibliographic(): boolean {
+        return this.isAdmin && this.bibliographicCount > +this.contributor.bibliographic;
+    }
+
+    @computed('isAdmin', 'isSelf', 'contributor.node.isRegistration')
     get canRemove(): boolean {
-        const { currentUserId } = this.currentUser;
-        const isSelf = currentUserId  === this.contributor.users.get('id');
-
-        if (!isSelf) {
-            return true;
-        }
-
-        const isRegistration = this.contributor.node.get('isRegistration');
-
-        if (!isRegistration) {
-            return true;
-        }
-
-        // const currentContributor = contributors.find(contributor => contributor.users.id === currentUserId);
-
-        // return !!currentContributor && currentContributor.permission === 'admin';
-
-        return false;
-    }
-
-    @action
-    remove() {
-        //
-    }
-
-    @action
-    toggleBibliographic() {
-        const actionName = this.contributor.bibliographic ? 'select' : 'deselect';
-        this.analytics.track('checkbox', actionName, 'Collections - Submit - Update Bibliographic');
-        this.contributor.save();
-        debugger;
+        return this.isAdmin && !this.isSelf && !this.contributor.node.get('isRegistration');
     }
 }
