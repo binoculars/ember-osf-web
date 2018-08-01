@@ -1,7 +1,7 @@
 {{#sortable-item
     tagName="tr"
     model=contributor
-    class="contributor-row"
+    class=(concat "contributor-row " (local-class highlightClass))
     group=group
     spacing=1
     handle=".handle"
@@ -27,16 +27,15 @@
                     </a>
                 {{/if}}
                 <span class="pull-right remove-contributor-padding-xs">
-                    {{!-- 
-                    {{#if (and
-                        (permissionToRemoveContributor contrib currentUser isAdmin node)
-                        (conditionsForContribRemoval contrib contributors authorModification))
-                    }}
-                        <button class="remove-contributor-xs" {{action 'removeContributor' contrib}} aria-label={{t "components.preprint-form-authors.authors.remove_author"}}>
-                            <i class="fa fa-times"> </i>
+                    {{#if canRemove}}
+                        <button
+                            {{action removeContributor contributor}}
+                            class="remove-contributor-xs"
+                            aria-label={{t 'collections.project_contributors.list.contributor.remove_author'}}
+                        >
+                            <i class="fa fa-times"></i>
                         </button>
                     {{/if}}
-                    --}}
                 </span>
             </span>
         </div>
@@ -64,7 +63,7 @@
             {{#if canChangePermissions}}
                 <select
                     class="text-smaller form-control permission-select"
-                    onchange={{action (action updatePermissions contributor) value='target.value'}}
+                    onchange={{action (action updatePermissions this) value='target.value'}}
                 >
                     {{#each permissions as |option|}}
                         <option selected={{eq contributor.permission option}} value={{option}}>
@@ -82,24 +81,19 @@
         </div>
     </td>
     <td class="bib-padding">
-        {{!-- <div class="form-group vert-align">
-            <span class="visible-xs-inline checkbox-padding"
-                ><em>{{t "components.preprint-form-authors.authors.in_citation"}}:</em>
+        <div class="form-group vert-align">
+            <span class="visible-xs-inline checkbox-padding">
+                <em>
+                    {{t 'collections.project_contributors.list.contributor.in_citation'}}:
+                </em>
             </span>
-            <input
-                disabled={{if (and isAdmin (and canEdit (min-bibliographic contrib contributors authorModification))) false true}}
-                onchange={{action (action 'updateBibliographic' contrib) value='target.checked'}}
-                checked={{eq contributor.bibliographic true}}
-                type="checkbox"
-                name="bibliographic"
-            >
-        </div> --}}
-        {{input
-            type='checkbox'
-            disabled=(not canChangeBibliographic)
-            checked=contributor.bibliographic
-            change=(action toggleBibliographic contributor)
-        }}
+            {{input
+                type='checkbox'
+                disabled=(not canChangeBibliographic)
+                checked=contributor.bibliographic
+                change=(action toggleBibliographic this)
+            }}
+        </div>
     </td>
     <td>
         <div>

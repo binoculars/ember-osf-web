@@ -4,9 +4,10 @@ import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
 import Contributor, { permissions } from 'ember-osf-web/models/contributor';
 import CurrentUser from 'ember-osf-web/services/current-user';
+import defaultTo from 'ember-osf-web/utils/default-to';
 
 @tagName('')
-export default class extends Component {
+export default class Item extends Component {
     @service currentUser!: CurrentUser;
 
     permissions = permissions;
@@ -14,6 +15,7 @@ export default class extends Component {
     isAdmin: boolean = this.isAdmin;
     adminCount: number = this.adminCount;
     bibliographicCount: number = this.bibliographicCount;
+    highlightClass: '' | 'success' | 'failure' = defaultTo(this.highlightClass, '');
 
     @computed('currentUser.currentUserId', 'contributor.users.id')
     get isSelf() {
