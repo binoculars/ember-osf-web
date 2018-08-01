@@ -38,7 +38,7 @@
     </thead>
     {{#sortable-group tagName="tbody" onChange="reorderItems" as |group|}}
         {{#each contributors as |contributor|}}
-            {{project-contributors/list/contributor
+            {{project-contributors/list/item
                 group=group
                 contributor=contributor
                 isAdmin=isAdmin

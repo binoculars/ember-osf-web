@@ -8,7 +8,7 @@ import defaultTo from 'ember-osf-web/utils/default-to';
 import BaseFileItem from './base-file-item';
 import Citation from './citation';
 import Comment from './comment';
-import Contributor from './contributor';
+import Contributor, { Permission } from './contributor';
 import DraftRegistration from './draft-registration';
 import FileProvider from './file-provider';
 import Institution from './institution';
@@ -59,7 +59,7 @@ export default class Node extends BaseFileItem.extend(Validations) {
     @attr('fixstring') description!: string;
     @attr('fixstring') category!: string;
 
-    @attr('array') currentUserPermissions!: string[];
+    @attr('array') currentUserPermissions!: Permission[];
     @attr('boolean') currentUserIsContributor!: boolean;
 
     @attr('boolean') fork!: boolean;

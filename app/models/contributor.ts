@@ -31,14 +31,12 @@ const Validations = buildValidations({
 });
 
 export enum Permission {
-    'admin',
-    'write',
-    'read',
+    admin = 'admin',
+    write = 'write',
+    read = 'read',
 }
 
-export const permissions = Object.freeze(
-    Object.values(Permission).filter(key => typeof key === 'string'),
-);
+export const permissions = Object.freeze(Object.values(Permission));
 
 /**
  * Model for OSF APIv2 contributors. Primarily accessed via relationship fields.

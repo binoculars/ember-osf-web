@@ -630,14 +630,18 @@ export default {
                 name: 'Name:',
                 permissions: 'Permissions:',
                 citation: 'Citiation:',
+                remove_contributor_success: 'Project contributor removed!',
+                remove_contributor_error: 'Could not remove contributor. Please try again.',
                 contributor: {
                     img_alt: 'Gravatar',
-                    remove: 'Remove',
+                    in_citation: 'In citation',
                     permissions: {
                         admin: 'Administrator',
                         write: 'Read + Write',
                         read: 'Read',
                     },
+                    remove: 'Remove',
+                    remove_author: 'Remove author',
                 },
             },
             search: {
