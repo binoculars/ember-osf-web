@@ -3,7 +3,7 @@ import { action } from '@ember-decorators/object';
 import { alias } from '@ember-decorators/object/computed';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
-import EmberObject, { /*computed, */setProperties } from '@ember/object';
+import EmberObject, { setProperties } from '@ember/object';
 import { task } from 'ember-concurrency';
 import DS from 'ember-data';
 import Provider from 'ember-osf-web/models/provider';
@@ -70,8 +70,6 @@ export default class SubjectPicker extends Component.extend({
     initialSubjects: any[] = [];
     currentSubjects: any[] = [];
     hasChanged: boolean = false;
-
-//     @notEmpty('currentSubjects') isValid!: boolean;
 
     resetColumnSelections() {
         this.columns.forEach((column, i) => {

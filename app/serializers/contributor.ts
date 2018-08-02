@@ -3,18 +3,11 @@ import OsfSerializer from './osf-serializer';
 
 export default class Contributor extends OsfSerializer.extend({
     serialize(snapshot: DS.Snapshot, options = {}) {
-        const includeUser = snapshot.record.get('isNew') ? true : undefined;
-
-        // const opts = {
-        //     includeUser,
-        //     ...options,
-        // };
-
         // Restore relationships to serialized data
         const serialized = this._super(snapshot, options);
 
         // APIv2 expects contributor information to be nested under relationships.
-        if (includeUser) {
+        if (snapshot.record.get('isNew')) {
             serialized.data.relationships = {
                 users: {
                     data: {
