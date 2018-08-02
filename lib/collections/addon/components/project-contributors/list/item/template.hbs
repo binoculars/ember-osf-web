@@ -1,7 +1,7 @@
 {{#sortable-item
     tagName="tr"
     model=contributor
-    class=(concat "contributor-row " (local-class highlightClass))
+    class=(concat "contributor-row " (local-class contributor.highlightClass))
     group=group
     spacing=1
     handle=".handle"
@@ -63,7 +63,7 @@
             {{#if canChangePermissions}}
                 <select
                     class="text-smaller form-control permission-select"
-                    onchange={{action (action updatePermissions this) value='target.value'}}
+                    onchange={{action (action updatePermissions contributor) value='target.value'}}
                 >
                     {{#each permissions as |option|}}
                         <option selected={{eq contributor.permission option}} value={{option}}>
@@ -91,7 +91,7 @@
                 type='checkbox'
                 disabled=(not canChangeBibliographic)
                 checked=contributor.bibliographic
-                change=(action toggleBibliographic this)
+                change=(action toggleBibliographic contributor)
             }}
         </div>
     </td>

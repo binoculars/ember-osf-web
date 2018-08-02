@@ -7,12 +7,13 @@ export default class Contributor extends OsfAdapter.extend({
     buildURL(
         this: Contributor,
         modelName: 'contributor',
-        id: string,
+        id: string | undefined,
         snapshot: DS.Snapshot,
         requestType: string,
     ) {
         if (requestType === 'createRecord' || requestType === 'findRecord') {
-            const nodeId = snapshot ? snapshot.record.get('nodeId') : id.split('-').shift();
+            const [nId, uId] = (id || '').split('-');
+            const nodeId = snapshot ? snapshot.record.get('nodeId') : nId;
             const node = this.store.peekRecord('node', nodeId);
 
             if (!node) {
@@ -22,7 +23,7 @@ export default class Contributor extends OsfAdapter.extend({
             const base = this.buildRelationshipURL((node as any)._internalModel.createSnapshot(), 'contributors');
 
             if (requestType === 'findRecord') {
-                return `${base}${id.split('-').pop()}/`;
+                return `${base}${uId}/`;
             }
 
             const params = {

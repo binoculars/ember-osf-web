@@ -9,7 +9,7 @@ import Contributor, { Permission } from 'ember-osf-web/models/contributor';
 import Node from 'ember-osf-web/models/node';
 import Analytics from 'ember-osf-web/services/analytics';
 import Toast from 'ember-toastr/services/toast';
-import Item from './item/component';
+import { HighlightableContributor } from './item/component';
 
 export default class List extends Component {
     @service analytics!: Analytics;
@@ -23,39 +23,56 @@ export default class List extends Component {
     /**
      * Changes the contributor's permissions
      */
-    updatePermissions = task(function *(this: List, item: Item, permission: Permission) {
+    updatePermissions = task(function *(this: List, contributor: HighlightableContributor, permission: Permission) {
         this.analytics.track('option', 'select', 'Collections - Submit - Change Permission');
-        item.contributor.setProperties({ permission });
+        contributor.setProperties({ permission });
 
-        yield this.get('saveAndHighlight').perform(item);
-    }).keepLatest();
+        yield this.get('saveAndHighlight').perform(contributor);
+    }).enqueue();
 
     /**
      * Changes the contributor's bibliographic
      */
-    toggleBibliographic = task(function *(this: List, item: Item) {
-        const actionName = `${item.contributor.toggleProperty('bibliographic') ? '' : 'de'}select`;
+    toggleBibliographic = task(function *(this: List, contributor: HighlightableContributor) {
+        const actionName = `${contributor.toggleProperty('bibliographic') ? '' : 'de'}select`;
         this.analytics.track('checkbox', actionName, 'Collections - Submit - Update Bibliographic');
 
-        yield this.get('saveAndHighlight').perform(item);
-    }).keepLatest();
+        yield this.get('saveAndHighlight').perform(contributor);
+    }).enqueue();
+
+    /**
+     * Changes the order of contributors for ember-sortable
+     */
+    reorderContributors = task(function *(
+        this: List,
+        contributors: HighlightableContributor[],
+        contributor: HighlightableContributor,
+    ) {
+        const newIndex = contributors.indexOf(contributor);
+        this.contributors.removeObject(contributor);
+        this.contributors.insertAt(newIndex, contributor);
+
+        contributor.set('index', newIndex);
+
+        yield this.get('saveAndHighlight').perform(contributor);
+    }).drop();
 
     /**
      * Saves the contributor and highlights the row with success/failure
      */
-    saveAndHighlight = task(function *(this: List, item: Item): IterableIterator<any> {
-        let highlightClass: 'success' | 'failure';
+    saveAndHighlight = task(function *(this: List, contributor: HighlightableContributor): IterableIterator<any> {
+        let highlightClass: typeof contributor.highlightClass;
 
         try {
-            yield item.contributor.save();
+            yield contributor.save();
             highlightClass = 'success';
         } catch (e) {
             highlightClass = 'failure';
         }
 
-        item.setProperties({ highlightClass });
+        contributor.setProperties({ highlightClass });
         yield timeout(2000);
-        item.setProperties({ highlightClass: '' });
+        contributor.setProperties({ highlightClass: '' });
     });
 
     /**
@@ -69,7 +86,6 @@ export default class List extends Component {
             this.toast.success(this.i18n.t('collections.project_contributors.list.remove_contributor_success'));
         } catch (e) {
             this.toast.error(this.i18n.t('collections.project_contributors.list.remove_contributor_error'));
-            throw e;
         }
 
         // It's necessary to unload the record from the store after destroying it, in case the user is added back as a

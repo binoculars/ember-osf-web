@@ -20,7 +20,7 @@ export default class UnregisteredContributor extends Component {
     node: Node = this.node;
     didValidate: boolean = false;
 
-    @requiredAction close!: () => void;
+    @requiredAction closeForm!: () => void;
 
     add = task(function *(this: UnregisteredContributor) {
         const { validations } = yield this.model!.validate();
@@ -44,7 +44,7 @@ export default class UnregisteredContributor extends Component {
         }
 
         this.reset(false);
-        this.close();
+        this.closeForm();
     }).drop();
 
     didReceiveAttrs(this: UnregisteredContributor) {
@@ -68,6 +68,6 @@ export default class UnregisteredContributor extends Component {
     @action
     cancel(this: UnregisteredContributor) {
         this.reset();
-        this.close();
+        this.closeForm();
     }
 }
