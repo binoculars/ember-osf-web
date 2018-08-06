@@ -12,7 +12,6 @@ export default class Submit extends Controller {
     @service analytics!: Analytics;
     @service currentUser!: CurrentUser;
 
-    tags: string[] = [];
     collectionItem!: Node;
     isProjectSelectorValid: boolean = false;
 
@@ -20,21 +19,12 @@ export default class Submit extends Controller {
     @alias('model.taskInstance.value.primaryCollection') collection!: Collection;
 
     @action
-    projectSelected(this: Submit, item: Node) {
-        item.set('collectable', true);
-        this.set('collectionItem', item);
-    }
+    projectSelected(this: Submit, collectionItem: Node) {
+        collectionItem.set('collectable', true);
 
-    @action
-    addTag(this: Submit, tag: string) {
-        this.analytics.click('button', 'Collection - Submit - Add tag');
-        this.collectionItem.set('tags', [...this.collectionItem.tags.slice(), tag].sort());
-    }
-
-    @action
-    removeTagAtIndex(this: Submit, index: number) {
-        this.analytics.click('button', 'Collections - Submit - Remove tag');
-        this.collectionItem.set('tags', this.collectionItem.tags.slice().removeAt(index));
+        this.setProperties({
+            collectionItem,
+        });
     }
 
     @action

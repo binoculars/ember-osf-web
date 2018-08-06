@@ -3,10 +3,7 @@ import { bool, equal } from '@ember-decorators/object/computed';
 import { not } from '@ember/object/computed';
 import { buildValidations, validator } from 'ember-cp-validations';
 import DS from 'ember-data';
-<<<<<<< HEAD
-=======
-import authenticatedAJAX from 'ember-osf-web/utils/ajax-helpers';
->>>>>>> WIP submit/contributors
+import { Deserialized as NodeLicense } from 'ember-osf-web/transforms/node-license';
 import defaultTo from 'ember-osf-web/utils/default-to';
 import BaseFileItem from './base-file-item';
 import Citation from './citation';
@@ -75,7 +72,7 @@ export default class Node extends BaseFileItem.extend(Validations) {
 
     @attr('date') forkedDate!: Date;
 
-    @attr('object') nodeLicense!: any;
+    @attr('node-license') nodeLicense!: NodeLicense | null;
     @attr('array') tags!: string[];
 
     @attr('fixstring') templateFrom!: string;
@@ -160,6 +157,18 @@ export default class Node extends BaseFileItem.extend(Validations) {
                 data: { type: 'nodes' },
             }),
         });
+    }
+
+    get nodeLicenseDefaults(): NodeLicense {
+        const {
+            copyrightHolders = '',
+            year = new Date().getUTCFullYear().toString(),
+        } = (this.nodeLicense || {});
+
+        return {
+            copyrightHolders,
+            year,
+        };
     }
 }
 

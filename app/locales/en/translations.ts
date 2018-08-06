@@ -622,6 +622,22 @@ export default {
                 search: 'Search',
             },
         },
+        project_metadata: {
+            field_title_label: 'Title:',
+            field_title_placeholder: '',
+            field_description_label: 'Description:',
+            field_description_placeholder: '',
+            field_license_label: 'Choose a license:',
+            field_license_placeholder: '',
+            field_tags_label: 'Tags:',
+            field_tags_placeholder: 'Add a tag',
+            save_success: 'Project Metadata saved.',
+            save_error: 'Unable to save Project Metadata.',
+        },
+        license_picker: {
+            show: 'Show full text',
+            hide: 'Hide full text',
+        },
         project_contributors: {
             title: 'Contributors:',
             instructions: 'Drag and drop authors to change authorship order.',
