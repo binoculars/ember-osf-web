@@ -9,6 +9,6 @@ export default class License extends OsfModel {
 
 declare module 'ember-data' {
     interface ModelRegistry {
-        'license': License;
+        license: License;
     }
 }

@@ -1,0 +1,29 @@
+<label>
+    {{yield}}
+    {{#power-select
+        search=(perform queryLicenses)
+        options=licensesAcceptable
+        selected=selected
+        onchange=(action 'changeLicense')
+        noMatchesMessage=(t 'new_project.no_matches')
+        as |license|
+    }}
+        {{license.name}}
+    {{/power-select}}
+</label>
+
+{{#if selected}}
+    <br>
+    {{#each-in node.nodeLicense as |key value|}}
+        {{key}}
+        {{input value=(mut (get node.nodeLicense key))}}
+        <br>
+    {{/each-in}}
+    <br>
+    <a role="button" onclick={{action (mut showText) (not showText)}}>
+        {{t (concat 'collections.license_picker.' (if showText 'hide' 'show'))}}
+    </a>
+    {{#if showText}}
+        <pre>{{licenseText}}</pre>
+    {{/if}}
+{{/if}}

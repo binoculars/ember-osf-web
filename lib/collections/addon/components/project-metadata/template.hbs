@@ -1,0 +1,60 @@
+<div class="col-md-6">
+    <label>
+        {{t 'collections.project_metadata.field_title_label'}}
+        {{validated-input
+            model=node
+            valuePath='title'
+            aria-label=(t 'move_to_project.enter_project_title')
+        }}
+    </label>
+    <br>
+    <label>
+        {{t 'collections.project_metadata.field_description_label'}}
+        {{validated-input
+            model=node
+            type='textarea'
+            valuePath='description'
+        }}
+    </label>
+</div>
+<div class="col-md-6">
+    {{#license-picker node=node}}
+        {{t 'collections.project_metadata.field_license_label'}}
+    {{/license-picker}}
+    <br>
+    <label>
+        {{t 'collections.project_metadata.field_tags_label'}}
+        {{#tag-input
+            tags=node.tags
+            addTag=(action 'addTag')
+            removeTagAtIndex=(action 'removeTagAtIndex')
+            allowSpacesInTags=true
+            placeholder=(t 'file_detail.add_tag')
+            aria_label=(t 'file_detial.tags')
+            readOnly=false
+            as |tag|
+        }}
+            <a
+                href='{{searchUrl}}?q=(tags:"{{tag}}")'
+                onclick={{action 'click' 'link' 'Collections - Submit - Search by tag' target=analytics}}
+            >
+                {{tag}}
+            </a>
+        {{/tag-input}}
+    </label>
+</div>
+<div class="col-xs-12 text-right">
+    <button
+        {{action (perform reset)}}
+        class="btn btn-default"
+    >
+        {{t 'general.cancel'}}
+    </button>
+    <button
+        {{action (perform save)}}
+        class="btn btn-primary"
+        disabled={{v-get node 'isInvalid'}}
+    >
+        {{t 'general.save'}}
+    </button>
+</div>

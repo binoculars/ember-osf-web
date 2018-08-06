@@ -24,52 +24,7 @@
                 titleKey='project_metadata_title'
                 descriptionKey='project_metadata_description'
             }}
-                <div class="col-md-6">
-                    <label>
-                        {{t 'collections.submit.project_metadata_field_title_label'}}
-                        {{validated-input
-                            model=collectionItem
-                            valuePath='title'
-                            aria-label=(t 'move_to_project.enter_project_title')
-                        }}
-                    </label>
-                    <br>
-                    <label>
-                        {{t 'collections.submit.project_metadata_field_description_label'}}
-                        {{validated-input
-                            model=collectionItem
-                            type='textarea'
-                            valuePath='description'
-                        }}
-                    </label>
-                </div>
-                <div class="col-md-6">
-                    <label>
-                        {{t 'collections.submit.project_metadata_field_license_label'}}
-                        {{!power-select}}
-                    </label>
-                    <br>
-                    <label>
-                        {{t 'collections.submit.project_metadata_field_tags_label'}}
-                        {{#tag-input
-                            tags=tags
-                            addTag=(action 'addTag')
-                            removeTagAtIndex=(action 'removeTagAtIndex')
-                            allowSpacesInTags=true
-                            placeholder=(t 'file_detail.add_tag')
-                            aria_label=(t 'file_detial.tags')
-                            readOnly=false
-                            as |tag|
-                        }}
-                            <a
-                                href='{{searchUrl}}?q=(tags:"{{tag}}")'
-                                onclick={{action 'click' 'link' 'Collections - Submit - Search by tag' target=analytics}}
-                            >
-                                {{tag}}
-                            </a>
-                        {{/tag-input}}
-                    </label>
-                </div>
+                {{project-metadata node=collectionItem}}
             {{/submit-section}}
 
             {{#submit-section
