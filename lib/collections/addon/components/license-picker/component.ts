@@ -1,8 +1,8 @@
-// import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember-decorators/object';
-import { alias } from '@ember-decorators/object/computed';
+import { alias, sort } from '@ember-decorators/object/computed';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
+import EmberObject from '@ember/object';
 import { task, timeout } from 'ember-concurrency';
 import DS from 'ember-data';
 import I18N from 'ember-i18n/services/i18n';
@@ -12,9 +12,9 @@ import Provider from 'ember-osf-web/models/provider';
 import Analytics from 'ember-osf-web/services/analytics';
 import Theme from 'ember-osf-web/services/theme';
 
-// @tagName('')
 export default class LicensePicker extends Component.extend({
-    didReceiveAttrs(this: LicensePicker) {
+    didReceiveAttrs(this: LicensePicker, ...args: any[]) {
+        this._super(...args);
         this.get('queryLicenses').perform();
     },
 
@@ -39,36 +39,49 @@ export default class LicensePicker extends Component.extend({
     showText: boolean = false;
     node: Node = this.node;
     licensesAcceptable: License[] = [];
-    selected?: License;
+    helpLink: string = 'http://help.osf.io/m/60347/l/611430-licensing';
 
     @alias('theme.provider') provider!: Provider;
+    @alias('node.license') selected!: License;
+
+    @sort('selected.requiredFields', (a: string, b: string) => +(a > b))
+    requiredFields!: string[];
 
     /**
-     * TODO: Dynamic computed properties
+     * This replaces the placeholders, e.g. `{{field}}`, in the license text (which acts as a template)
+     * TODO: Dynamic computed properties. `year` and `copyrightHolders` are the only two acceptable fields on
+     * nodeLicense, currently.
      */
-    @computed('selected.text', 'node.nodeLicense.{year,copyrightHolders}')
+    @computed('selected.{text,requiredFields.length}', 'node.nodeLicense.{year,copyrightHolders}')
     get licenseText(): string {
-        let result = this.selected!.text || '';
+        const requiredFields = this.selected.get('requiredFields');
+        const result = this.selected.get('text') || '';
 
-        if (!this.node.nodeLicense) {
+        if (!this.node.nodeLicense || !(requiredFields && requiredFields.length)) {
             return result;
         }
 
-        for (const [key, value] of Object.entries(this.node.nodeLicense)) {
-            result = result.replace(new RegExp(`{{${key}}}`), value);
-        }
-
-        return result;
+        return Object.entries(this.node.nodeLicense).reduce(
+            (acc, [key, value]) => acc.replace(new RegExp(`{{${key}}}`), value),
+            result,
+        );
     }
 
     @action
     changeLicense(this: LicensePicker, selected: License) {
-        if (selected.requiredFields && !this.node.nodeLicense) {
-            this.node.set('nodeLicense', this.node.nodeLicenseDefaults);
-        }
+        this.node.setNodeLicenseDefaults(selected.requiredFields);
 
         this.setProperties({
             selected,
         });
+    }
+
+    /**
+     * Calling notifyPropertyChange doesn't trigger dirty attributes
+     */
+    @action
+    notify(this: LicensePicker) {
+        // TODO: find a better way to set propertyDidChange
+        this.node.set('nodeLicense', EmberObject.create({ ...this.node.nodeLicense }));
     }
 }

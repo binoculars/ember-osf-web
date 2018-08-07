@@ -1,50 +1,72 @@
+import EmberObject from '@ember/object';
+import { camelize, decamelize } from '@ember/string';
 import DS from 'ember-data';
 
 const { Transform } = DS;
 
-interface Serialized {
-    copyrightHolders: string[];
-    year: string;
+interface Serialized extends EmberObject {
+    copyright_holders?: string[];
+    year?: string;
 }
 
-export interface Deserialized {
-    copyrightHolders: string;
-    year: string;
+export interface Deserialized extends EmberObject {
+    copyrightHolders?: string;
+    year?: string;
+}
+
+function rekeyObject<T>(fn: (str: string) => string, object: T, recursive?: boolean): EmberObject {
+    const obj = Object.entries(object)
+        .reduce((acc, [key, val]) => ({
+            ...acc,
+            [fn(key)]: recursive && typeof val === 'object' ?
+                rekeyObject(fn, val, recursive) :
+                val,
+        }), {});
+
+    return EmberObject.create(obj);
+}
+
+function camelizeObject<T>(object: T, recursive?: boolean): EmberObject {
+    return rekeyObject(camelize, object, recursive);
+}
+
+function decamelizeObject<T>(object: T, recursive?: boolean): EmberObject {
+    return rekeyObject(decamelize, object, recursive);
 }
 
 export default class NodeLicense extends Transform.extend({
-    deserialize(value: Serialized | null): Deserialized | null {
+    deserialize(value: Serialized): Deserialized {
         if (!value) {
-            return null;
+            return EmberObject.create({});
         }
 
         const {
-            copyrightHolders = [],
-            year,
+            copyright_holders = [],
+            year = '',
         } = value;
 
-        return {
-            copyrightHolders: copyrightHolders.join(', '),
+        return camelizeObject({
+            copyright_holders: copyright_holders.join(', '),
             year,
-        };
+        });
     },
 
-    serialize(value: Deserialized | null): Serialized | null {
+    serialize(value: Deserialized): Serialized {
         if (!value) {
-            return null;
+            return EmberObject.create({});
         }
 
         const {
-            copyrightHolders,
-            year,
+            copyrightHolders = '',
+            year = '',
         } = value;
 
-        return {
+        return EmberObject.create(decamelizeObject({
             copyrightHolders: copyrightHolders
                 .split(', ')
                 .map(s => s.trim()),
             year,
-        };
+        }));
     },
 }) {}
 
