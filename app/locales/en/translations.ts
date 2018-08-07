@@ -599,14 +599,6 @@ export default {
             closed_tooltip: 'Select a project to edit this section',
             project_metadata_title: 'Project metadata',
             project_metadata_description: 'Updates made in this section will update the project.',
-            project_metadata_field_title_label: 'Title:',
-            project_metadata_field_title_placeholder: '',
-            project_metadata_field_description_label: 'Description:',
-            project_metadata_field_description_placeholder: '',
-            project_metadata_field_license_label: 'Choose a license:',
-            project_metadata_field_license_placeholder: '',
-            project_metadata_field_tags_label: 'Tags:',
-            project_metadata_field_tags_placeholder: 'Add a tag',
             project_contributors_title: 'Project contributors',
             project_contributors_description: 'Updates made to this section will update the project.',
             subjects_title: 'Collection subjects',
@@ -636,8 +628,13 @@ export default {
             save_error: 'Unable to save Project Metadata.',
         },
         license_picker: {
+            faq: 'License FAQ',
             show: 'Show full text',
             hide: 'Hide full text',
+            fields: {
+                copyrightHolders: 'Copyright Holders',
+                year: 'Year',
+            },
         },
         project_contributors: {
             title: 'Contributors:',

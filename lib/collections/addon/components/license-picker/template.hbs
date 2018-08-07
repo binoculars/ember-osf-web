@@ -11,14 +11,28 @@
         {{license.name}}
     {{/power-select}}
 </label>
-
+<br>
+<small>
+    <a
+        target="_blank"
+        rel="noopener"
+        href={{helpLink}}
+    >
+        {{t 'collections.license_picker.faq'}}
+    </a>
+</small>
 {{#if selected}}
     <br>
-    {{#each-in node.nodeLicense as |key value|}}
-        {{key}}
-        {{input value=(mut (get node.nodeLicense key))}}
+    <br>
+    {{#each requiredFields as |key|}}
+        {{t (concat 'collections.license_picker.fields.' key)}}
         <br>
-    {{/each-in}}
+        {{input
+            value=(mut (get node.nodeLicense key))
+            change=(action 'notify')
+        }}
+        <br>
+    {{/each}}
     <br>
     <a role="button" onclick={{action (mut showText) (not showText)}}>
         {{t (concat 'collections.license_picker.' (if showText 'hide' 'show'))}}

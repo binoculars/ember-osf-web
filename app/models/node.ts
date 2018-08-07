@@ -1,5 +1,6 @@
 import { attr, belongsTo, hasMany } from '@ember-decorators/data';
 import { bool, equal } from '@ember-decorators/object/computed';
+import EmberObject from '@ember/object';
 import { not } from '@ember/object/computed';
 import { buildValidations, validator } from 'ember-cp-validations';
 import DS from 'ember-data';
@@ -160,16 +161,32 @@ export default class Node extends BaseFileItem.extend(Validations) {
         });
     }
 
-    get nodeLicenseDefaults(): NodeLicense {
+    /**
+     * Sets the nodeLicense field defaults based on required fields from a License
+     */
+    setNodeLicenseDefaults(this: Node, requiredFields: Array<keyof NodeLicense>): void {
+        if (!requiredFields.length) {
+            this.set('nodeLicense', null);
+            return;
+        }
+
         const {
             copyrightHolders = '',
             year = new Date().getUTCFullYear().toString(),
         } = (this.nodeLicense || {});
 
-        return {
+        const nodeLicenseDefaults: NodeLicense = EmberObject.create({
             copyrightHolders,
             year,
-        };
+        });
+
+        // Only set the required fields on nodeLicense
+        const props = requiredFields.reduce(
+            (acc, val) => ({ ...acc, [val]: nodeLicenseDefaults[val] }),
+            {},
+        );
+
+        this.set('nodeLicense', EmberObject.create(props));
     }
 }
 

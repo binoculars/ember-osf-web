@@ -24,11 +24,13 @@ export default class ProjectMetadata extends Component {
 
     node: Node = this.node;
 
-    reset = task(function *(this: ProjectMetadata): IterableIterator<void> {
+    reset = task(function *(this: ProjectMetadata) {
         this.node.rollbackAttributes();
+        yield this.node.reload();
     });
 
     save = task(function *(this: ProjectMetadata) {
+        debugger;
         try {
             yield this.node.save();
             this.toast.success(this.i18n.t('collections.project_metadata.save_success'));
