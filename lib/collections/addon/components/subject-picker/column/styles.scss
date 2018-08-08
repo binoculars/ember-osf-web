@@ -14,12 +14,12 @@
         text-overflow: ellipsis;
         position: relative;
         transition-property: background-color, color, font-weight;
-        transition-duration: .1s;
+        transition-duration: 0.1s;
         transition-timing-function: linear;
     }
 
     li:hover {
-        background-color: #67A3BF;
+        background-color: #67a3bf;
         color: #fff;
     }
 }
@@ -30,7 +30,7 @@
 }
 
 .selected {
-    background-color: #337AB7;
+    background-color: #337ab7;
     color: #fff;
     font-weight: 700;
     white-space: normal;
