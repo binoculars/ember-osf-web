@@ -607,9 +607,12 @@ export default {
             collection_metadata_status_label: 'Status:',
             cancel: 'Cancel',
             add_to_collection: 'Add to collection',
+            save_success: '{{title}} has been added to the collection.',
+            save_error: 'Error adding {{title}} to the collection:\n{{error}}',
         },
         subject_picker: {
             remove: 'Remove',
+            discard: 'Discard',
             column: {
                 search: 'Search',
             },

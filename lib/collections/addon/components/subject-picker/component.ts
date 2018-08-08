@@ -31,7 +31,7 @@ export default class SubjectPicker extends Component.extend({
 
         this.setProperties({
             initialSubjects: [],
-            currentSubjects: [],
+            // currentSubjects: [],
             hasChanged: false,
             columns: new Array(3)
                 .fill(null)
@@ -68,7 +68,7 @@ export default class SubjectPicker extends Component.extend({
     columns!: Column[];
     editMode: boolean = defaultTo(this.editMode, false);
     initialSubjects: any[] = [];
-    currentSubjects: any[] = [];
+    currentSubjects: any[] = defaultTo(this.currentSubjects, []);
     hasChanged: boolean = false;
 
     resetColumnSelections() {
@@ -82,7 +82,11 @@ export default class SubjectPicker extends Component.extend({
 
     @action
     deselect(this: SubjectPicker, index: number) {
-        this.analytics.track('button', 'click', `${this.editMode ? 'Edit' : 'Submit'} - Discipline Remove`);
+        this.analytics.track(
+            'button',
+            'click',
+            `Collections - ${this.editMode ? 'Edit' : 'Submit'} - Discipline Remove`,
+        );
 
         this.set('hasChanged', true);
         this.resetColumnSelections();
@@ -92,7 +96,7 @@ export default class SubjectPicker extends Component.extend({
 
     @action
     select(this: SubjectPicker, tier: number, selected: Taxonomy) {
-        this.analytics.track('button', 'click', `${this.editMode ? 'Edit' : 'Submit'} - Discipline Add`);
+        this.analytics.track('button', 'click', `Collections - ${this.editMode ? 'Edit' : 'Submit'} - Discipline Add`);
 
         this.set('hasChanged', true);
         const column = this.columns[tier];
@@ -147,30 +151,19 @@ export default class SubjectPicker extends Component.extend({
         }
     }
 
-    // @action
-    // discard() {
-    //     this.analytics.track(
-    //         'button',
-    //         'click',
-    //         `Collections - ${this.editMode ? 'Edit' : 'Submit'} - Discard Discipline Changes`,
-    //     );
+    @action
+    discard(this: SubjectPicker) {
+        this.analytics.track(
+            'button',
+            'click',
+            `Collections - ${this.editMode ? 'Edit' : 'Submit'} - Discard Discipline Changes`,
+        );
 
-    //     this.resetColumnSelections();
+        this.resetColumnSelections();
 
-    //     this.setProperties({
-    //         currentSubjects: [...this.initialSubjects],
-    //         hasChanged: false,
-    //     });
-    // }
-
-    // @action
-    // save() {
-    //     this.analytics.track(
-    //         'button',
-    //         'click',
-    //         `Collections - ${this.editMode ? 'Edit' : 'Submit'} - Discipline Save and Continue`,
-    //     );
-
-    //     this.sendAction('saveSubjects', this.hasChanged);
-    // }
+        this.setProperties({
+            currentSubjects: [...this.initialSubjects],
+            hasChanged: false,
+        });
+    }
 }
