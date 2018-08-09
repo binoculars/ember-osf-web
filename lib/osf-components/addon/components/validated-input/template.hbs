@@ -58,11 +58,13 @@
             name=valuePath
             options=options
             selected=(get model valuePath)
-            onchange=(action (mut (get model valuePath)))
+            onchange=(action 'powerSelectChanged')
+            search=search
+            noMatchesMessage=noMatchesMessage
             disabled=disabled
             as |option|
         }}
-            {{option}}
+            {{yield option}}
         {{/power-select}}
     {{/if}}
 

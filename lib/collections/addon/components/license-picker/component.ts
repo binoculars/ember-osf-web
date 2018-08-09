@@ -70,10 +70,6 @@ export default class LicensePicker extends Component.extend({
     @action
     changeLicense(this: LicensePicker, selected: License) {
         this.node.setNodeLicenseDefaults(selected.requiredFields);
-
-        this.setProperties({
-            selected,
-        });
     }
 
     /**

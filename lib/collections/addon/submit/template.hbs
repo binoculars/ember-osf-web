@@ -8,14 +8,11 @@
                 open=true
                 titleKey='project_select_title'
             }}
-                <div class="col-xs-12">
-                    {{project-selector
-                        projectSelectState='existingProject'
-                        user=currentUser.user
-                        validationChanged=(action (mut isProjectSelectorValid))
-                        projectSelected=(action 'projectSelected')
-                    }}
-                </div>
+                {{collection-item-picker
+                    class="col-xs-12"
+                    projectSelected=(action 'projectSelected')
+                    validationChanged=(action (mut isProjectSelectorValid))
+                }}
             {{/submit-section}}
 
             {{#submit-section
