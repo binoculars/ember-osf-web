@@ -41,9 +41,16 @@ const Validations = buildValidations({
             disabled: not('model.collectable'),
         }),
     ],
-    // nodeLicense: [
-
-    // ],
+    nodeLicense: [
+        validator('presence', {
+            presence: true,
+            disabled: not('model.collectable'),
+        }),
+        validator('node-license', {
+            on: 'license',
+            disabled: not('model.collectable'),
+        }),
+    ],
     tags: [
         validator('presence', {
             presence: true,

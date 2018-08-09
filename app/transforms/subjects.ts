@@ -1,8 +1,13 @@
 import ArrayTransform from './array';
 
+interface Identifiable {
+    id: string;
+    [key: string]: any;
+}
+
 export default class Subjects extends ArrayTransform {
-    serialize(value: any[][]): any[][] {
-        return (super.serialize(value) as any[][])
+    serialize(value: Identifiable[][]): string[][] {
+        return (super.serialize(value) as Identifiable[][])
             .map(
                 item => item.map(({ id }) => id),
             );

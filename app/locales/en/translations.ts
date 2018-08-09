@@ -461,6 +461,8 @@ export default {
         recaptcha: 'Please complete reCAPTCHA.',
         affirm_terms: 'You must read and agree to the Terms of Use and Privacy Policy.',
         min_subjects: 'You must select at least {{minLength}} subject(s).',
+        node_license_invalid: 'Invalid required fields for the license',
+        node_license_missing_fields: 'The following required fields are missing: {{missingFields}}',
     },
     node_navbar: {
         toggle: 'Toggle navigation',

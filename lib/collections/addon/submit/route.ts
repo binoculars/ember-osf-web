@@ -2,10 +2,12 @@ import { service } from '@ember-decorators/service';
 import Route from '@ember/routing/route';
 import { task } from 'ember-concurrency';
 import { DS } from 'ember-data';
+import requireAuth from 'ember-osf-web/decorators/require-auth';
 import CollectionProvider from 'ember-osf-web/models/collection-provider';
 import CurrentUser from 'ember-osf-web/services/current-user';
 import Theme from 'ember-osf-web/services/theme';
 
+@requireAuth()
 export default class Submit extends Route {
     @service currentUser!: CurrentUser;
     @service store!: DS.Store;
@@ -18,7 +20,6 @@ export default class Submit extends Route {
         const collectedMetadatum = this.store.createRecord('collected-metadatum', {
             collection: primaryCollection,
             creator: this.currentUser.user,
-            // subjects: [],
         });
 
         return {
