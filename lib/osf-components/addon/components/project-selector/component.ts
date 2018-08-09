@@ -102,9 +102,9 @@ export default class ProjectSelector extends Component.extend({
     }
 
     didReceiveAttrs(this: ProjectSelector) {
-        // if (this.projectSelectState === ProjectSelectState.main) {
+        if (this.projectSelectState === ProjectSelectState.main) {
             this.get('initialLoad').perform();
-        // }
+        }
     }
 
     @action

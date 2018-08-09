@@ -38,6 +38,7 @@ export default class ValidatedInput extends Component {
     placeholder: string = defaultTo(this.placeholder, '');
     validation: any = defaultTo(this.validation, null);
     isTyping: boolean = defaultTo(this.isTyping, false);
+    onchange?: (value: string) => void;
 
     @oneWay('target.didValidate') didValidate!: boolean;
     @oneWay('validation.isInvalid') isInvalid!: boolean;
@@ -79,6 +80,17 @@ export default class ValidatedInput extends Component {
     onCaptchaExpired(this: ValidatedInput) {
         if (this.model && this.valuePath) {
             this.model.set(this.valuePath, '');
+        }
+    }
+
+    @action
+    powerSelectChanged(this: ValidatedInput, value: any) {
+        if (this.model && this.valuePath) {
+            this.model.set(this.valuePath, value);
+        }
+
+        if (this.onchange) {
+            this.onchange(value);
         }
     }
 }
