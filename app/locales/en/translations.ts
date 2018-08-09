@@ -460,6 +460,7 @@ export default {
         password_match: 'Passwords must match.',
         recaptcha: 'Please complete reCAPTCHA.',
         affirm_terms: 'You must read and agree to the Terms of Use and Privacy Policy.',
+        min_subjects: 'You must select at least {{minLength}} subject(s).',
     },
     node_navbar: {
         toggle: 'Toggle navigation',

@@ -14,24 +14,23 @@ const Validations = buildValidations({
     status: [
         validator('presence', true),
     ],
-    // license: [
-    //     validator('presence', {
-    //         presence: true,
-    //         disabled: not('model.collectable'),
-    //     }),
-    // ],
-    // tags: [
-    //     validator('presence', {
-    //         presence: true,
-    //         disabled: not('model.collectable'),
-    //     }),
-    // ],
+    subjects: [
+        validator('presence', {
+            presence: true,
+            minLength: 1,
+            messageKey: 'validationErrors.min_subjects',
+        }),
+        validator('array', {
+            minLength: 1,
+            messageKey: 'validationErrors.min_subjects',
+        }),
+    ],
 });
 
 export default class CollectedMetadatum extends OsfModel.extend(Validations) {
     @attr('string') collectedType!: string;
     @attr('string') status!: string; // eslint-disable-line no-restricted-globals
-    @attr('array') subjects!: SubjectRef[][];
+    @attr('subjects') subjects!: SubjectRef[][];
 
     @belongsTo('collection') collection!: Collection;
     @belongsTo('guid') guid!: Guid;

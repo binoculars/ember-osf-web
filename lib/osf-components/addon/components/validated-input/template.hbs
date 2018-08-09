@@ -66,6 +66,8 @@
         }}
             {{yield option}}
         {{/power-select}}
+    {{else if (eq type 'custom')}}
+        {{yield}}
     {{/if}}
 
     {{#if isValid}}
