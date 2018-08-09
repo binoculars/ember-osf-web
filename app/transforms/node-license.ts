@@ -2,10 +2,8 @@ import EmberObject from '@ember/object';
 import { camelize, decamelize } from '@ember/string';
 import DS from 'ember-data';
 
-const { Transform } = DS;
-
 interface Serialized extends EmberObject {
-    copyright_holders?: string[];
+    copyright_holders?: string[]; // eslint-disable-line camelcase
     year?: string;
 }
 
@@ -34,14 +32,14 @@ function decamelizeObject<T>(object: T, recursive?: boolean): EmberObject {
     return rekeyObject(decamelize, object, recursive);
 }
 
-export default class NodeLicense extends Transform.extend({
+export default class NodeLicense extends DS.Transform {
     deserialize(value: Serialized): Deserialized {
         if (!value) {
             return EmberObject.create({});
         }
 
         const {
-            copyright_holders = [],
+            copyright_holders = [], // eslint-disable-line camelcase
             year = '',
         } = value;
 
@@ -49,7 +47,7 @@ export default class NodeLicense extends Transform.extend({
             copyright_holders: copyright_holders.join(', '),
             year,
         });
-    },
+    }
 
     serialize(value: Deserialized): Serialized {
         if (!value) {
@@ -67,8 +65,8 @@ export default class NodeLicense extends Transform.extend({
                 .map(s => s.trim()),
             year,
         }));
-    },
-}) {}
+    }
+}
 
 declare module 'ember-data' {
     interface TransformRegistry {

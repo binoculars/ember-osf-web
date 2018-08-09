@@ -18,7 +18,7 @@ export default class Submit extends Route {
         const collectedMetadatum = this.store.createRecord('collected-metadatum', {
             collection: primaryCollection,
             creator: this.currentUser.user,
-            subjects: [],
+            // subjects: [],
         });
 
         return {

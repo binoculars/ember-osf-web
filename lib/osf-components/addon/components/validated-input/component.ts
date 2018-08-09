@@ -18,6 +18,8 @@ enum InputType {
     Text = 'text',
     TextArea = 'textarea',
     ReCaptcha = 'reCaptcha',
+    PowerSelect = 'power-select',
+    Custom = 'custom',
 }
 
 @classNames('validated-input')

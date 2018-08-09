@@ -10,7 +10,11 @@
 
 .body {
     label {
-        width: inherit;
+        display: inline;
+    }
+
+    textarea {
+        height: 10em;
     }
 }
 

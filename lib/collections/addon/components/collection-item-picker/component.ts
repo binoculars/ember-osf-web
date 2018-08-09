@@ -13,6 +13,10 @@ import styles from './styles';
 import layout from './template';
 
 export default class CollectionItemPicker extends Component.extend({
+    didInsertElement(this: CollectionItemPicker) {
+        this.get('initialLoad').perform();
+    },
+
     initialLoad: task(function *(this: CollectionItemPicker) {
         this.setProperties({
             // didValidate: false,
@@ -37,10 +41,6 @@ export default class CollectionItemPicker extends Component.extend({
 
         return nodes;
     }).restartable(),
-
-    didReceiveAttrs(this: CollectionItemPicker) {
-        this.get('initialLoad').perform();
-    },
 }) {
     layout = layout;
     styles = styles;
