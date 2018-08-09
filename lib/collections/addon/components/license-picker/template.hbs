@@ -13,7 +13,6 @@
         {{license.name}}
     {{/validated-input}}
 </label>
-<br>
 <small>
     <a
         target="_blank"
@@ -26,15 +25,21 @@
 {{#if selected}}
     <br>
     <br>
-    {{#each requiredFields as |key|}}
-        {{t (concat 'collections.license_picker.fields.' key)}}
-        <br>
-        {{input
-            value=(mut (get node.nodeLicense key))
-            change=(action 'notify')
-        }}
-        <br>
-    {{/each}}
+    {{#validated-input
+        type='custom'
+        model=node
+        valuePath='nodeLicense'
+    }}
+        {{#each requiredFields as |key|}}
+            {{t (concat 'collections.license_picker.fields.' key)}}
+            <br>
+            {{input
+                value=(mut (get node.nodeLicense key))
+                change=(action 'notify')
+            }}
+            <br>
+        {{/each}}
+    {{/validated-input}}
     <br>
     <a role="button" onclick={{action (mut showText) (not showText)}}>
         {{t (concat 'collections.license_picker.' (if showText 'hide' 'show'))}}
