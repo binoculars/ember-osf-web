@@ -1,6 +1,12 @@
 <td class="p-v-xs">
-    <img class="m-l-xs" src={{user.links.profile_image}} height=30 width=30>
-    <a href={{user.links.html}} target="_blank">
+    <img
+        class="m-l-xs"
+        src={{user.links.profile_image}}
+        alt="{{user.fullname}}"
+        height="30"
+        width="30"
+    >
+    <a href={{user.links.html}} target="_blank" rel="noopener">
         {{~user.fullName~}}
     </a>
     {{#if isSelf}}
