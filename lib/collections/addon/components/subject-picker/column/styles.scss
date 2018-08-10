@@ -4,6 +4,7 @@
     height: 15rem;
     padding: 0;
     border: 1px solid #d3d3d3;
+    border-top: 0;
 
     li {
         cursor: pointer;
@@ -16,6 +17,13 @@
         transition-property: background-color, color, font-weight;
         transition-duration: 0.1s;
         transition-timing-function: linear;
+
+        &[aria-selected='true'] {
+            background-color: #337ab7;
+            color: #fff;
+            font-weight: 700;
+            white-space: normal;
+        }
     }
 
     li:hover {
@@ -25,7 +33,6 @@
 }
 
 .input {
-    border-style: none none solid;
     box-shadow: none;
 }
 

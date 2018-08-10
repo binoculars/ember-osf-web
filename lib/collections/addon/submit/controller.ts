@@ -57,6 +57,8 @@ export default class Submit extends Controller {
             this.toast.success(this.i18n.t('collections.submit.save_success', {
                 title: this.collectionItem.title,
             }));
+
+            // TODO: Go to project
         } catch (e) {
             this.toast.error(this.i18n.t('collections.submit.save_error', {
                 title: this.collectionItem.title,
