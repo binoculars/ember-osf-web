@@ -672,7 +672,7 @@ export default {
                     title: 'Add author by email',
                     full_name: 'Full name',
                     email: 'Email',
-                    paragraph: 'We will notify the user that they have been added to your preprint.',
+                    paragraph: 'We will notify the user that they have been added to your project.',
                     cancel: 'Cancel',
                     add: 'Add',
                     add_success: 'Unregistered contributor added!',
