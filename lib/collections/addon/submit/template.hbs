@@ -10,6 +10,7 @@
             }}
                 {{collection-item-picker
                     class="col-xs-12"
+                    collection=collection
                     projectSelected=(action 'projectSelected')
                     validationChanged=(action (mut isProjectSelectorValid))
                 }}

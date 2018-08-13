@@ -84,7 +84,7 @@ export default class SearchFacetTaxonomy extends Base.extend({
     },
 }) {
     static async getTaxonomies(item: TaxonomyItem, provider: Provider) {
-        const results: Taxonomy[] = await provider.queryHasMany('taxonomies', {
+        const results = await provider.queryHasMany<Taxonomy>('taxonomies', {
             filter: { parents: item.id },
             page: { size: pageSize },
         });
