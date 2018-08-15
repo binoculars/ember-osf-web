@@ -2,7 +2,7 @@ import { action } from '@ember-decorators/object';
 import { alias } from '@ember-decorators/object/computed';
 import { service } from '@ember-decorators/service';
 import Controller from '@ember/controller';
-import { task } from 'ember-concurrency';
+import { task, timeout } from 'ember-concurrency';
 import DS from 'ember-data';
 import I18N from 'ember-i18n/services/i18n';
 import CollectedMetadatum from 'ember-osf-web/models/collected-metadatum';
@@ -14,6 +14,15 @@ import Analytics from 'ember-osf-web/services/analytics';
 import CurrentUser from 'ember-osf-web/services/current-user';
 import Toast from 'ember-toastr/services/toast';
 
+enum Section {
+    project,
+    projectMetadata,
+    projectContributors,
+    collectionSubjects,
+    collectionMetadata,
+    submit,
+}
+
 export default class Submit extends Controller {
     @service analytics!: Analytics;
     @service currentUser!: CurrentUser;
@@ -24,6 +33,9 @@ export default class Submit extends Controller {
     collectionItem!: Node;
     isProjectSelectorValid: boolean = false;
     didValidate: boolean = false;
+    sections = Section;
+    activeSection: Section = Section.project;
+    savedSections: Section[] = [];
 
     @alias('model.taskInstance.value.provider') provider!: CollectionProvider;
     @alias('model.taskInstance.value.primaryCollection') collection!: Collection;
@@ -54,11 +66,15 @@ export default class Submit extends Controller {
 
         try {
             yield this.collectedMetadatum.save();
+
             this.toast.success(this.i18n.t('collections.submit.save_success', {
                 title: this.collectionItem.title,
             }));
 
-            // TODO: Go to project
+            yield timeout(1000);
+
+            // TODO: external-link-to / waffle for project main page
+            window.location.href = this.collectionItem.links.self;
         } catch (e) {
             this.toast.error(this.i18n.t('collections.submit.save_error', {
                 title: this.collectionItem.title,
@@ -74,10 +90,27 @@ export default class Submit extends Controller {
         this.setProperties({
             collectionItem,
         });
+
+        this.nextSection();
     }
 
     @action
-    cancel() {
+    cancel(this: Submit) {
         this.collectedMetadatum.rollbackAttributes();
+        this.setProperties({
+            activeSection: Section.project,
+            savedSections: [],
+        });
+    }
+
+    @action
+    noop() {
+        // Nothing to see here
+    }
+
+    @action
+    nextSection() {
+        this.savedSections.pushObject(this.activeSection);
+        this.incrementProperty('activeSection');
     }
 }

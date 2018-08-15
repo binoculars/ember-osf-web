@@ -18,7 +18,7 @@ import layout from './template';
 
 export default class CollectionItemPicker extends Component.extend({
     didReceiveAttrs(this: CollectionItemPicker) {
-        if (this.collection) {
+        if (!this.get('initialLoad').hasStarted && this.collection) {
             this.get('initialLoad').perform();
         }
     },

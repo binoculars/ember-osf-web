@@ -19,7 +19,6 @@
         </span>
     {{/each}}
 </div>
-
 <div local-class="columns">
     {{#each columns as |column tier|}}
         {{subject-picker/column
@@ -29,12 +28,14 @@
         }}
     {{/each}}
 </div>
-
-<div class="col-xs-12 text-right">
-    <button
-        class="btn btn-default"
-        {{action 'discard'}}
-    >
-        {{t 'collections.subject_picker.discard'}}
-    </button>
-</div>
+{{validated-input
+    type='custom'
+    model=model
+    valuePath=valuePath
+    didValidate=didValidate
+}}
+{{submit-section-buttons
+    discard=(action 'discard')
+    continue=continue
+    continueDisabled=(v-get model valuePath 'isInvalid')
+}}

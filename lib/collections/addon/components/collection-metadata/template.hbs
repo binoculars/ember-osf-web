@@ -15,3 +15,11 @@
         </label>
     </div>
 {{/each}}
+{{submit-section-buttons
+    discard=(action 'discard')
+    continue=continue
+    continueDisabled=(or 
+        (v-get collectedMetadatum 'collectedType' 'isInvalid')
+        (v-get collectedMetadatum 'status' 'isInvalid')
+    )
+}}
