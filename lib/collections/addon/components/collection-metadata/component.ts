@@ -1,4 +1,5 @@
 import { tagName } from '@ember-decorators/component';
+import { action } from '@ember-decorators/object';
 import Component from '@ember/component';
 import CollectedMetadatum from 'ember-osf-web/models/collected-metadatum';
 import Collection from 'ember-osf-web/models/collection';
@@ -27,4 +28,12 @@ export default class CollectionMetadata extends Component {
             optionsKey: 'statusChoices',
         },
     ];
+
+    @action
+    discard() {
+        this.collectedMetadatum.setProperties({
+            collectedType: '',
+            status: '',
+        });
+    }
 }

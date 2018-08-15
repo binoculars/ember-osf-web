@@ -613,6 +613,10 @@ export default {
             save_success: '{{title}} has been added to the collection.',
             save_error: 'Error adding {{title}} to the collection:\n{{error}}',
         },
+        submit_section: {
+            discard: 'Discard changes',
+            save: 'Save and continue',
+        },
         subject_picker: {
             remove: 'Remove',
             discard: 'Discard',

@@ -52,18 +52,8 @@
         {{/validated-input}}
     </label>
 </div>
-<div class="col-xs-12 text-right">
-    <button
-        {{action (perform reset)}}
-        class="btn btn-default"
-    >
-        {{t 'general.cancel'}}
-    </button>
-    <button
-        {{action (perform save)}}
-        class="btn btn-primary"
-        disabled={{v-get node 'isInvalid'}}
-    >
-        {{t 'general.save'}}
-    </button>
-</div>
+{{submit-section-buttons
+    discard=(action (perform reset))
+    continue=(action (perform save))
+    continueDisabled=(v-get node 'isInvalid')
+}}

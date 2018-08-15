@@ -4,68 +4,90 @@
 <div local-class="body">
     <div class="container">
         <div class="row m-t-lg">
-            {{#submit-section
-                open=true
-                titleKey='project_select_title'
-            }}
-                {{collection-item-picker
-                    class="col-xs-12"
-                    collection=collection
-                    projectSelected=(action 'projectSelected')
-                    validationChanged=(action (mut isProjectSelectorValid))
+            {{#cp-panels accordion=true as |panels|}}
+                {{#submit-section
+                    panels=panels
+                    section=sections.project
+                    activeSection=activeSection
+                    savedSections=savedSections
+                    titleKey='project_select_title'
+                    continue=(action 'nextSection' sections.project)
                 }}
-            {{/submit-section}}
+                    {{collection-item-picker
+                        class="col-xs-12"
+                        collection=collection
+                        projectSelected=(action 'projectSelected')
+                        validationChanged=(action (mut isProjectSelectorValid))
+                    }}
+                {{/submit-section}}
 
-            {{#submit-section
-                open=collectionItem
-                tooltipKey='closed_tooltip'
-                titleKey='project_metadata_title'
-                descriptionKey='project_metadata_description'
-            }}
-                {{project-metadata node=collectionItem}}
-            {{/submit-section}}
-
-            {{#submit-section
-                open=collectionItem
-                tooltipKey='closed_tooltip'
-                titleKey='project_contributors_title'
-                descriptionKey='project_contributors_description'
-            }}
-                {{project-contributors
-                    node=collectionItem
-                    contributors=collectionItem.contributors
+                {{#submit-section
+                    panels=panels
+                    section=sections.projectMetadata
+                    activeSection=activeSection
+                    savedSections=savedSections
+                    tooltipKey='closed_tooltip'
+                    titleKey='project_metadata_title'
+                    descriptionKey='project_metadata_description'
                 }}
-            {{/submit-section}}
+                    {{project-metadata
+                        node=collectionItem
+                        continue=(action 'nextSection')
+                    }}
+                {{/submit-section}}
 
-            {{#submit-section
-                open=true
-                titleKey='subjects_title'
-                descriptionKey='subjects_description'
-            }}
-                {{subject-picker
-                    id='subjects'
-                    currentSubjects=collectedMetadatum.subjects
+                {{#submit-section
+                    panels=panels
+                    section=sections.projectContributors
+                    activeSection=activeSection
+                    savedSections=savedSections
+                    tooltipKey='closed_tooltip'
+                    titleKey='project_contributors_title'
+                    descriptionKey='project_contributors_description'
                 }}
-                {{validated-input
-                    type='custom'
-                    model=collectedMetadatum
-                    valuePath='subjects'
-                    didValidate=didValidate
-                }}
-            {{/submit-section}}
+                    {{project-contributors
+                        node=collectionItem
+                        contributors=collectionItem.contributors
+                        discard=(action 'noop')
+                        continue=(action 'nextSection')
+                    }}
+                {{/submit-section}}
 
-            {{#submit-section
-                open=true
-                titleKey='collection_metadata_title'
-            }}
-                {{collection-metadata
-                    collection=collection
-                    collectedMetadatum=collectedMetadatum
-                    didValidate=didValidate
+                {{#submit-section
+                    panels=panels
+                    section=sections.collectionSubjects
+                    activeSection=activeSection
+                    savedSections=savedSections
+                    titleKey='subjects_title'
+                    descriptionKey='subjects_description'
                 }}
-            {{/submit-section}}
+                    {{subject-picker
+                        id='subjects'
+                        currentSubjects=collectedMetadatum.subjects
+                        model=collectedMetadatum
+                        valuePath='subjects'
+                        didValidate=didValidate
+                        continue=(action 'nextSection')
+                    }}
+                {{/submit-section}}
 
-            {{#submit-section open=true shadow=false}}
+                {{#submit-section
+                    panels=panels
+                    section=sections.collectionMetadata
+                    activeSection=activeSection
+                    savedSections=savedSections
+                    titleKey='collection_metadata_title'
+                }}
+                    {{collection-metadata
+                        collection=collection
+                        collectedMetadatum=collectedMetadatum
+                        didValidate=didValidate
+                        continue=(action 'nextSection')
+                    }}
+                {{/submit-section}}
+            {{/cp-panels}}
+
+            <section class="row" local-class="last-buttons">
                 <div class="col-xs-12 text-right">
                     <button class="btn btn-default" {{action 'cancel'}}>
                         {{t 'collections.submit.cancel'}}
@@ -74,7 +96,7 @@
                         {{t 'collections.submit.add_to_collection'}}
                     </button>
                 </div>
-            {{/submit-section}}
+            </section>
         </div>
     </div>
 </div>
