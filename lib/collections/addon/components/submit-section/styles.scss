@@ -1,6 +1,7 @@
 .Component {
     margin: 20px 10%;
     padding: 10px 20px 20px;
+    box-shadow: 0 0 3px #ddd;
 
     :global(.cp-Panel-body-inner) {
         padding: 1em 1em 0;
@@ -8,6 +9,7 @@
 
     header {
         font-size: large;
+        padding-bottom: 1em;
     }
 }
 
@@ -15,10 +17,10 @@
     color: #888;
 }
 
-.shadow {
-    box-shadow: 0 0 3px #ddd;
-}
-
 .green {
     color: #488132;
+}
+
+.pointer {
+    cursor: pointer;
 }
