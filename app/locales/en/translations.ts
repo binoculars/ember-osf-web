@@ -598,9 +598,14 @@ export default {
             title: 'Submit',
             header: 'Add to Collection',
             project_select_title: 'Select a project',
+            project_select_project_label: 'Project:',
             closed_tooltip: 'Select a project to edit this section',
             project_metadata_title: 'Project metadata',
             project_metadata_description: 'Updates made in this section will update the project.',
+            project_metadata_title_label: 'Title:',
+            project_metadata_description_label: 'Description:',
+            project_metadata_license_label: 'License:',
+            project_metadata_tags_label: 'Tags:',
             project_contributors_title: 'Project contributors',
             project_contributors_description: 'Updates made to this section will update the project.',
             subjects_title: 'Collection subjects',
@@ -616,6 +621,7 @@ export default {
         submit_section: {
             discard: 'Discard changes',
             save: 'Save and continue',
+            click_to_edit: 'Click to edit',
         },
         subject_picker: {
             remove: 'Remove',

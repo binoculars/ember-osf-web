@@ -15,12 +15,12 @@ import CurrentUser from 'ember-osf-web/services/current-user';
 import Toast from 'ember-toastr/services/toast';
 
 enum Section {
-    project,
-    projectMetadata,
-    projectContributors,
-    collectionSubjects,
-    collectionMetadata,
-    submit,
+    project = 0,
+    projectMetadata = 1,
+    projectContributors = 2,
+    collectionSubjects = 3,
+    collectionMetadata = 4,
+    submit = 5,
 }
 
 export default class Submit extends Controller {
@@ -74,7 +74,7 @@ export default class Submit extends Controller {
             yield timeout(1000);
 
             // TODO: external-link-to / waffle for project main page
-            window.location.href = this.collectionItem.links.self;
+            window.location.href = this.collectionItem.links.html;
         } catch (e) {
             this.toast.error(this.i18n.t('collections.submit.save_error', {
                 title: this.collectionItem.title,

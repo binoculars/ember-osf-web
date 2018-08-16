@@ -1,28 +1,41 @@
-{{#if (and (not open) tooltipKey)}}
+{{yield}}
+{{#if showTooltip}}
     {{bs-tooltip
         title=(t (concat tPrefix tooltipKey))
         triggerElement='parentView'
     }}
 {{/if}}
 {{#panels.panel
-    open=(eq section activeSection)
+    open=open
     as |panel|
 }}
     <header local-class="{{if (not open) 'closed'}}">
         {{t (concat tPrefix titleKey)}}
         <span class="pull-right">
-            <i class="fa fa-icon fa-floppy-o"></i>
+            <i class="fa fa-icon fa-floppy-o" local-class="{{if didSave 'green'}}"></i>
         </span>
     </header>
-    {{#if didSave}}
-        <span {{action 'editSection'}}>Click to edit</span>
-    {{/if}}
     {{#panel.body}}
         {{#if descriptionKey}}
             <p>{{t (concat tPrefix descriptionKey)}}</p>
         {{/if}}
         <div class="row">
-            {{yield}}
+            {{#yield-slot 'active'}}
+                {{yield}}
+            {{/yield-slot}}
         </div>
     {{/panel.body}}
+    {{#if showReopen}}
+        <div
+            {{action 'editSection'}}
+            local-class="{{if showReopen 'pointer'}}"
+        >
+            {{#yield-slot 'complete'}}
+                {{yield}}
+            {{/yield-slot}}
+            <p class="text-smaller">
+                <i>{{t 'collections.submit_section.click_to_edit'}}</i>
+            </p>
+        </div>
+    {{/if}}
 {{/panels.panel}}
