@@ -11,7 +11,15 @@
                 renderInPlace=false
                 placeholder=(t 'move_to_project.select_placeholder')
                 options=items
+                matcher=matcher
+                afterOptionsComponent=(component
+                    'collection-item-picker/after-options'
+                    loadMore=(action 'loadMore')
+                    hasMore=hasMore
+                    isLoading=loadingMore
+                )
                 search=(perform findNodes)
+                oninput=(action 'oninput')
                 selected=selected
                 searchField='title'
                 onchange=(action 'valueChanged')
