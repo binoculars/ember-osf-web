@@ -10,7 +10,6 @@ import Collection from 'ember-osf-web/models/collection';
 import Node from 'ember-osf-web/models/node';
 import { QueryHasManyResult } from 'ember-osf-web/models/osf-model';
 import CurrentUser from 'ember-osf-web/services/current-user';
-import authenticatedAJAX from 'ember-osf-web/utils/ajax-helpers';
 import defaultTo from 'ember-osf-web/utils/default-to';
 import { stripDiacritics } from 'ember-power-select/utils/group-utils';
 import $ from 'jquery';
@@ -76,7 +75,7 @@ export default class CollectionItemPicker extends Component.extend({
             'fields[collected-metadata]': '', // sparse fieldset optimization (only need IDs)
         });
 
-        const { data } = yield authenticatedAJAX({
+        const { data } = yield this.currentUser.authenticatedAJAX({
             url: `${this.collection.links.self}collected_metadata/?${params}`,
         });
 
