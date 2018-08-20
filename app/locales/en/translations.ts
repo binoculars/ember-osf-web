@@ -623,6 +623,12 @@ export default {
             save: 'Save and continue',
             click_to_edit: 'Click to edit',
         },
+        collection_item_picker: {
+            after_options: {
+                loading: 'Loading\u2026',
+                load_more: 'Load More Projects',
+            },
+        },
         subject_picker: {
             remove: 'Remove',
             discard: 'Discard',
