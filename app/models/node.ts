@@ -174,8 +174,10 @@ export default class Node extends BaseFileItem.extend(Validations) {
      * Sets the nodeLicense field defaults based on required fields from a License
      */
     setNodeLicenseDefaults(this: Node, requiredFields: Array<keyof NodeLicense>): void {
-        if (!requiredFields.length) {
-            this.set('nodeLicense', null);
+        if (!requiredFields.length && this.nodeLicense) {
+            // If the nodeLicense exists, notify property change so that validation is triggered
+            this.notifyPropertyChange('nodeLicense');
+
             return;
         }
 

@@ -8,6 +8,7 @@ import DS from 'ember-data';
 import I18N from 'ember-i18n/services/i18n';
 import License from 'ember-osf-web/models/license';
 import Node from 'ember-osf-web/models/node';
+import { QueryHasManyResult } from 'ember-osf-web/models/osf-model';
 import Provider from 'ember-osf-web/models/provider';
 import Analytics from 'ember-osf-web/services/analytics';
 import Theme from 'ember-osf-web/services/theme';
@@ -20,15 +21,22 @@ export default class LicensePicker extends Component.extend({
 
     queryLicenses: task(function *(this: LicensePicker, name?: string) {
         if (name) {
-            yield timeout(250);
+            yield timeout(500);
         }
 
-        const licensesAcceptable = yield this.provider.queryHasMany('licensesAcceptable', {
-            page: { size: 20 },
-            filter: name ? { name } : undefined,
-        });
+        const licensesAcceptable: QueryHasManyResult<License> = yield this.provider
+            .queryHasMany<License>('licensesAcceptable', {
+                page: { size: 20 },
+                filter: name ? { name } : undefined,
+            });
+
+        yield this.node.license;
 
         this.setProperties({ licensesAcceptable });
+
+        this.node.notifyPropertyChange('license');
+
+        return licensesAcceptable;
     }).restartable(),
 }) {
     @service analytics!: Analytics;
@@ -38,7 +46,7 @@ export default class LicensePicker extends Component.extend({
 
     showText: boolean = false;
     node: Node = this.node;
-    licensesAcceptable: License[] = [];
+    licensesAcceptable!: QueryHasManyResult<License>;
     helpLink: string = 'http://help.osf.io/m/60347/l/611430-licensing';
 
     @alias('theme.provider') provider!: Provider;

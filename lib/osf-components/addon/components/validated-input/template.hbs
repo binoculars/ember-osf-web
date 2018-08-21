@@ -57,7 +57,7 @@
             id=valuePath
             name=valuePath
             options=options
-            selected=(get model valuePath)
+            selected=(or (get model valuePath) null)
             onchange=(action 'powerSelectChanged')
             search=search
             noMatchesMessage=noMatchesMessage

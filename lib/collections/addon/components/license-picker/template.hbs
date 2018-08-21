@@ -23,24 +23,25 @@
     </a>
 </small>
 {{#if selected}}
-    <br>
-    <br>
+    {{#if requiredFields.length}}
+        <br>
+    {{/if}}
     {{#validated-input
         type='custom'
         model=node
         valuePath='nodeLicense'
     }}
         {{#each requiredFields as |key|}}
-            {{t (concat 'collections.license_picker.fields.' key)}}
+            <br>
+            <label for="nodeLicense-{{key}}">{{t (concat 'collections.license_picker.fields.' key)}}</label>
             <br>
             {{input
+                id=(concat 'nodeLicense-' key)
                 value=(mut (get node.nodeLicense key))
-                change=(action 'notify')
+                input=(action 'notify')
             }}
-            <br>
         {{/each}}
     {{/validated-input}}
-    <br>
     <a role="button" onclick={{action (mut showText) (not showText)}}>
         {{t (concat 'collections.license_picker.' (if showText 'hide' 'show'))}}
     </a>
