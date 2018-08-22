@@ -1,0 +1,114 @@
+{{#sortable-item
+    tagName="tr"
+    model=contributor
+    class=(concat "contributor-row " (local-class contributor.highlightClass))
+    group=group
+    spacing=1
+    handle=".handle"
+}}
+    {{! Profile Image }}
+    <td class="text-nowrap author-cols">
+        <div class="form-group drag-drop-contrib">
+            <span class="fa fa-bars sortable-bars handle small"></span>
+            <img
+                alt={{t   'app_components.project_contributors.list.contributor.img_alt'}}
+                class="m-l-xs"
+                src={{contributor.users.profileImage}}
+                height="30"
+                width="30"
+            >
+            <span class="visible-xs-inline">
+                {{!CONTRIBUTOR NAME - XS Screen}}
+                {{#if contributor.unregisteredContributor}}
+                    {{contributor.unregisteredContributor}}
+                {{else}}
+                    <a href={{contributor.users.links.html}} target="_blank" rel="noopener">
+                        {{contributor.users.fullName}}
+                    </a>
+                {{/if}}
+                <span class="pull-right remove-contributor-padding-xs">
+                    {{#if canRemove}}
+                        <button
+                            {{action removeContributor contributor}}
+                            class="remove-contributor-xs"
+                            aria-label={{t   'app_components.project_contributors.list.contributor.remove_author'}}
+                        >
+                            <i class="fa fa-times"></i>
+                        </button>
+                    {{/if}}
+                </span>
+            </span>
+        </div>
+    </td>
+
+    {{! Name }}
+    <td>
+        <div class="vert-align-contributor-name hidden-xs">
+            {{#if contributor.unregisteredContributor}}
+                {{contributor.unregisteredContributor}}
+            {{else}}
+                <a href={{contributor.users.links.html}} target="_blank" rel="noopener">
+                    {{contributor.users.fullName}}
+                </a>
+            {{/if}}
+        </div>
+    </td>
+
+    {{! Permissions }}
+    <td>
+        <div class="form-group vert-align-enabled-permissions">
+            <span class="visible-xs-inline permission-label">
+                <em>
+                    {{t "components.preprint-form-authors.authors.permissions"}}:
+                </em>
+            </span>
+            {{#if canChangePermissions}}
+                {{#power-select
+                    searchEnabled=false
+                    options=permissions
+                    onchange=(action (action updatePermissions contributor))
+                    selected=contributor.permission
+                    as |option|
+                }}
+                    {{t (concat   'app_components.project_contributors.list.contributor.permissions.' option)}}
+                {{/power-select}}
+            {{else}}
+                <div class="vert-align-disabled-permissions">
+                    <span class="text-smaller">
+                        {{t (concat   'app_components.project_contributors.list.contributor.permissions.' contributor.permission)}}
+                    </span>
+                </div>
+            {{/if}}
+        </div>
+    </td>
+
+    {{! Bibliographic (Citation) }}
+    <td class="bib-padding">
+        <div class="form-group vert-align">
+            <span class="visible-xs-inline checkbox-padding">
+                <em>
+                    {{t   'app_components.project_contributors.list.contributor.in_citation'}}:
+                </em>
+            </span>
+            {{input
+                type='checkbox'
+                disabled=(not canChangeBibliographic)
+                checked=contributor.bibliographic
+                change=(action toggleBibliographic contributor)
+            }}
+        </div>
+    </td>
+
+    {{! Remove }}
+    <td>
+        <div>
+            <button
+                {{action removeContributor contributor}}
+                class="btn btn-danger btn-sm"
+                disabled={{not canRemove}}
+            >
+                {{t   'app_components.project_contributors.list.contributor.remove'}}
+            </button>
+        </div>
+    </td>
+{{/sortable-item}}
