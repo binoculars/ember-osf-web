@@ -6,6 +6,7 @@
     spacing=1
     handle=".handle"
 }}
+    {{! Profile Image }}
     <td class="text-nowrap author-cols">
         <div class="form-group drag-drop-contrib">
             <span class="fa fa-bars sortable-bars handle small"></span>
@@ -40,6 +41,7 @@
         </div>
     </td>
 
+    {{! Name }}
     <td>
         <div class="vert-align-contributor-name hidden-xs">
             {{#if contributor.unregisteredContributor}}
@@ -52,6 +54,7 @@
         </div>
     </td>
 
+    {{! Permissions }}
     <td>
         <div class="form-group vert-align-enabled-permissions">
             <span class="visible-xs-inline permission-label">
@@ -60,16 +63,15 @@
                 </em>
             </span>
             {{#if canChangePermissions}}
-                <select
-                    class="text-smaller form-control permission-select"
-                    onchange={{action (action updatePermissions contributor) value='target.value'}}
-                >
-                    {{#each permissions as |option|}}
-                        <option selected={{eq contributor.permission option}} value={{option}}>
-                            {{t (concat 'collections.project_contributors.list.contributor.permissions.' option)}}
-                        </option>
-                    {{/each}}
-                </select>
+                {{#power-select
+                    searchEnabled=false
+                    options=permissions
+                    onchange=(action (action updatePermissions contributor))
+                    selected=contributor.permission
+                    as |option|
+                }}
+                    {{t (concat 'collections.project_contributors.list.contributor.permissions.' option)}}
+                {{/power-select}}
             {{else}}
                 <div class="vert-align-disabled-permissions">
                     <span class="text-smaller">
@@ -79,6 +81,8 @@
             {{/if}}
         </div>
     </td>
+
+    {{! Bibliographic (Citation) }}
     <td class="bib-padding">
         <div class="form-group vert-align">
             <span class="visible-xs-inline checkbox-padding">
@@ -94,6 +98,8 @@
             }}
         </div>
     </td>
+
+    {{! Remove }}
     <td>
         <div>
             <button

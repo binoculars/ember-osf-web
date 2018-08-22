@@ -2,6 +2,7 @@ import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
+import requiredAction from 'ember-osf-web/decorators/required-action';
 import Contributor, { permissions } from 'ember-osf-web/models/contributor';
 import CurrentUser from 'ember-osf-web/services/current-user';
 
@@ -16,6 +17,10 @@ export default class Item extends Component {
     isAdmin: boolean = this.isAdmin;
     adminCount: number = this.adminCount;
     bibliographicCount: number = this.bibliographicCount;
+
+    @requiredAction removeContributor!: () => void;
+    @requiredAction toggleBibliographic!: () => void;
+    @requiredAction updatePermissions!: () => void;
 
     @computed('currentUser.currentUserId', 'contributor.users.id')
     get isSelf() {
