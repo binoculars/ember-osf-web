@@ -12,7 +12,7 @@
         <button
             class='btn btn-link'
             local-class="toggleShowBody"
-            aria-label={{t 'eosf.components.searchitem.showResult'}}
+            aria-label={{t (concat 'collections.search_result.' (if showBody 'collapse' 'expand'))}}
             {{action 'toggleShowBody'}}
         >
             <i class="fa fa-caret-{{if showBody 'up' 'down'}}"></i>
