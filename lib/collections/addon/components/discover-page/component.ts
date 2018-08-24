@@ -17,23 +17,6 @@ import { encodeParams, getSplitParams, getUniqueList } from '../../utils/elastic
 import styles from './styles';
 import layout from './template';
 
-/**
- * Discover-page component. Builds a search interface utilizing SHARE.
- * See retraction-watch, registries, and preprints discover pages for working examples.
- *
- * Majority adapted from Ember-SHARE https://github.com/CenterForOpenScience/ember-share, with additions from PREPRINTS
- * and REGISTRIES discover pages. Original Ember-SHARE facets and PREPRINTS/REGISTRIES facets behave differently at this
- * time. You can build a discover-page that uses Ember-SHARE type facets -OR- PREPRINTS/REGISTRIES type facets.
- * Would not recommend mixing until code is combined.
- *
- * How to Use:
- * Pass in custom text like searchPlaceholder.  The facets property will enable you to customize the filters
- * on the left-hand side of the discover page. Sort options are the sort dropdown options.  The lockedParams are the
- * query parameters that are always locked in your application. Each query parameter must be passed in individually,
- * so they are reflected in the URL.  Logo and custom colors must be placed in the consuming application's stylesheet.
- * Individual components can additionally be overridden in your application.
- */
-
 const filterQueryParams = [
     'taxonomy',
     'provider',
@@ -125,13 +108,6 @@ export default class DiscoverPage extends Component.extend({
      * @default ''
      */
     contributors: string = defaultTo(this.contributors, '');
-
-    /**
-     * Name of detail route for consuming application, like 'content' or 'detail'. Override if search result title
-     * should link to detail route.
-     * @property {String} detailRoute
-     */
-    detailRoute: string = defaultTo(this.detailRoute, '');
 
     /**
      * Text header for top of discover page.
@@ -420,8 +396,6 @@ export default class DiscoverPage extends Component.extend({
     }
 
     async loadPage(this: DiscoverPage) {
-        // const data = JSON.stringify(this.getQueryBody());
-
         this.set('loading', true);
 
         try {

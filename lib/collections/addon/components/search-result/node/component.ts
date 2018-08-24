@@ -13,22 +13,6 @@ import defaultTo from 'ember-osf-web/utils/default-to';
 import styles from './styles';
 import layout from './template';
 
-/**
- * Adapted from Ember-SHARE and Ember Preprints
- * Used for search results on discover page.
- *
- * ```handlebars
- * {{search-result
- *      detailRoute=detailRoute
- *      addFilter='addFilter'
- *      result=result
- *      queryParams=queryParams
- *      filterReplace=filterReplace
- *      updateFilters=(action 'updateFilters')
- * }}
- * ```
- * @class search-result
- */
 @classNames('row')
 export default class SearchResultNode extends Component.extend({
     didRender(...args: any[]) {
