@@ -7,6 +7,11 @@ import OsfModel from './osf-model';
 import { SubjectRef } from './taxonomy';
 import User from './user';
 
+export interface DisplaySubject {
+    text: string;
+    path: string;
+}
+
 const Validations = buildValidations({
     collectedType: [
         validator('presence', true),
@@ -37,8 +42,15 @@ export default class CollectedMetadatum extends OsfModel.extend(Validations) {
     @belongsTo('user') creator!: User;
 
     @computed('subjects')
-    get displaySubjects() {
-        return this.subjects.map(({ lastObject }) => lastObject);
+    get displaySubjects(): DisplaySubject[] {
+        return this.subjects.map(subject => {
+            const names = subject.mapBy('text');
+
+            return {
+                text: names.get('lastObject'),
+                path: ['', ...names].join('|'),
+            };
+        });
     }
 }
 

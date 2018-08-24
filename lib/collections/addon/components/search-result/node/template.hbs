@@ -22,7 +22,7 @@
                 <span
                     role="button"
                     local-class="pointer subject-preview"
-                    onclick={{action addFilter 'taxonomy' (or subject.value subject.text)}}
+                    onclick={{action addFilter 'taxonomy' subject.path}}
                 >
                     {{subject.text}}
                 </span>

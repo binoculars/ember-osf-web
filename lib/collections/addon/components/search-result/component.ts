@@ -8,12 +8,11 @@ import config from 'collections/config/environment';
 import { ModelRegistry } from 'ember-data';
 import I18N from 'ember-i18n/services/i18n';
 import { localClassNames } from 'ember-osf-web/decorators/css-modules';
-import CollectedMetadatum from 'ember-osf-web/models/collected-metadatum';
+import CollectedMetadatum, { DisplaySubject } from 'ember-osf-web/models/collected-metadatum';
 import Collection from 'ember-osf-web/models/collection';
 import Node from 'ember-osf-web/models/node';
 import Preprint from 'ember-osf-web/models/preprint';
 import Registration from 'ember-osf-web/models/registration';
-import { SubjectRef } from 'ember-osf-web/models/taxonomy';
 import Analytics from 'ember-osf-web/services/analytics';
 import Theme from 'ember-osf-web/services/theme';
 import defaultTo from 'ember-osf-web/utils/default-to';
@@ -23,23 +22,6 @@ import layout from './template';
 
 type Collectable = Collection | Node | Preprint | Registration;
 type CollectableType = keyof Pick<ModelRegistry, 'collection' | 'node' | 'preprint' | 'registration'>;
-
-/**
- * Adapted from Ember-SHARE and Ember Preprints
- * Used for search results on discover page.
- *
- * ```handlebars
- * {{search-result
- *      detailRoute=detailRoute
- *      addFilter='addFilter'
- *      result=result
- *      queryParams=queryParams
- *      filterReplace=filterReplace
- *      updateFilters=(action 'updateFilters')
- * }}
- * ```
- * @class search-result
- */
 
 @classNames('p-sm')
 @localClassNames('search-result')
@@ -58,22 +40,12 @@ export default class SearchResult extends Component {
     maxDescription: number = defaultTo(this.maxDescription, 300);
     showBody: boolean = defaultTo(this.showBody, false);
     facetContexts: FacetContexts = this.facetContexts;
-
-    /**
-     * Array of query params being used in consuming app
-     * @property {Array} queryParams
-     */
     queryParams: string[] | null = defaultTo(this.queryParams, null);
-
-    /**
-     * Search result from SHARE
-     * @property {Object} result
-     */
     result: CollectedMetadatum = this.result;
 
     @alias('result.guid.content') item!: Collectable;
     @alias('item.constructor.modelName') type!: CollectableType;
-    @alias('result.displaySubjects') subjects!: SubjectRef;
+    @alias('result.displaySubjects')! subjects!: DisplaySubject[];
 
     @action
     addFilter(facet: keyof FacetContexts, item: string): void {
