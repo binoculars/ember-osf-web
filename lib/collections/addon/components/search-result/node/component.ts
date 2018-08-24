@@ -39,12 +39,6 @@ export default class SearchResultNode extends Component.extend({
 
     item: Node = this.item;
 
-    /**
-     * Array of query params being used in consuming app
-     * @property {Array} queryParams
-     */
-    queryParams: string[] | null = defaultTo(this.queryParams, null);
-
     domainRedirectProviders = [];
 
     @computed('item.description', 'maxDescription')
