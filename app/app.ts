@@ -13,6 +13,7 @@ const App = Application.extend({
         collections: {
             dependencies: {
                 externalRoutes: {
+                    home: 'home',
                     support: 'support',
                 },
                 services: [
