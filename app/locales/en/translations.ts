@@ -719,6 +719,7 @@ export default {
     collections: {
         navbar: {
             brand: '{{name}} Collections',
+            add: 'Add to Collection',
         },
         index: {
             title: 'Collections',
