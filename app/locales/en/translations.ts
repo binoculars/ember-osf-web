@@ -776,12 +776,10 @@ export default {
                 load_more: 'Load More Projects',
             },
         },
-
         search_result: {
             expand: 'Expand search result',
             collapse: 'Collapse search result',
         },
-
         discover_page: {
             active_filters: {
                 button: 'Clear filters',
