@@ -88,9 +88,9 @@ export default class List extends Component {
 
         try {
             yield contributor.destroyRecord();
-            this.toast.success(this.i18n.t('collections.project_contributors.list.remove_contributor_success'));
+            this.toast.success(this.i18n.t('app_components.project_contributors.list.remove_contributor_success'));
         } catch (e) {
-            this.toast.error(this.i18n.t('collections.project_contributors.list.remove_contributor_error'));
+            this.toast.error(this.i18n.t('app_components.project_contributors.list.remove_contributor_error'));
         }
 
         // It's necessary to unload the record from the store after destroying it, in case the user is added back as a

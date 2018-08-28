@@ -33,10 +33,10 @@ export default class ProjectMetadata extends Component {
     save = task(function *(this: ProjectMetadata) {
         try {
             yield this.node.save();
-            this.toast.success(this.i18n.t('collections.project_metadata.save_success'));
+            this.toast.success(this.i18n.t('app_components.project_metadata.save_success'));
             this.continue();
         } catch (e) {
-            this.toast.error(this.i18n.t('collections.project_metadata.save_error'));
+            this.toast.error(this.i18n.t('app_components.project_metadata.save_error'));
         }
     });
 

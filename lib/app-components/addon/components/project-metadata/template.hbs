@@ -1,6 +1,6 @@
 <div class="col-md-6">
     <label>
-        {{t   'app_components.project_metadata.field_title_label'}}
+        {{t 'app_components.project_metadata.field_title_label'}}
         {{validated-input
             model=node
             valuePath='title'
@@ -10,7 +10,7 @@
     </label>
     <br>
     <label>
-        {{t   'app_components.project_metadata.field_description_label'}}
+        {{t 'app_components.project_metadata.field_description_label'}}
         {{validated-input
             model=node
             type='textarea'
@@ -21,11 +21,11 @@
 </div>
 <div class="col-md-6">
     {{#license-picker node=node}}
-        {{t   'app_components.project_metadata.field_license_label'}}
+        {{t 'app_components.project_metadata.field_license_label'}}
     {{/license-picker}}
     <br>
     <label>
-        {{t   'app_components.project_metadata.field_tags_label'}}
+        {{t 'app_components.project_metadata.field_tags_label'}}
         {{#validated-input
             type='custom'
             model=node

@@ -3,7 +3,7 @@
         {{input
             value=query
             class='form-control'
-            placeholder=(t 'collections.project_contributors.search.placeholder')
+            placeholder=(t 'app_components.project_contributors.search.placeholder')
         }}
         <span class="input-group-btn">
             <button
@@ -24,16 +24,16 @@
     }}
 {{else if results.isLoaded}}
     <div class="text-center" local-class="unregisteredUsers">
-        <p>{{t   'app_components.project_contributors.search.unregistered_description'}}</p>
+        <p>{{t 'app_components.project_contributors.search.unregistered_description'}}</p>
         <button
             class="btn btn-primary btn-small"
             {{action (mut showUnregisteredForm) true}}
         >
-            {{t   'app_components.project_contributors.search.unregistered_button'}}
+            {{t 'app_components.project_contributors.search.unregistered_button'}}
         </button>
     </div>
     <h3>
-        {{t   'app_components.project_contributors.search.results'}}
+        {{t 'app_components.project_contributors.search.results'}}
     </h3>
     {{#if results.length}}
         <table class="table author-table">
@@ -53,6 +53,6 @@
             }}
         </div>
     {{else}}
-        {{t   'app_components.project_contributors.search.no_results'}}
+        {{t 'app_components.project_contributors.search.no_results'}}
     {{/if}}
 {{/if}}

@@ -19,7 +19,7 @@
         rel="noopener"
         href={{helpLink}}
     >
-        {{t   'app_components.license_picker.faq'}}
+        {{t 'app_components.license_picker.faq'}}
     </a>
 </small>
 {{#if selected}}
@@ -33,7 +33,7 @@
     }}
         {{#each requiredFields as |key|}}
             <br>
-            <label for="nodeLicense-{{key}}">{{t (concat   'app_components.license_picker.fields.' key)}}</label>
+            <label for="nodeLicense-{{key}}">{{t (concat 'app_components.license_picker.fields.' key)}}</label>
             <br>
             {{input
                 id=(concat 'nodeLicense-' key)
@@ -43,7 +43,7 @@
         {{/each}}
     {{/validated-input}}
     <a role="button" onclick={{action (mut showText) (not showText)}}>
-        {{t (concat   'app_components.license_picker.' (if showText 'hide' 'show'))}}
+        {{t (concat 'app_components.license_picker.' (if showText 'hide' 'show'))}}
     </a>
     {{#if showText}}
         <pre>{{licenseText}}</pre>

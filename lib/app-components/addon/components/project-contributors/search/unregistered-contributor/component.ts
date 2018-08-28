@@ -40,11 +40,11 @@ export default class UnregisteredContributor extends Component {
         try {
             yield this.model!.save();
             this.toast.success(
-                this.i18n.t('collections.project_contributors.search.unregistered_contributor.add_success'),
+                this.i18n.t('app_components.project_contributors.search.unregistered_contributor.add_success'),
             );
         } catch (e) {
             this.toast.error(
-                this.i18n.t('collections.project_contributors.search.unregistered_contributor.add_error'),
+                this.i18n.t('app_components.project_contributors.search.unregistered_contributor.add_error'),
             );
         }
 

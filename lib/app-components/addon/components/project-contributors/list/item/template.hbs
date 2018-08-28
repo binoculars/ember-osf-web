@@ -11,7 +11,7 @@
         <div class="form-group drag-drop-contrib">
             <span class="fa fa-bars sortable-bars handle small"></span>
             <img
-                alt={{t   'app_components.project_contributors.list.contributor.img_alt'}}
+                alt={{t 'app_components.project_contributors.list.contributor.img_alt'}}
                 class="m-l-xs"
                 src={{contributor.users.profileImage}}
                 height="30"
@@ -31,7 +31,7 @@
                         <button
                             {{action removeContributor contributor}}
                             class="remove-contributor-xs"
-                            aria-label={{t   'app_components.project_contributors.list.contributor.remove_author'}}
+                            aria-label={{t 'app_components.project_contributors.list.contributor.remove_author'}}
                         >
                             <i class="fa fa-times"></i>
                         </button>
@@ -70,12 +70,12 @@
                     selected=contributor.permission
                     as |option|
                 }}
-                    {{t (concat   'app_components.project_contributors.list.contributor.permissions.' option)}}
+                    {{t (concat 'app_components.project_contributors.list.contributor.permissions.' option)}}
                 {{/power-select}}
             {{else}}
                 <div class="vert-align-disabled-permissions">
                     <span class="text-smaller">
-                        {{t (concat   'app_components.project_contributors.list.contributor.permissions.' contributor.permission)}}
+                        {{t (concat 'app_components.project_contributors.list.contributor.permissions.' contributor.permission)}}
                     </span>
                 </div>
             {{/if}}
@@ -87,7 +87,7 @@
         <div class="form-group vert-align">
             <span class="visible-xs-inline checkbox-padding">
                 <em>
-                    {{t   'app_components.project_contributors.list.contributor.in_citation'}}:
+                    {{t 'app_components.project_contributors.list.contributor.in_citation'}}:
                 </em>
             </span>
             {{input
@@ -107,7 +107,7 @@
                 class="btn btn-danger btn-sm"
                 disabled={{not canRemove}}
             >
-                {{t   'app_components.project_contributors.list.contributor.remove'}}
+                {{t 'app_components.project_contributors.list.contributor.remove'}}
             </button>
         </div>
     </td>

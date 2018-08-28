@@ -38,7 +38,7 @@ export default class NodeLicense extends BaseValidator {
         const missingFields = license.requiredFields
             .filter((field: keyof Deserialized) => !value[field])
             .sort()
-            .map(field => this.i18n.t(`collections.license_picker.fields.${field}`))
+            .map(field => this.i18n.t(`app_components.license_picker.fields.${field}`))
             .join(', ');
 
         if (missingFields.length) {

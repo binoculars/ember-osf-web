@@ -45,6 +45,5 @@ export default class SubmitSection extends Component.extend(SlotsMixin) {
     @action
     editSection(this: SubmitSection): void {
         this.set('activeSection', this.section);
-        // TODO: call a closure action that says section changed
     }
 }
