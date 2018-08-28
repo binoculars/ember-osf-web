@@ -1,5 +1,7 @@
 import { service } from '@ember-decorators/service';
 import { setProperties } from '@ember/object';
+import { task } from 'ember-concurrency';
+import { QueryHasManyResult } from 'ember-osf-web/models/osf-model';
 import Provider from 'ember-osf-web/models/provider';
 import Taxonomy from 'ember-osf-web/models/taxonomy';
 import Theme from 'ember-osf-web/services/theme';
@@ -26,7 +28,29 @@ function getParentPaths(item: string): string[] {
         .slice(1);
 }
 
+export const getTaxonomies = task(function *(item: TaxonomyItem, provider: Provider) {
+    const results: QueryHasManyResult<Taxonomy> = yield provider.queryHasMany<Taxonomy>('taxonomies', {
+        filter: { parents: item.id },
+        page: { size: pageSize },
+    });
+
+    setProperties(item, {
+        children: results
+            .map(({ id, text, childCount, shareTitle, path }) => ({
+                id,
+                text,
+                children: [],
+                childCount,
+                shareTitle,
+                path,
+            }))
+            .sortBy('text'),
+    });
+});
+
 export default class SearchFacetTaxonomy extends Base.extend({
+    getTaxonomies,
+
     didInsertElement(this: SearchFacetTaxonomy, ...args: any[]) {
         this._super(...args);
 
@@ -79,29 +103,9 @@ export default class SearchFacetTaxonomy extends Base.extend({
             },
         });
 
-        SearchFacetTaxonomy.getTaxonomies(this.item, this.theme.provider!);
+        this.get('getTaxonomies').perform(this.item, this.theme.provider!);
     },
 }) {
-    static async getTaxonomies(item: TaxonomyItem, provider: Provider) {
-        const results = await provider.queryHasMany<Taxonomy>('taxonomies', {
-            filter: { parents: item.id },
-            page: { size: pageSize },
-        });
-
-        setProperties(item, {
-            children: results
-                .map(({ id, text, childCount, shareTitle, path }) => ({
-                    id,
-                    text,
-                    children: [],
-                    childCount,
-                    shareTitle,
-                    path,
-                }))
-                .sortBy('text'),
-        });
-    }
-
     layout = layout;
     styles = styles;
 

@@ -42,8 +42,9 @@
                     {{input
                         id="searchBox"
                         value=q
-                        class="form-control"
-                        enter="searchAction"
+                        class='form-control'
+                        enter='searchAction'
+                        key-up='searchAction'
                         placeholder=(t
                             (or searchPlaceholder 'collections.discover_page.searchPlaceholder')
                             documentType=themeProvider.documentType
@@ -124,15 +125,12 @@
         <div class="row search-results-section">
             {{!LEFT PANEL - SEARCH FACETS}}
             <div class="col-sm-4 col-xs-12 search-sidebar">
-                {{! ACTIVE FILTERS - FOR PREPRINTS, REGISTRIES}}
                 {{#if showActiveFilters}}
                     <div id="activeFilters" class="well well-sm p-md">
                         {{discover-page/active-filters
                             activeFilters=activeFilters
                             facetContexts=facetContexts
-                            filterReplace=filterReplace
                             clearFilters=(action clearFilters)
-                            filterChanged=(action 'filterChanged')
                         }}
                     </div>
                 {{/if}}
@@ -166,7 +164,8 @@
                         {{!RESULTS FOUND}}
                         <div class="results-top">
                             {{#each results as |result|}}
-                                {{search-result
+                                {{component
+                                    searchResultComponent
                                     result=result
                                     currentService=currentService
                                     facetContexts=facetContexts

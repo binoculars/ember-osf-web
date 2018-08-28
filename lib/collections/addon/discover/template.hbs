@@ -1,6 +1,8 @@
 {{title (t 'collections.discover.title')}}
 
 {{discover-page
+    query=(action 'query')
+    searchResultComponent='collection-search-result'
     activeFilters=activeFilters
     consumingService=consumingService
     discoverHeader=discoverHeader

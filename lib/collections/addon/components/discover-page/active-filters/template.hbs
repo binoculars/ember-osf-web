@@ -13,41 +13,9 @@
     </div>
 </div>
 
-{{#each facetContexts.collection-provider.activeFilter as |item|}}
-    {{discover-page/active-filters/filter
-        facet='collection-provider'
-        item=item
-        text=(filter-replace item.key filterReplace)
-        ariaLabel=(t 'collections.discover_page.active_filters.remove_provider')
-        hide=theme.isProvider
-        removeFilterItem=(action 'removeFilterItem')
-        extraClass='provider'
-    }}
-{{/each}}
-{{#each facetContexts.taxonomy.activeFilter as |item|}}
-    {{discover-page/active-filters/filter
-        facet='taxonomy'
-        item=item
-        text=(custom-taxonomy-filter item)
-        ariaLabel=(t 'collections.discover_page.active_filters.remove_subject')
-        removeFilterItem=(action 'removeFilterItem')
-    }}
-{{/each}}
-{{#each facetContexts.collected-type.activeFilter as |item|}}
-    {{discover-page/active-filters/filter
-        facet='collected-type'
-        item=item
-        text=item
-        ariaLabel=(t 'collections.discover_page.active_filters.remove_type')
-        removeFilterItem=(action 'removeFilterItem')
-    }}
-{{/each}}
-{{#each facetContexts.status.activeFilter as |item|}}
-    {{discover-page/active-filters/filter
-        facet='status'
-        item=item
-        text=item
-        ariaLabel=(t 'collections.discover_page.active_filters.remove_status')
-        removeFilterItem=(action 'removeFilterItem')
+{{#each facetContexts as |context|}}
+    {{component
+        (concat 'discover-page/active-filters/' context.component)
+        context=context
     }}
 {{/each}}

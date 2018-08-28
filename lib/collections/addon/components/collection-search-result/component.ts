@@ -3,7 +3,7 @@ import { action } from '@ember-decorators/object';
 import { alias } from '@ember-decorators/object/computed';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
-import { get } from '@ember/object';
+// import { get } from '@ember/object';
 import config from 'collections/config/environment';
 import { ModelRegistry } from 'ember-data';
 import I18N from 'ember-i18n/services/i18n';
@@ -16,7 +16,7 @@ import Registration from 'ember-osf-web/models/registration';
 import Analytics from 'ember-osf-web/services/analytics';
 import Theme from 'ember-osf-web/services/theme';
 import defaultTo from 'ember-osf-web/utils/default-to';
-import { FacetContexts } from '../discover-page/component';
+import { FacetContext } from '../discover-page/component';
 import styles from './styles';
 import layout from './template';
 
@@ -39,7 +39,7 @@ export default class SearchResult extends Component {
     maxCreators: number = defaultTo(this.maxCreators, 10);
     maxDescription: number = defaultTo(this.maxDescription, 300);
     showBody: boolean = defaultTo(this.showBody, false);
-    facetContexts: FacetContexts = this.facetContexts;
+    facetContexts: FacetContext[] = this.facetContexts;
     queryParams: string[] | null = defaultTo(this.queryParams, null);
     result: CollectedMetadatum = this.result;
 
@@ -48,10 +48,10 @@ export default class SearchResult extends Component {
     @alias('result.displaySubjects')! subjects!: DisplaySubject[];
 
     @action
-    addFilter(facet: keyof FacetContexts, item: string): void {
-        const context = get(this.facetContexts, facet);
+    addFilter(facet: string, item: string): void {
+        // const context = get(this.facetContexts, facet);
 
-        context.updateFilters(item);
+        this.facetContexts.findBy('component', facet)!.updateFilters(item);
     }
 
     @action
