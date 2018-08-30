@@ -1,8 +1,20 @@
 .navbar {
+    border: 0;
+    position: fixed;
+    z-index: 99;
+    width: 100%;
     box-shadow: 2px 1px 4px rgba(82, 81, 81, 0.7);
     height: 50px;
     border-radius: 0 !important;
     margin-bottom: 0 !important;
+}
+
+.navbar-content {
+    width: 100%;
+
+    a {
+        line-height: 2em !important;
+    }
 }
 
 .navbar-image {
@@ -18,4 +30,11 @@
     background-position-y: center;
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+.toggle {
+    background: transparent !important;
+    border: 0;
+    margin-right: -1em;
+    padding-right: 0;
 }

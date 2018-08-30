@@ -586,9 +586,10 @@ export default {
                 citation: 'Citiation:',
                 remove_contributor_success: 'Project contributor removed!',
                 remove_contributor_error: 'Could not remove contributor. Please try again.',
-                contributor: {
+                item: {
                     img_alt: 'Gravatar',
-                    in_citation: 'In citation',
+                    in_citation_label: 'In citation:',
+                    permissions_label: 'Permissions:',
                     permissions: {
                         admin: 'Administrator',
                         write: 'Read + Write',
@@ -817,6 +818,7 @@ export default {
         },
     },
     branded_navbar: {
+        sr_only: 'Toggle navigation',
         my_osf_projects: 'My OSF Projects',
         on_the_osf: 'On the OSF:',
     },

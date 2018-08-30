@@ -1,10 +1,9 @@
-import { classNames, tagName } from '@ember-decorators/component';
+import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
 import { service } from '@ember-decorators/service';
 import Component from '@ember/component';
 import I18N from 'ember-i18n/services/i18n';
 import { serviceLinks } from 'ember-osf-web/const/service-links';
-import { localClassNames } from 'ember-osf-web/decorators/css-modules';
 import requiredAction from 'ember-osf-web/decorators/required-action';
 import Analytics from 'ember-osf-web/services/analytics';
 import Theme from 'ember-osf-web/services/theme';
@@ -14,9 +13,7 @@ import layout from './template';
 
 type ObjectType = 'collection' | 'preprint' | 'registration';
 
-@tagName('nav')
-@classNames('navbar')
-@localClassNames('navbar')
+@tagName('')
 export default class BrandedNavbar extends Component {
     layout = layout;
     styles = styles;
