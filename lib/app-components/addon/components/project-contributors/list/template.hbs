@@ -1,42 +1,34 @@
-<table class="table author-table current-authors">
-    <thead class="hidden-xs">
-        <tr>
-            <th></th>
-            <th class="contrib-column-header">
-                {{t 'app_components.project_contributors.list.name'}}
-            </th>
-            <th class="contrib-column-header">
-                {{t 'app_components.project_contributors.list.permissions'}}
-                <span>
-                    <i class="fa fa-question-circle permission-info"
-                        data-toggle="popover"
-                        data-title="{{t 'app_components.project_contributors.list.'}}"
-                        data-trigger="hover"
-                        data-html="true"
-                        data-placement="bottom"
-                        id="permissions-popover">
-                    </i>
-                </span>
-                <br>
-            </th>
-            <th class="bib-padding">
-                {{t 'app_components.project_contributors.list.citation'}}
-                <span>
-                    <i class="fa fa-question-circle permission-info"
-                        data-toggle="popover"
-                        data-title="{{t 'app_components.project_contributors.list.'}}"
-                        data-trigger="hover"
-                        data-html="true"
-                        data-placement="bottom"
-                        id="bibliographic-popover">
-                    </i>
-                </span>
-                <br>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    {{#sortable-group tagName="tbody" onChange=(action (perform reorderContributors)) as |group|}}
+<div class="container-fluid">
+    <div class="row hidden-xs">
+        <div class="col-sm-3 col-sm-offset-2">
+            <strong>{{t 'app_components.project_contributors.list.name'}}</strong>
+        </div>
+        <div class="col-sm-3">
+            <strong>{{t 'app_components.project_contributors.list.permissions'}}</strong>
+            <i class="fa fa-question-circle">
+                {{#bs-popover
+                    placement='bottom'
+                    triggerEvents='hover'
+                    title=(t 'app_components.project_contributors.list.permissions_popover_title')
+                }}
+                    {{t 'app_components.project_contributors.list.permissions_popover'}}
+                {{/bs-popover}}
+            </i>
+        </div>
+        <div class="col-sm-2 bib-padding">
+            <strong>{{t 'app_components.project_contributors.list.citation'}}</strong>
+            <i class="fa fa-question-circle">
+                {{#bs-popover
+                    placement='bottom'
+                    triggerEvents='hover'
+                    title=(t 'app_components.project_contributors.list.citation_popover_title')
+                }}
+                    {{t 'app_components.project_contributors.list.citation_popover'}}
+                {{/bs-popover}}
+            </i>
+        </div>
+    </div>
+    {{#sortable-group onChange=(action (perform reorderContributors)) as |group|}}
         {{#each contributors as |contributor|}}
             {{project-contributors/list/item
                 group=group
@@ -50,4 +42,4 @@
             }}
         {{/each}}
     {{/sortable-group}}
-</table>
+</div>

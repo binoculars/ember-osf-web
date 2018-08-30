@@ -17,3 +17,32 @@
 .error {
     animation: redHighlight 2s;
 }
+
+.row {
+    border-top: 1px solid #eee !important;
+    padding-top: 2px;
+
+    > * {
+        padding: 5px;
+    }
+
+    @media(max-width: 767px) {
+        padding-top: 10px;
+    }
+}
+
+.profile-image {
+    width: 30px;
+    height: 30px;
+}
+
+.checkbox-label {
+    font-weight: normal;
+    padding-right: 5px;
+}
+
+@media (min-width: 768px) {
+    .text-sm-center {
+        text-align: center;
+    }
+}

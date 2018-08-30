@@ -578,12 +578,43 @@ export default {
             add_item: 'Add to {{objectType}}',
         },
         project_contributors: {
-            title: 'Contributors:',
+            title: 'Contributors',
+            contributors_popover_title: 'Contributor Information',
+            contributors_popover: 'Projects must have at least one registered administrator and one author showing in the citation at all times. A registered administrator is a user who has both confirmed their account and has administrator privileges.',
             instructions: 'Drag and drop authors to change authorship order.',
             list: {
-                name: 'Name:',
-                permissions: 'Permissions:',
-                citation: 'Citiation:',
+                name: 'Name',
+                permissions: 'Permissions',
+                permissions_popover_title: 'Permission Information',
+                permissions_popover: `
+                    <dl>
+                        <dt>Read</dt>
+                        <dd>
+                            <ul>
+                                <li>View project</li>
+                            </ul>
+                        </dd>
+                        <dt>Read + Write</dt>
+                        <dd>
+                            <ul>
+                                <li>Read privileges</li>
+                                <li>Add and configure project</li>
+                                <li>Add and edit content</li>
+                            </ul>
+                        </dd>
+                        <dt>Administrator</dt>
+                        <dd>
+                            <ul>
+                                <li>Read and write privileges</li>
+                                <li>Manage contributors</li>
+                                <li>Public-private settings</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `,
+                citation: 'Citiation',
+                citation_popover_title: 'Citation Information',
+                citation_popover: 'Only checked contribotrs will be included in project citations. Contributors not in the citation can read and modify the project as normal.',
                 remove_contributor_success: 'Project contributor removed!',
                 remove_contributor_error: 'Could not remove contributor. Please try again.',
                 item: {
