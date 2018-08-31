@@ -783,7 +783,7 @@ export default {
             header: 'Add to Collection',
             project_select_title: 'Select a project',
             project_select_project_label: 'Project:',
-            closed_tooltip: 'Select a project to edit this section',
+            closed_tooltip: 'Complete the previous section to edit this section',
             project_metadata_title: 'Project metadata',
             project_metadata_description: 'Updates made in this section will update the project.',
             project_metadata_title_label: 'Title:',

@@ -3,7 +3,6 @@ import { action, computed } from '@ember-decorators/object';
 import Component from '@ember/component';
 import SlotsMixin from 'ember-block-slots';
 import { localClassNames } from 'ember-osf-web/decorators/css-modules';
-import defaultTo from 'ember-osf-web/utils/default-to';
 import styles from './styles';
 import layout from './template';
 
@@ -13,10 +12,9 @@ export default class SubmitSection extends Component.extend(SlotsMixin) {
     layout = layout;
     styles = styles;
 
-    tPrefix: string = defaultTo(this.tPrefix, 'collections.submit.');
-    tooltipKey: string = this.tooltipKey;
-    titleKey: string = this.titleKey;
-    descriptionKey?: string = this.descriptionKey;
+    tooltip: string = this.tooltip;
+    title: string = this.title;
+    description?: string = this.description;
 
     section: number = this.section;
     activeSection: number = this.activeSection;
@@ -34,7 +32,7 @@ export default class SubmitSection extends Component.extend(SlotsMixin) {
 
     @computed('open', 'didSave')
     get showTooltip(): boolean {
-        return !!this.tooltipKey && !this.open && !this.didSave;
+        return !!this.tooltip && !this.open && !this.didSave;
     }
 
     @computed('open', 'didSave')

@@ -10,7 +10,7 @@
                     section=sections.project
                     activeSection=activeSection
                     savedSections=savedSections
-                    titleKey='project_select_title'
+                    title=(t 'collections.submit.project_select_title')
                     continue=(action 'nextSection' sections.project)
                 }}
                     {{#block-slot 'active'}}
@@ -34,9 +34,9 @@
                     section=sections.projectMetadata
                     activeSection=activeSection
                     savedSections=savedSections
-                    tooltipKey='closed_tooltip'
-                    titleKey='project_metadata_title'
-                    descriptionKey='project_metadata_description'
+                    tooltip=(t 'collections.submit.closed_tooltip')
+                    title=(t 'collections.submit.project_metadata_title')
+                    description=(t 'collections.submit.project_metadata_description')
                 }}
                     {{#block-slot 'active'}}
                         {{project-metadata
@@ -71,9 +71,9 @@
                     section=sections.projectContributors
                     activeSection=activeSection
                     savedSections=savedSections
-                    tooltipKey='closed_tooltip'
-                    titleKey='project_contributors_title'
-                    descriptionKey='project_contributors_description'
+                    tooltip=(t 'collections.submit.closed_tooltip')
+                    title=(t 'collections.submit.project_contributors_title')
+                    description=(t 'collections.submit.project_contributors_description')
                 }}
                     {{#block-slot 'active'}}
                         {{project-contributors
@@ -93,8 +93,9 @@
                     section=sections.collectionSubjects
                     activeSection=activeSection
                     savedSections=savedSections
-                    titleKey='subjects_title'
-                    descriptionKey='subjects_description'
+                    tooltip=(t 'collections.submit.closed_tooltip')
+                    title=(t 'collections.submit.subjects_title')
+                    description=(t 'collections.submit.subjects_description')
                 }}
                     {{#block-slot 'active'}}
                         {{subject-picker
@@ -124,7 +125,8 @@
                     section=sections.collectionMetadata
                     activeSection=activeSection
                     savedSections=savedSections
-                    titleKey='collection_metadata_title'
+                    tooltip=(t 'collections.submit.closed_tooltip')
+                    title=(t 'collections.submit.collection_metadata_title')
                 }}
                     {{#block-slot 'active'}}
                         {{collection-metadata

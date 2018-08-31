@@ -36,6 +36,7 @@
             <label for="nodeLicense-{{key}}">{{t (concat 'app_components.license_picker.fields.' key)}}</label>
             <br>
             {{input
+                class='form-control'
                 id=(concat 'nodeLicense-' key)
                 value=(mut (get node.nodeLicense key))
                 input=(action 'notify')
